@@ -1,5 +1,5 @@
 export async function fetchSiteData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/siteinfo/${id}/`);
+  const response = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/${id}/`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -9,7 +9,7 @@ export async function fetchSiteData(id: string) {
 }
 
 export async function createSiteData(data: any) {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/siteinfo/', {
+  const response = await fetch('http://10.24.8.120:8000/api/sitebasicinfo/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export async function createSiteData(data: any) {
 }
 
 export async function updateSiteData(id: string, updatedData: any) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/siteinfo/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/${id}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export async function updateSiteData(id: string, updatedData: any) {
 }
 
 export async function deleteSiteData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/siteinfo/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/${id}/`, {
     method: 'DELETE',
   });
 

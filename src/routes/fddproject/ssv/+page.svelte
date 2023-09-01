@@ -12,24 +12,24 @@
 
 
   const subconName = data.reldata.subcon.results
-    .filter((item:any) => item.subcon_category == 'Optimization')
-    .map((item:any) => item.subcon_name)
+    .filter((item:any) => item.type == 'Service')
+    .map((item:any) => item.subcon)
   let subconOptions: string[] = subconName
 
   // Pagination variables
   let paginationurl = 'fddproject/ssv'
   let sitebasicinfo = '';
   let contracttype = '';
-  let regions = '';
-  let onair_date = '';
-  let ssv_start_date = '';
-  let ssv_complete_date = '';
-  let ssv_submit_date = '';
-  let bs_receive_date = '';
-  let bs_submit_date = '';
-  let bs_approval_date = '';
-  let ic_submit_date = '';
-  let subcon = '';
+  let region = '';
+  let oaairdate = '';
+  let ssvstartdate = '';
+  let ssvcompletedate = '';
+  let ssvsubmitdate = '';
+  let bsreceivedate = '';
+  let bssubmitdate = '';
+  let bsapprovedate = '';
+  let icsubmitdate = '';
+  let ssvsubcon = '';
 
   let limit = Number($page.url.searchParams.get('limit')) || 5;
   $: totalPages = (Number(data?.reldata?.totalPages) || 0);
@@ -51,32 +51,32 @@
     params.set('offset', '0');
     params.set('sitebasicinfo', sitebasicinfo);
     params.set('contracttype', contracttype);
-    params.set('regions', regions);
-    params.set('onair_date', onair_date);
-    params.set('ssv_start_date', ssv_start_date);
-    params.set('ssv_complete_date', ssv_complete_date);
-    params.set('ssv_submit_date', ssv_submit_date);
-    params.set('bs_receive_date', bs_receive_date);
-    params.set('bs_submit_date', bs_submit_date);
-    params.set('bs_approval_date', bs_approval_date);
-    params.set('ic_submit_date', ic_submit_date);
-    params.set('subcon', subcon);
+    params.set('region', region);
+    params.set('oaairdate', oaairdate);
+    params.set('ssvstartdate', ssvstartdate);
+    params.set('ssvcompletedate', ssvcompletedate);
+    params.set('ssvsubmitdate', ssvsubmitdate);
+    params.set('bsreceivedate', bsreceivedate);
+    params.set('bssubmitdate', bssubmitdate);
+    params.set('bsapprovedate', bsapprovedate);
+    params.set('icsubmitdate', icsubmitdate);
+    params.set('ssvsubcon', ssvsubcon);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
   function resetFilters() {
     sitebasicinfo = '';
     contracttype = '';
-    regions = '';
-    onair_date = '';
-    ssv_start_date = '';
-    ssv_complete_date = '';
-    ssv_submit_date = '';
-    bs_receive_date = '';
-    bs_submit_date = '';
-    bs_approval_date = '';
-    ic_submit_date = '';
-    subcon = '';
+    region = '';
+    oaairdate = '';
+    ssvstartdate = '';
+    ssvcompletedate = '';
+    ssvsubmitdate = '';
+    bsreceivedate = '';
+    bssubmitdate = '';
+    bsapprovedate = '';
+    icsubmitdate = '';
+    ssvsubcon = '';
     search();
   }
 
@@ -127,13 +127,13 @@
     
         <DropdownMulti
           options={['Central', 'Northern', 'Southern', 'Eastern', 'Sabah', 'Sarawak']}
-          bind:selectedOptions={regions}
+          bind:selectedOptions={region}
           onOptionChange={search}
           placeholder="Region" 
         />
       
         <DropdownMulti
-          options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse-Replace']}
+          options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse_Replace']}
           bind:selectedOptions={contracttype}
           onOptionChange={search}
           placeholder="Contract type" 
@@ -141,7 +141,7 @@
     
         <DropdownMulti
           options={subconOptions}
-          bind:selectedOptions={subcon}
+          bind:selectedOptions={ssvsubcon}
           onOptionChange={search}
           placeholder="Sub-Contractor" 
         />
@@ -163,49 +163,49 @@
       <div class="grid grid-cols-7 items-center w-full gap-2">
         <DropdownMulti
           options={['Null', 'Not Null']}
-          bind:selectedOptions={onair_date}
+          bind:selectedOptions={oaairdate}
           onOptionChange={search}
           placeholder="OnAir" 
         />
 
         <DropdownMulti
           options={['Null', 'Not Null']}
-          bind:selectedOptions={ssv_start_date}
+          bind:selectedOptions={ssvstartdate}
           onOptionChange={search}
           placeholder="SSV Start" 
         />
       
         <DropdownMulti
           options={['Null', 'Not Null']}
-          bind:selectedOptions={ssv_complete_date}
+          bind:selectedOptions={ssvcompletedate}
           onOptionChange={search}
           placeholder="SSV Complete" 
         />
     
         <DropdownMulti
         options={['Null', 'Not Null']}
-          bind:selectedOptions={ssv_submit_date}
+          bind:selectedOptions={ssvsubmitdate}
           onOptionChange={search}
           placeholder="SSV Submit" 
         />
 
         <DropdownMulti
         options={['Null', 'Not Null']}
-          bind:selectedOptions={bs_submit_date}
+          bind:selectedOptions={bssubmitdate}
           onOptionChange={search}
           placeholder="BS Submit" 
         />
 
         <DropdownMulti
         options={['Null', 'Not Null']}
-          bind:selectedOptions={bs_approval_date}
+          bind:selectedOptions={bsapprovedate}
           onOptionChange={search}
           placeholder="BS Approve" 
         />
 
         <DropdownMulti
         options={['Null', 'Not Null']}
-          bind:selectedOptions={ic_submit_date}
+          bind:selectedOptions={icsubmitdate}
           onOptionChange={search}
           placeholder="I&C Submit" 
         />
@@ -233,8 +233,8 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start">
-              <span class="dark:text-gray-400">{rellist.ssvsection.sitebasicinfo}</span>
-              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.regions}</span>
+              <span class="dark:text-gray-400">{rellist.ssv.sitebasicinfo}</span>
+              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.region}</span>
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
@@ -243,15 +243,15 @@
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                {#if rellist.ssvsection.subcon}
-                {rellist.ssvsection.subcon}
+                {#if rellist.ssv.ssvsubcon}
+                {rellist.ssv.ssvsubcon}
                 {/if}
               </span>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                {#if rellist.installtillonair.onair_date}
+                {#if rellist.install.oaairdate}
                 <div class="flex items-center gap-1 rounded-md bg-lime-400 py-0.5 px-2">
                   <Icon icon="pepicons-pop:wifi-circle" class="me-1 text-xs text-slate-900"/>
                   <small class="text-xs text-slate-900">OnAir</small>
@@ -266,15 +266,15 @@
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.ssvsection.ssv_start_date}
+              {#if rellist.ssv.ssvstartdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="heroicons-outline:play" class="text-sky-500" />{rellist.ssvsection.ssv_start_date}
+                <Icon icon="heroicons-outline:play" class="text-sky-500" />{rellist.ssv.ssvstartdate}
                 <Tooltip color="green">SSV Start Date</Tooltip>
               </span>
               {/if}
-              {#if rellist.ssvsection.ssv_complete_date}
+              {#if rellist.ssv.ssvcompletedate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="heroicons-outline:stop" class="text-green-500" />{rellist.ssvsection.ssv_complete_date}
+                <Icon icon="heroicons-outline:stop" class="text-green-500" />{rellist.ssv.ssvcompletedate}
                 <Tooltip color="green">SSV Complete Date</Tooltip>
               </span>
               {/if}
@@ -282,24 +282,24 @@
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.ssvsection.ssv_submit_date}
+              {#if rellist.ssv.ssvsubmitdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                {rellist.ssvsection.ssv_submit_date}
+                {rellist.ssv.ssvsubmitdate}
               </span>
               {/if}
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.ssvsection.bs_submit_date}
+              {#if rellist.ssv.bssubmitdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.ssvsection.bs_submit_date}
+                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.ssv.bssubmitdate}
                 <Tooltip color="green">BS Report Submit</Tooltip>
               </span>
               {/if}
-              {#if rellist.ssvsection.bs_approval_date}
+              {#if rellist.ssv.bsapprovedate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.ssvsection.bs_approval_date}
+                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.ssv.bsapprovedate}
                 <Tooltip color="green">BS Report Approve</Tooltip>
               </span>
               {/if}
@@ -307,9 +307,9 @@
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.ssvsection.ic_submit_date}
+              {#if rellist.ssv.icsubmitdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                {rellist.ssvsection.ic_submit_date}
+                {rellist.ssv.icsubmitdate}
               </span>
               {/if}
             </div>
@@ -325,7 +325,7 @@
                 </span>
 
                 <Button
-                  on:click={() => {siteId = rellist.ssvsection.id; ssvUpdateModal = true}}
+                  on:click={() => {siteId = rellist.ssv.id; ssvUpdateModal = true}}
                   size="sm" 
                   class="rounded-md px-2 bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-600"
                 >
@@ -334,7 +334,7 @@
                 <Tooltip color="yellow">SSV Info Update</Tooltip>
     
                 <Button
-                  on:click={() => {siteId = rellist.ssvsection.id; ssvDeleteModal = true}}
+                  on:click={() => {siteId = rellist.ssv.id; ssvDeleteModal = true}}
                   size="sm" 
                   color="red" 
                   class="rounded-md px-2"
@@ -351,7 +351,7 @@
   </Table>
 
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, regions, onair_date, ssv_start_date, ssv_complete_date, ssv_submit_date, bs_receive_date, bs_submit_date, bs_approval_date, ic_submit_date, subcon}} />
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, oaairdate, ssvstartdate, ssvcompletedate, ssvsubmitdate, bsreceivedate, bssubmitdate, bsapprovedate, icsubmitdate, ssvsubcon}} />
 
   <!-- Drawer -->
   <SSVdetailDrawer bind:ssvdetaildrawer={ssvdetaildrawer} {selectedRellist} />

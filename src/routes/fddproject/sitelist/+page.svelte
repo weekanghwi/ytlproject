@@ -19,7 +19,7 @@
   let region = '';
   let state = '';
   let contracttype = '';
-  let optcategory = '';
+  let siteconfig = '';
 
   // Pagination
   let limit = Number($page.url.searchParams.get('limit')) || 5;
@@ -35,7 +35,7 @@
     params.set('region', region);
     params.set('state', state);
     params.set('contracttype', contracttype);
-    params.set('optcategory', optcategory);
+    params.set('siteconfig', siteconfig);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
@@ -45,7 +45,7 @@
     region = '';
     state = '';
     contracttype = '';
-    optcategory = '';
+    siteconfig = '';
     search();
   }
 
@@ -58,8 +58,8 @@
   let stateOptions:any = [];
   async function fetchStates(region) {
     const url = region
-      ? `http://10.24.8.115:8000/api/v2/state/?regions=${region}`
-      : `http://10.24.8.115:8000/api/v2/state/`
+      ? `http://10.24.8.120:8000/api/state/?region=${region}`
+      : `http://10.24.8.120:8000/api/state/`
     const res = await fetch(url)
     const data = await res.json()
     return data.results.map(state => state.state)
@@ -128,10 +128,10 @@
     />
 
     <DropdownMulti
-      options={['CLOPT', 'SSO', 'IBS', 'TDD', 'Dismantle']}
-      bind:selectedOptions={optcategory}
+      options={['L23', 'L23+L26', 'L23+L800', 'L23+L26+L800', 'L26', 'L26+L800', 'L800']}
+      bind:selectedOptions={siteconfig}
       onOptionChange={search}
-      placeholder="OPT type" 
+      placeholder="Site Config" 
     />
     
     <Button size="sm" color="light" on:click={search}>
@@ -158,14 +158,14 @@
       {#each data.sitelists.data.results as sites}
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="flex flex-col py-2">
-            <span class="text-sm dark:text-gray-400">{sites.site_id}</span>
-            <span class="text-xs dark:text-gray-500">{sites.site_name}</span>
+            <span class="text-sm dark:text-gray-400">{sites.siteid}</span>
+            <span class="text-xs dark:text-gray-500">{sites.sitename}</span>
           </TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.cluster}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.regions}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.region}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.state}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.optcategory}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.siteconfig}</span></TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
               <div class="flex gap-1">
@@ -202,7 +202,7 @@
   </Table>
   
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, optcategory}} />
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, siteconfig}} />
 
   <!-- CRUD Modal -->
   <CreateModal

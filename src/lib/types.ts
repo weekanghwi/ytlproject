@@ -4,38 +4,32 @@ export interface ErrorsRecord {
 
 export interface SiteData {
   id: number;
-  site_id: string;
-  site_name: string;
+  siteid: string;
+  sitename: string;
   cluster: string;
   contracttype: string;
-  optcategory: string;
+  siteconfig: string;
   antennatype: string;
-  regions: string;
+  region: string;
   state: string;
   lat: number;
   lon: number;
-  wimax_id: string;
-  candidateid: string;
-  school_code: string;
   remark: string;
 }
 
 export function createInitialSiteData(): SiteData {
   return {
     id: 0,
-    site_id: '',
-    site_name: '',
+    siteid: '',
+    sitename: '',
     cluster: '',
     contracttype: '',
-    optcategory: '',
+    siteconfig: '',
     antennatype: '',
-    regions: '',
+    region: '',
     state: '',
     lat: 0,
     lon: 0,
-    wimax_id: '',
-    candidateid: '',
-    school_code: '',
     remark: '',
   }
 }
@@ -97,60 +91,40 @@ export function createInitialphySiteData(): PhysicalSiteData {
 export interface doData {
   id: number;
   sitebasicinfo: string;
-  do_number: number;
-  do_issue_date: string;
-  do_delay_detail: string;
-  cod_submit_to_ytl_date: string;
-  cod_approval_date: string;
-  cod_delay_detail: string;
+  doissuedate: string;
+  codsubmitdate: string;
+  codapprovedate: string;
   create_at: string;
   update_at: string;
-  do_delay: number;
-  cod_delay: number;
 }
 
 export function createInitialdoData(): doData {
   return {
     id: 0,
     sitebasicinfo: '',
-    do_number: 0,
-    do_issue_date: '',
-    do_delay_detail: '',
-    cod_submit_to_ytl_date: '',
-    cod_approval_date: '',
-    cod_delay_detail: '',
+    doissuedate: '',
+    codsubmitdate: '',
+    codapprovedate: '',
     create_at: '',
     update_at: '',
-    do_delay: 0,
-    cod_delay: 0,
   }
 }
 
 export interface InstallData {
   id: number,
   sitebasicinfo: string,
-  installdelay: string,
-  integratedelay: string,
-  onairdelay: string,
-  coidelay: string,
-  coicdelay: string,
   subcon: string,
-  install_start: string,
-  install_complete: string,
-  installdelay_detail: string,
-  integration_date: string,
-  integration_turnon: string,
-  integratedelay_detail: string,
-  onair_date: string,
-  onairdelay_detail: string,
-  coi_submit_date: string,
-  coi_approval_date: string,
-  coidelay_detail: string,
-  coic_submit_date: string,
-  coic_approval_status: string,
-  coicdelay_detail: string,
-  pnoc_ho_trigger_date: string,
-  pnoc_ho_complete_date: string,
+  startdate: string,
+  completedate: string,
+  integrationdate: string,
+  integrationondate: string,
+  oaairdate: string,
+  coisubmitdate: string,
+  coiapprovedate: string,
+  coicsubmitdate: string,
+  coicapprovestatus: string,
+  pnochotriggerdate: string,
+  pnochocompletedate: string,
   modify_date: string,
 }
 
@@ -158,28 +132,18 @@ export function createInitialInstallData(): InstallData {
   return {
     id: 0,
   sitebasicinfo: '',
-  installdelay: '',
-  integratedelay: '',
-  onairdelay: '',
-  coidelay: '',
-  coicdelay: '',
   subcon: '',
-  install_start: '',
-  install_complete: '',
-  installdelay_detail: '',
-  integration_date: '',
-  integration_turnon: '',
-  integratedelay_detail: '',
-  onair_date: '',
-  onairdelay_detail: '',
-  coi_submit_date: '',
-  coi_approval_date: '',
-  coidelay_detail: '',
-  coic_submit_date: '',
-  coic_approval_status: '',
-  coicdelay_detail: '',
-  pnoc_ho_trigger_date: '',
-  pnoc_ho_complete_date: '',
+  startdate: '',
+  completedate: '',
+  integrationdate: '',
+  integrationondate: '',
+  oaairdate: '',
+  coisubmitdate: '',
+  coiapprovedate: '',
+  coicsubmitdate: '',
+  coicapprovestatus: '',
+  pnochotriggerdate: '',
+  pnochocompletedate: '',
   modify_date: '',
   }
 }

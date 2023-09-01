@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Drawer, Button, CloseButton, Timeline, TimelineItem, TimelineItemVertical } from 'flowbite-svelte';
+  import { Drawer, Button, CloseButton } from 'flowbite-svelte';
   import Icon from '@iconify/svelte';
   import { sineIn } from 'svelte/easing'
   // import UpdateInstallModal from '../crud/UpdateInstallModal.svelte';
@@ -14,16 +14,6 @@
 
   let siteId = '';
   let ssvUpdateModal = false;
-
-  $: dodate = selectedRellist.doinfo?.do_number; // reactive statement
-  $: codsubmitdate = selectedRellist.doinfo?.cod_submit_to_ytl_date; // reactive statement
-  $: codapprovaldate = selectedRellist.doinfo?.cod_approval_date; // reactive statement
-
-  $: spanClass = `flex absolute left-1 justify-center items-center w-4 h-4 ${
-    dodate
-        ? 'bg-lime-400 rounded-full ring-8 ring-lime-500' // 둘 다 참일 때
-      : '' // 그 외의 경우
-  }`; // reactive statement
 </script>
 
 <Drawer width="w-96" placement="right" transitionType="fly" transitionParams={transitionParamsRight} bind:hidden={ssvdetaildrawer} id="dodetaildrawer">
@@ -38,10 +28,10 @@
   <div class="flex flex-col gap-1 mb-6">
     <div class="flex flex-col mb-3 items-center justify-center">
       <p class="text-lg text-slate-500 dark:text-slate-400">
-        {selectedRellist.ssvsection.sitebasicinfo}
+        {selectedRellist.ssv.sitebasicinfo}
       </p>
       <p class="text-xs text-slate-500 dark:text-slate-400">
-        {selectedRellist.sitebasicinfo.site_name}
+        {selectedRellist.sitebasicinfo.sitename}
       </p>
     </div>
     <div class="flex items-center justify-center gap-2">
@@ -58,19 +48,19 @@
       {/if}
       <div class="flex items-center">
         <span class="text-xs text-slate-200 dark:text-slate-200 rounded-sm py-0.5 px-3 bg-slate-600 w-fit">
-          {selectedRellist.sitebasicinfo.regions}
+          {selectedRellist.sitebasicinfo.region}
         </span>
       </div>
       <div class="flex items-center">
         <span class="text-xs text-slate-200 dark:text-slate-200 rounded-sm py-0.5 px-3 bg-slate-600 w-fit">
-          {#if selectedRellist.ssvsection.subcon}
-            {selectedRellist.ssvsection.subcon}
+          {#if selectedRellist.ssv.ssvsubcon}
+            {selectedRellist.ssv.ssvsubcon}
           {:else}
             Subcon
           {/if}
         </span>
       </div>
-      {#if selectedRellist.installtillonair.onair_date}
+      {#if selectedRellist.install.oaairdate}
       <div class="flex items-center">
         <span class="text-xs text-slate-900 dark:text-slate-900 rounded-sm py-0.5 px-3 bg-lime-400 w-fit">
           OnAir
@@ -92,19 +82,19 @@
     <div class="flex">
       <p class="text-slate-400 text-xs">This site no need to check SSV information because this site is not confirm meterial or Reuse-Replace site. SSV scope is YTLC</p>
     </div>
-    {:else if selectedRellist.installtillonair.onair_date && !selectedRellist.ssvsection.ssv_start_date}
+    {:else if selectedRellist.install.oaairdate && !selectedRellist.ssv.ssvstartdate}
       <!-- Pending -->
       <div class="flex flex-col mb-2 gap-2">
         <p class="text-slate-400 text-xs flex items-center gap-2">
           OnAir Date: 
           <span class="rounded-full bg-slate-600 text-xs text-white py-0.5 px-2">
-            {selectedRellist.installtillonair.onair_date}
+            {selectedRellist.install.oaairdate}
           </p>
         <div class="flex items-center gap-2">
           <p class="text-xs text-rose-400">Pending to start SSV</p>
-          <p class="text-xs text-slate-900 rounded-full bg-rose-400 py-0.5 px-2">{selectedRellist.ssvsection.ssvdelaycategory}</p>
+          <p class="text-xs text-slate-900 rounded-full bg-rose-400 py-0.5 px-2">{selectedRellist.ssv.ssvdelaycategory}</p>
         </div>
-        <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.bs_delay_detail}</p>
+        <p class="text-slate-400 text-xs">{selectedRellist.ssv.bs_delay_detail}</p>
       </div>
     {:else}
       <!-- SSV Activity -->
@@ -112,25 +102,25 @@
         <p class="text-slate-400 mb-4 px-2 rounded-full">SSV Activity</p>
         <div class="grid grid-cols-3 items-center">
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.ssv_start_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.ssvstartdate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
               <Icon icon="codicon:debug-start" class="text-lg"/>
             </p>
             <p class="text-slate-400 text-xs">SSV Start</p>
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.ssv_start_date}</p>
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.ssvstartdate}</p>
           </div>
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.ssv_complete_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.ssvcompletedate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
               <Icon icon="ci:stop" class="text-lg" />
             </p>
             <p class="text-slate-400 text-xs">SSV Complete</p>
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.ssv_complete_date}</p>
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.ssvcompletedate}</p>
           </div>
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.ssv_submit_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.ssvsubmitdate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-600'}">
               <Icon icon="iconoir:submit-document" class="text-lg" />
             </p>
             <p class="text-slate-400 text-xs">SSV Submit</p>
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.ssv_submit_date}</p>
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.ssvsubmitdate}</p>
           </div>
         </div>        
       </div>
@@ -140,63 +130,63 @@
         <p class="text-slate-400 mb-4 px-2 rounded-full">BS Report Status</p>
         <div class="grid grid-cols-3 items-center mb-2">
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.bs_receive_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.bsreceivedate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
               <Icon icon="mdi:email-receive-outline" class="text-lg" />
             </p>
             <p class="text-slate-400 text-xs">BS Receive</p>
-            {#if selectedRellist.ssvsection.bs_receive_date}
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.bs_receive_date}</p>
+            {#if selectedRellist.ssv.bsreceivedate}
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.bsreceivedate}</p>
             {:else}
             <p class="text-rose-400 text-xs">Pending</p>
             {/if}
           </div>
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.bs_submit_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.bssubmitdate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
               <Icon icon="iconoir:submit-document" class="text-lg" />
             </p>
             <p class="text-slate-400 text-xs">BS Submit</p>
-            {#if selectedRellist.ssvsection.bs_submit_date}
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.bs_submit_date}</p>
+            {#if selectedRellist.ssv.bssubmitdate}
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.bssubmitdate}</p>
             {:else}
             <p class="text-rose-400 text-xs">Pending</p>
             {/if}
           </div>
           <div class="flex flex-col items-center justify-center">
-            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssvsection.bs_approval_date ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
+            <p class="rounded-full h-8 w-8 bg-slate-600 text-xs flex items-center justify-center mb-2 {selectedRellist.ssv.bsapprovedate ? 'text-lime-400 ring-4 ring-lime-400' : 'text-slate-400'}">
               <Icon icon="material-symbols:order-approve-outline-rounded" class="text-lg" />
             </p>
             <p class="text-slate-400 text-xs">BS Approve</p>
-            {#if selectedRellist.ssvsection.bs_approval_date}
-            <p class="text-slate-400 text-xs">{selectedRellist.ssvsection.bs_approval_date}</p>
+            {#if selectedRellist.ssv.bsapprovedate}
+            <p class="text-slate-400 text-xs">{selectedRellist.ssv.bsapprovedate}</p>
             {:else}
             <p class="text-rose-400 text-xs">Pending</p>
             {/if}
           </div>
         </div> 
-        {#if selectedRellist.ssvsection.ssv_submit_date && !selectedRellist.ssvsection.bs_submit_date}
+        {#if selectedRellist.ssv.ssvsubmitdate && !selectedRellist.ssv.bssubmitdate}
         <div class="flex flex-col items-center justify-center">
           <p class="text-slate-400 text-xs">Pending BS Report Submit due to</p>
-          <p class="text-rose-400 text-xs">{selectedRellist.ssvsection.bssubmitdelaycategory}</p>
+          <p class="text-rose-400 text-xs">{selectedRellist.ssv.bssubmitdelaycategory}</p>
         </div>
         {/if}
-        {#if selectedRellist.ssvsection.bs_submit_date && !selectedRellist.ssvsection.bs_approval_date}
+        {#if selectedRellist.ssv.bssubmitdate && !selectedRellist.ssv.bsapprovedate}
         <div class="flex flex-col items-center justify-center">
           <p class="text-slate-400 text-xs">Pending BS Report Approve due to</p>
-          <p class="text-rose-400 text-xs">{selectedRellist.ssvsection.bsapprovaldelaycategory}</p>
+          <p class="text-rose-400 text-xs">{selectedRellist.ssv.bsapprovaldelaycategory}</p>
         </div>
         {/if}
         
       </div>
 
       <!-- I&C Submit status-->
-      {#if selectedRellist.ssvsection.ic_submit_date}
+      {#if selectedRellist.ssv.ic_submit_date}
       <div class="flex items-center border border-slate-200 dark:border-slate-700 p-4 pt-6 rounded-xl mb-4 gap-2">
         <Icon icon="iconoir:submit-document" class="text-2xl text-lime-400" />
         <p class="text-slate-400 text-sm">I&C Report submit:</p>
-        <p class="text-slate-400 text-sm me-auto">{selectedRellist.ssvsection.ic_submit_date}</p>
+        <p class="text-slate-400 text-sm me-auto">{selectedRellist.ssv.ic_submit_date}</p>
         <Icon icon="material-symbols:check-circle-outline" class="me-1 text-lime-400"/>
       </div>
-      {:else if selectedRellist.ssvsection.bs_approval_date && !selectedRellist.ssvsection.ic_submit_date}
+      {:else if selectedRellist.ssv.bsapprovedate && !selectedRellist.ssv.ic_submit_date}
       <div class="flex items-center border border-slate-200 dark:border-slate-700 p-4 pt-6 rounded-xl mb-4 gap-2">
         <Icon icon="iconoir:submit-document" class="text-2xl text-rose-400" />
         <p class="text-slate-400 text-sm me-auto">Pending I&C Report submit</p>
@@ -208,7 +198,7 @@
 
   <div class="grid grid-cols-2 gap-4">
     <Button color="blue"
-      on:click={() => {siteId = selectedRellist.ssvsection.id; ssvUpdateModal = true }}>
+      on:click={() => {siteId = selectedRellist.ssv.id; ssvUpdateModal = true }}>
       Update SSV
     </Button>
     <Button on:click={() => (ssvdetaildrawer = true)} class="px-4"><Icon icon="ph:x" class="me-1" /> Close</Button>

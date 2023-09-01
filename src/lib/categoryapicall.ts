@@ -1,5 +1,5 @@
 export async function fetchClusterData(query: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/cluster/?cluster_name=${query}`);
+  const response = await fetch(`http://10.24.8.120:8000/api/cluster/?cluster=${query}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -9,7 +9,7 @@ export async function fetchClusterData(query: string) {
 }
 
 export async function fetchRegionData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/region/');
+  const response = await fetch('http://10.24.8.120:8000/api/region/');
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -19,7 +19,7 @@ export async function fetchRegionData() {
 }
 
 export async function fetchStateData(query: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/state/?regions=${query}`);
+  const response = await fetch(`http://10.24.8.120:8000/api/state/?region=${query}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -29,7 +29,7 @@ export async function fetchStateData(query: string) {
 }
 
 export async function fetchContractTypeData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/contracttype/');
+  const response = await fetch('http://10.24.8.120:8000/api/contracttype/');
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -38,18 +38,18 @@ export async function fetchContractTypeData() {
   return contractTypeData;
 }
 
-export async function fetchOptCategoryData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/optcategory/');
+export async function fetchSiteConfigData() {
+  const response = await fetch('http://10.24.8.120:8000/api/siteconfig/');
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   const data = await response.json();
-  const optCategoryData = data.results;
-  return optCategoryData;
+  const siteConfigData = data.results;
+  return siteConfigData;
 }
 
 export async function fetchAntennaTypeData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/antennatype/');
+  const response = await fetch('http://10.24.8.120:8000/api/antennatype/');
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -59,7 +59,7 @@ export async function fetchAntennaTypeData() {
 }
 
 export async function fetchSubconData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/subcon/');
+  const response = await fetch('http://10.24.8.120:8000/api/subcon/');
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -68,52 +68,12 @@ export async function fetchSubconData() {
   return subconData;
 }
 
-export async function fetchInstalldelayData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/installdelay/');
-  if (!response.ok) {
+export async function fetchCOICApproveStatusData() {
+  const response = await fetch('http://10.24.8.120:8000/api/coicapprovestatus');
+  if (!response.ok){
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   const data = await response.json();
-  const installdelayData = data.results;
-  return installdelayData;
-}
-
-export async function fetchIntegratedelayData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/integratedelay/');
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  const integratedelayData = data.results;
-  return integratedelayData;
-}
-
-export async function fetchOnairdelayData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/onairdelay/');
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  const onairdelayData = data.results;
-  return onairdelayData;
-}
-
-export async function fetchCOIdelayData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/coidelay/');
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  const coidelayData = data.results;
-  return coidelayData;
-}
-
-export async function fetchCOICdelayData() {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/coicdelay/');
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  const coicdelayData = data.results;
-  return coicdelayData;
+  const coicapprovestatus = data.results;
+  return coicapprovestatus;
 }

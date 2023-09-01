@@ -10,7 +10,7 @@ export async function load({ url, fetch }) {
   params.set('optcategory', params.get('optcategory') || '');
 
   async function getSitelist(){
-    const res = await fetch(`http://10.24.8.115:8000/api/v2/siteinfo/?${params.toString()}`)
+    const res = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/?${params.toString()}`)
     if (res.ok) {
       const data = await res.json()
       return {

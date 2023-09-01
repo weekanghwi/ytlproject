@@ -15,6 +15,12 @@
     <Sidebar>
       <SidebarWrapper>
         <SidebarGroup>
+          <SidebarItem label="Map" href="/fddproject/map" active={selectedMenu === 'Map'} on:click={() => selectMenuHandler('Map')}>
+            <svelte:fragment slot="icon">
+              <Icon icon="heroicons-outline:chart-pie" class="text-xl" />
+            </svelte:fragment>
+          </SidebarItem>
+
           <SidebarItem label="Dashboard" href="/fddproject/dashboard" active={selectedMenu === 'Dashboard'} on:click={() => selectMenuHandler('Dashboard')}>
             <svelte:fragment slot="icon">
               <Icon icon="heroicons-outline:chart-pie" class="text-xl" />

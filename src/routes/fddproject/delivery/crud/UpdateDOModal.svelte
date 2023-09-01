@@ -2,7 +2,7 @@
   import { type doData, type ErrorsRecord, createInitialdoData } from '$lib/types';
   import { createEventDispatcher } from 'svelte';
   import { fetchDOData, updateDOData } from './crud'
-  import { Modal, Label, Input, Button, NumberInput, Select } from 'flowbite-svelte';
+  import { Modal, Label, Input, Button } from 'flowbite-svelte';
   import { z } from 'zod'
   import { DoFormSchema } from '$lib/schemas';
   import Icon from '@iconify/svelte';
@@ -24,14 +24,6 @@
       try {
         const data = await fetchDOData(siteId);
         doData = data;
-        // if (data.cluster) {
-        //   selectedCluster = data.cluster;
-        //   ClustersearchQuery = data.cluster; 
-        // } else {
-        //   selectedCluster = null;
-        //   ClustersearchQuery = '';
-        // }
-        // showClusterDropdownmenu = false;
       } catch (error) {
         console.error('Failed to fetch DO data:', error);
       }
@@ -41,14 +33,13 @@
 
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-    // siteData.cluster = selectedCluster ? selectedCluster.cluster_name : siteData.cluster;
 
     try {
       crudSchema.parse(doData);
       await updateDOData(siteId, doData);
       doUpdateModal = false;
       errors = {};
-      dispatch('siteUpdated');
+      dispatch('doUpdated');
     } catch (error) {
       console.error('Failed to update site data:', error);
       if (error instanceof z.ZodError) {
@@ -58,21 +49,9 @@
       }
     }
   }
-
-  let doDelay = [
-    { value: 1, name: 'Complete DO' },
-    { value: 2, name: 'No DO'}
-  ]
-
-  let codDelay = [
-    { value: 1, name: 'Approved' },
-    { value: 2, name: 'Pending Approve'},
-    { value: 3, name: 'Pending submit DO'},
-    { value: 4, name: 'No need DO'}
-  ]
 </script>
 
-<Modal bind:open={doUpdateModal} size="md" autoclose={false} class="w-full">
+<Modal bind:open={doUpdateModal} size="xs" autoclose={false} class="w-full">
   {#if doData}
   
   <form class="flex flex-col w-full" action="#" on:submit|preventDefault={handleSubmit}>
@@ -96,18 +75,6 @@
             bind:value={doData.sitebasicinfo} type="text" disabled
           />
         </Label>
-
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            DO Number {#if errors.do_number}<span class="text-rose-600 text-xs"> !{errors.do_number}</span>{/if}
-          </span>
-          <NumberInput 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="do_number" 
-            placeholder="DO Number" 
-            bind:value={doData.do_number} 
-          />
-        </Label>
       </div>
     </div>
 
@@ -115,36 +82,15 @@
       <div class="flex items-center w-full gap-4">
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            DO Date {#if errors.do_issue_date}<span class="text-rose-600 text-xs"> !{errors.do_issue_date}</span>{/if}
+            DO Date
           </span>
           <Input 
             class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="do_issue_date" 
+            name="doissuedate" 
             placeholder="DO Date" 
-            bind:value={doData.do_issue_date} type="date" 
+            bind:value={doData.doissuedate} type="date" 
           />
-        </Label>
-
-        <Label class="space-y-2 w-full flex flex-col">
-          <span class="text-slate-800 dark:text-slate-400">
-            DO Delay {#if errors.do_delay}<span class="text-rose-600 text-xs"> !{errors.do_delay}</span>{/if}
-          </span>
-          <Select
-          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-          items={doDelay} bind:value={doData.do_delay} />
-        </Label>
-      </div>
-      <div class="flex items-center w-full gap-4">
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            DO Delay Detail {#if errors.do_delay_detail}<span class="text-rose-600 text-xs"> !{errors.do_delay_detail}</span>{/if}
-          </span>
-          <Input 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="do_delay_detail" 
-            placeholder="DO Delay Detail" 
-            bind:value={doData.do_delay_detail} type="text" 
-          />
+          {#if errors.doissuedate}<span class="text-rose-600 text-xs"> !{errors.doissuedate}</span>{/if}
         </Label>
       </div>
     </div>
@@ -153,48 +99,32 @@
       <div class="flex items-center w-full gap-4">
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            CDO Submit Date {#if errors.cod_submit_to_ytl_date}<span class="text-rose-600 text-xs"> !{errors.cod_submit_to_ytl_date}</span>{/if}
+            COD Submit Date
           </span>
           <Input 
             class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="cod_submit_to_ytl_date" 
-            placeholder="CDO Submit Date" 
-            bind:value={doData.cod_submit_to_ytl_date} type="date" 
+            name="codsubmitdate" 
+            placeholder="COD Submit Date" 
+            bind:value={doData.codsubmitdate} type="date" 
           />
-        </Label>
-
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            CDO Approve Date {#if errors.cod_approval_date}<span class="text-rose-600 text-xs"> !{errors.cod_approval_date}</span>{/if}
-          </span>
-          <Input 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="cod_approval_date" 
-            placeholder="CDO Approve Date" 
-            bind:value={doData.cod_approval_date} type="date" 
-          />
-        </Label>
-
-        <Label class="space-y-2 w-full flex flex-col">
-          <span class="text-slate-800 dark:text-slate-400">
-            CDO Delay {#if errors.cod_delay}<span class="text-rose-600 text-xs"> !{errors.cod_delay}</span>{/if}
-          </span>
-          <Select
-          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-          items={codDelay} bind:value={doData.cod_delay} />
+          {#if errors.codsubmitdate}<span class="text-rose-600 text-xs"> !{errors.codsubmitdate}</span>{/if}
         </Label>
       </div>
+    </div>
+
+    <div class="flex flex-col gap-3 mb-4 pb-4">
       <div class="flex items-center w-full gap-4">
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            CDO Delay Detail {#if errors.cod_delay_detail}<span class="text-rose-600 text-xs"> !{errors.cod_delay_detail}</span>{/if}
+            COD Approve Date
           </span>
           <Input 
             class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="cod_delay_detail" 
-            placeholder="CDO Delay Detail" 
-            bind:value={doData.cod_delay_detail} type="text" 
+            name="codapprovedate" 
+            placeholder="COD Approve Date" 
+            bind:value={doData.codapprovedate} type="date" 
           />
+          {#if errors.codapprovedate}<span class="text-rose-600 text-xs"> !{errors.codapprovedate}</span>{/if}
         </Label>
       </div>
     </div>

@@ -1,5 +1,5 @@
 export async function fetchInstallData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/install/${id}/`);
+  const response = await fetch(`http://10.24.8.120:8000/api/install/${id}/`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -9,7 +9,7 @@ export async function fetchInstallData(id: string) {
 }
 
 export async function createInstallData(data: any) {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/install/', {
+  const response = await fetch('http://10.24.8.120:8000/api/install/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export async function createInstallData(data: any) {
 }
 
 export async function updateInstallData(id: string, updatedData: any) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/install/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/install/${id}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export async function updateInstallData(id: string, updatedData: any) {
 }
 
 export async function deleteInstallData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/install/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/install/${id}/`, {
     method: 'DELETE',
   });
 

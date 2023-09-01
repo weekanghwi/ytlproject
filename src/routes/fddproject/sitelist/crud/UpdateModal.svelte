@@ -2,7 +2,7 @@
   import { type SiteData, type ErrorsRecord, createInitialSiteData } from '$lib/types';
   import { createEventDispatcher } from 'svelte';
   import { fetchSiteData, updateSiteData } from './crud'
-  import { fetchClusterData, fetchRegionData, fetchStateData, fetchContractTypeData, fetchOptCategoryData, fetchAntennaTypeData } from '$lib/categoryapicall';
+  import { fetchClusterData, fetchRegionData, fetchStateData, fetchContractTypeData, fetchSiteConfigData, fetchAntennaTypeData } from '$lib/categoryapicall';
   import { Modal, Label, Input, Button, NumberInput } from 'flowbite-svelte';
   import { z } from 'zod'
   import { SiteFormSchema } from '$lib/schemas';
@@ -29,7 +29,7 @@
   let regionResults: any[] = [];
   let stateResults: any[] = [];
   let contracttypeResults: any[] = [];
-  let optcategoryResults: any[] = [];
+  let siteconfigResults: any[] = [];
   let antennatypeResults: any[] = [];
 
   async function fetchAndSetClusterData(query: string) {
@@ -66,8 +66,8 @@
       stateResults = [];
     }
   }
-  let regions = siteData.regions;
-  $: regions = siteData.regions;
+  let regions = siteData.region;
+  $: regions = siteData.region;
   $: fetchAndSetStateData(regions);
 
   async function fetchAndSetContracttypeData() {
@@ -83,18 +83,18 @@
   }
   $: fetchAndSetContracttypeData();
 
-  async function fetchAndSetOptcategoryData() {
+  async function fetchAndSetSiteConfiData() {
     try {
-      const data = await fetchOptCategoryData();
-      optcategoryResults = data;
+      const data = await fetchSiteConfigData();
+      siteconfigResults = data;
       return data;
     } catch (error) {
       console.error('Error:', error);
-      optcategoryResults = [];
+      siteconfigResults = [];
       return [];
     }
   }
-  $: fetchAndSetOptcategoryData();
+  $: fetchAndSetSiteConfiData();
 
   async function fetchAndSetAnttypeData() {
     try {
@@ -146,8 +146,8 @@
 
   async function handleClusterSelection(result: any) {
     selectedCluster = result;
-    selectedClusterName = selectedCluster.cluster_name;
-    ClustersearchQuery = selectedCluster.cluster_name;
+    selectedClusterName = selectedCluster.cluster;
+    ClustersearchQuery = selectedCluster.cluster;
     ClustersearchResults = [];
     showClusterDropdownmenu = false;
   }
@@ -184,7 +184,7 @@
     <div class="flex items-center gap-2 mb-6">
       <!-- <Icon icon="icon-park-solid:update-rotation" class="text-2xl text-indigo-600 animate-spin"/> -->
       <h3 class="text-xl font-medium text-gray-900 dark:text-white">Update Site Information</h3>
-      <p class="text-sm text-slate-500">({siteData.site_id})</p>
+      <p class="text-sm text-slate-500">({siteData.siteid})</p>
     </div>
     <Input class="py-1.5 px-3 w-full text-red-500" bind:value={siteData.id} type="hidden" />
 
@@ -197,63 +197,25 @@
       <div class="flex items-center w-full gap-4">
         <Label class="space-y-2">
           <span class="text-slate-800 dark:text-slate-400">
-            Site ID {#if errors.site_id}<span class="text-rose-600 text-xs"> !{errors.site_id}</span>{/if}
+            Site ID {#if errors.siteid}<span class="text-rose-600 text-xs"> !{errors.siteid}</span>{/if}
           </span>
           <Input 
             class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="site_id" 
+            name="siteid" 
             placeholder="Site ID" 
-            bind:value={siteData.site_id} type="text" 
+            bind:value={siteData.siteid} type="text" 
           />
         </Label>
   
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            Site Name {#if errors.site_name}<span class="text-rose-600 text-xs"> !{errors.site_name}</span>{/if}
+            Site Name {#if errors.sitename}<span class="text-rose-600 text-xs"> !{errors.sitename}</span>{/if}
           </span>
           <Input 
             class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="site_name" 
+            name="sitename" 
             placeholder="Site Name" 
-            bind:value={siteData.site_name} type="text" 
-          />
-        </Label>
-      </div>
-
-      <div class="flex items-center w-full gap-4">
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            WiMAX ID {#if errors.wimax_id}<span class="text-rose-600 text-xs">{errors.wimax_id}</span>{/if}
-          </span>
-          <Input 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="wimax_id" 
-            placeholder="WiMAX ID" 
-            bind:value={siteData.wimax_id} type="text" 
-          />
-        </Label>
-
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            Candidate ID {#if errors.candidateid}<span class="text-rose-600 text-xs">{errors.candidateid}</span>{/if}
-          </span>
-          <Input 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="candidateid" 
-            placeholder="Candidate ID" 
-            bind:value={siteData.candidateid} type="text" 
-          />
-        </Label>
-
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            School Code {#if errors.school_code}<span class="text-rose-600 text-xs">{errors.school_code}</span>{/if}
-          </span>
-          <Input 
-            class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="school_code" 
-            placeholder="School Code" 
-            bind:value={siteData.school_code} type="text" 
+            bind:value={siteData.sitename} type="text" 
           />
         </Label>
       </div>
@@ -300,13 +262,13 @@
             class="text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
             name="regions" 
             placeholder="Region" 
-            bind:value={siteData.regions}
+            bind:value={siteData.region}
           >
             {#each regionResults as regions (regions.id)}
               <option value={regions.region}>{regions.region}</option>
             {/each}
           </select>
-          {#if errors.regions}<span class="text-rose-600 text-xs">{errors.regions}</span>{/if}
+          {#if errors.region}<span class="text-rose-600 text-xs">{errors.region}</span>{/if}
         </Label>
 
         <Label class="flex flex-col space-y-2 w-full">
@@ -367,29 +329,29 @@
             Contract Type {#if errors.contracttype}<span class="text-rose-600 text-xs">{errors.contracttype}</span>{/if}
           </span>
           <select 
-            class="text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
+            class="w-full text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
             name="contracttype" 
             placeholder="Contract Type" 
             bind:value={siteData.contracttype}
           >
           {#each contracttypeResults as contracttypes (contracttypes.id)}
-            <option value={contracttypes.contractype}>{contracttypes.contractype}</option>
+            <option value={contracttypes.contracttype}>{contracttypes.contracttype}</option>
           {/each}
           </select>
         </Label>
 
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            Optimization Type {#if errors.optcategory}<span class="text-rose-600 text-xs">{errors.optcategory}</span>{/if}
+            Site Configuration {#if errors.siteconfig}<span class="text-rose-600 text-xs">{errors.siteconfig}</span>{/if}
           </span>
           <select 
             class="w-full text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="optcategory" 
+            name="siteconfig" 
             placeholder="Optimization Type" 
-            bind:value={siteData.optcategory} 
+            bind:value={siteData.siteconfig} 
           >
-            {#each optcategoryResults as optcategories (optcategories.id)}
-              <option value={optcategories.opt_category}>{optcategories.opt_category}</option>
+            {#each siteconfigResults as siteconfigs (siteconfigs.id)}
+              <option value={siteconfigs.siteconfig}>{siteconfigs.siteconfig}</option>
             {/each}
           </select>
         </Label>
@@ -400,7 +362,7 @@
           </span>
           <select 
             class="w-full text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="optcategory" 
+            name="antennatype" 
             placeholder="Antenna Type" 
             bind:value={siteData.antennatype}
           >

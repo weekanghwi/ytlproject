@@ -2,7 +2,7 @@
   import { type SiteData, type ErrorsRecord, createInitialSiteData } from '$lib/types';
   import { createEventDispatcher } from 'svelte';
   import { createSiteData } from './crud'
-  import { fetchClusterData, fetchRegionData, fetchStateData, fetchContractTypeData, fetchOptCategoryData, fetchAntennaTypeData } from '$lib/categoryapicall';
+  import { fetchClusterData, fetchRegionData, fetchStateData, fetchContractTypeData, fetchSiteConfigData, fetchAntennaTypeData } from '$lib/categoryapicall';
   import { Modal, Label, Input, Button, NumberInput } from 'flowbite-svelte';
   import { z } from 'zod'
   import { SiteFormSchema } from '$lib/schemas';
@@ -28,7 +28,7 @@
   let regionResults: any[] = [];
   let stateResults: any[] = [];
   let contracttypeResults: any[] = [];
-  let optcategoryResults: any[] = [];
+  let siteconfigResults: any[] = [];
   let antennatypeResults: any[] = [];
 
   async function fetchAndSetClusterData(query: string) {
@@ -82,18 +82,18 @@
   }
   $: fetchAndSetContracttypeData();
 
-  async function fetchAndSetOptcategoryData() {
+  async function fetchAndSetSiteConfiData() {
     try {
-      const data = await fetchOptCategoryData();
-      optcategoryResults = data;
+      const data = await fetchSiteConfigData();
+      siteconfigResults = data;
       return data;
     } catch (error) {
       console.error('Error:', error);
-      optcategoryResults = [];
+      siteconfigResults = [];
       return [];
     }
   }
-  $: fetchAndSetOptcategoryData();
+  $: fetchAndSetSiteConfiData();
 
   async function fetchAndSetAnttypeData() {
     try {
@@ -378,16 +378,16 @@
 
         <Label class="space-y-2 w-full">
           <span class="text-slate-800 dark:text-slate-400">
-            Optimization Type {#if errors.optcategory}<span class="text-rose-600 text-xs">{errors.optcategory}</span>{/if}
+            Optimization Type {#if errors.siteconfig}<span class="text-rose-600 text-xs">{errors.siteconfig}</span>{/if}
           </span>
           <select 
             class="w-full text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
             name="optcategory" 
             placeholder="Optimization Type" 
-            bind:value={siteData.optcategory} 
+            bind:value={siteData.siteconfig} 
           >
-            {#each optcategoryResults as optcategories (optcategories.id)}
-              <option value={optcategories.opt_category}>{optcategories.opt_category}</option>
+            {#each siteconfigResults as siteconfigs (siteconfigs.id)}
+              <option value={siteconfigs.siteconfig}>{siteconfigs.siteconfig}</option>
             {/each}
           </select>
         </Label>

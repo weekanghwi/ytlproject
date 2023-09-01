@@ -15,18 +15,19 @@
   let paginationurl = 'fddproject/install'
   let sitebasicinfo = '';
   let contracttype = '';
-  let regions = '';
-  let install_start = '';
-  let install_complete = '';
-  let integration_date = '';
-  let integration_turnon = '';
-  let onair_date = '';
-  let coi_submit_date = '';
-  let coi_approval_date = '';
-  let coic_submit_date = '';
-  let coic_approval_status = '';
-  let pnoc_ho_trigger_date = '';
-  let pnoc_ho_complete_date = '';
+  let region = '';
+  let doissuedate = '';
+  let startdate = '';
+  let completedate = '';
+  let integrationdate = '';
+  let integrationondate = '';
+  let oaairdate = '';
+  let coisubmitdate = '';
+  let coiapprovedate = '';
+  let coicsubmitdate = '';
+  let coicapprovestatus = '';
+  let pnochotriggerdate = '';
+  let pnochocompletedate = '';
 
   let limit = Number($page.url.searchParams.get('limit')) || 5;
   $: totalPages = (Number(data?.reldata?.totalPages) || 0);
@@ -48,36 +49,38 @@
     params.set('offset', '0');
     params.set('sitebasicinfo', sitebasicinfo);
     params.set('contracttype', contracttype);
-    params.set('regions', regions);
-    params.set('install_start', install_start);
-    params.set('install_complete', install_complete);
-    params.set('integration_date', integration_date);
-    params.set('integration_turnon', integration_turnon);
-    params.set('onair_date', onair_date);
-    params.set('coi_submit_date', coi_submit_date);
-    params.set('coi_approval_date', coi_approval_date);
-    params.set('coic_submit_date', coic_submit_date);
-    params.set('coic_approval_status', coic_approval_status);
-    params.set('pnoc_ho_trigger_date', pnoc_ho_trigger_date);
-    params.set('pnoc_ho_complete_date', pnoc_ho_complete_date);
+    params.set('region', region);
+    params.set('doissuedate', doissuedate);
+    params.set('startdate', startdate);
+    params.set('completedate', completedate);
+    params.set('integrationdate', integrationdate);
+    params.set('integrationondate', integrationondate);
+    params.set('oaairdate', oaairdate);
+    params.set('coisubmitdate', coisubmitdate);
+    params.set('coiapprovedate', coiapprovedate);
+    params.set('coicsubmitdate', coicsubmitdate);
+    params.set('coicapprovestatus', coicapprovestatus);
+    params.set('pnochotriggerdate', pnochotriggerdate);
+    params.set('pnochocompletedate', pnochocompletedate);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
   function resetFilters() {
     sitebasicinfo = '';
-    regions = '';
+    region = '';
     contracttype = '';
-    install_start = '';
-    install_complete = '';
-    integration_date = '';
-    integration_turnon = '';
-    onair_date = '';
-    coi_submit_date = '';
-    coi_approval_date = '';
-    coic_submit_date = '';
-    coic_approval_status = '';
-    pnoc_ho_trigger_date = '';
-    pnoc_ho_complete_date = '';
+    doissuedate = '';
+    startdate = '';
+    completedate = '';
+    integrationdate = '';
+    integrationondate = '';
+    oaairdate = '';
+    coisubmitdate = '';
+    coiapprovedate = '';
+    coicsubmitdate = '';
+    coicapprovestatus = '';
+    pnochotriggerdate = '';
+    pnochocompletedate = '';
     search();
   }
 
@@ -131,7 +134,7 @@
     
         <DropdownMulti
           options={['Central', 'Northern', 'Southern', 'Eastern', 'Sabah', 'Sarawak']}
-          bind:selectedOptions={regions}
+          bind:selectedOptions={region}
           onOptionChange={search}
           placeholder="Region" 
         />
@@ -158,35 +161,42 @@
 
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={install_start}
+            bind:selectedOptions={doissuedate}
+            onOptionChange={search}
+            placeholder="DO Issue" 
+          />
+
+          <DropdownMulti
+            options={['Null', 'Not Null']}
+            bind:selectedOptions={startdate}
             onOptionChange={search}
             placeholder="Insatall Start" 
           />
       
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={install_complete}
+            bind:selectedOptions={completedate}
             onOptionChange={search}
             placeholder="Install Complete" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={integration_date}
+            bind:selectedOptions={integrationdate}
             onOptionChange={search}
             placeholder="Integration" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={integration_turnon}
+            bind:selectedOptions={integrationondate}
             onOptionChange={search}
             placeholder="Integration TurnOn" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={onair_date}
+            bind:selectedOptions={oaairdate}
             onOptionChange={search}
             placeholder="OnAir" 
           />
@@ -199,42 +209,42 @@
 
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={coi_submit_date}
+            bind:selectedOptions={coisubmitdate}
             onOptionChange={search}
             placeholder="COI Submit" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={coi_approval_date}
+            bind:selectedOptions={coiapprovedate}
             onOptionChange={search}
             placeholder="COI Approve" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={coic_submit_date}
+            bind:selectedOptions={coicsubmitdate}
             onOptionChange={search}
             placeholder="COI&C Submit" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={coic_approval_status}
+            bind:selectedOptions={coicapprovestatus}
             onOptionChange={search}
             placeholder="COI&C Approve" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={pnoc_ho_trigger_date}
+            bind:selectedOptions={pnochotriggerdate}
             onOptionChange={search}
             placeholder="PNOC HO Trigger" 
           />
     
           <DropdownMulti
             options={['Null', 'Not Null']}
-            bind:selectedOptions={pnoc_ho_complete_date}
+            bind:selectedOptions={pnochocompletedate}
             onOptionChange={search}
             placeholder="PNOC HO Complete" 
           />
@@ -260,8 +270,8 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start">
-              <span class="dark:text-gray-400">{rellist.sitebasicinfo.site_id}</span>
-              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.regions}</span>
+              <span class="dark:text-gray-400">{rellist.sitebasicinfo.siteid}</span>
+              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.region}</span>
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
@@ -269,77 +279,77 @@
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.install_start}
+              {#if rellist.install.startdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.installtillonair.install_start}
+                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.install.startdate}
               </span>
               {/if}
-              {#if rellist.installtillonair.install_complete}
+              {#if rellist.install.completedate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-e-box-outline" class="text-green-500" />{rellist.installtillonair.install_complete}
-              </span>
-              {/if}
-            </div>
-          </TableBodyCell>
-          <TableBodyCell class="py-2">
-            <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.integration_date}
-              <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="heroicons-outline:play" class="text-sky-500" />{rellist.installtillonair.integration_date}
-              </span>
-              {/if}
-              {#if rellist.installtillonair.integration_turnon}
-              <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="heroicons-outline:stop" class="text-green-500" />{rellist.installtillonair.integration_turnon}
+                <Icon icon="mdi:alpha-e-box-outline" class="text-green-500" />{rellist.install.completedate}
               </span>
               {/if}
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.onair_date}
-              <span class="dark:text-gray-400">{rellist.installtillonair.onair_date}</span>
-              {/if}
-            </div>
-          </TableBodyCell>
-          <TableBodyCell class="py-2">
-            <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.coi_submit_date}
+              {#if rellist.install.integrationdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.installtillonair.coi_submit_date}
+                <Icon icon="heroicons-outline:play" class="text-sky-500" />{rellist.install.integrationdate}
               </span>
               {/if}
-              {#if rellist.installtillonair.coi_approval_date}
+              {#if rellist.install.integrationondate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.installtillonair.coi_approval_date}
+                <Icon icon="heroicons-outline:stop" class="text-green-500" />{rellist.install.integrationondate}
               </span>
               {/if}
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.coic_submit_date}
+              {#if rellist.install.oaairdate}
+              <span class="dark:text-gray-400">{rellist.install.oaairdate}</span>
+              {/if}
+            </div>
+          </TableBodyCell>
+          <TableBodyCell class="py-2">
+            <div class="flex flex-col items-start justify-center">
+              {#if rellist.install.coisubmitdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.installtillonair.coic_submit_date}
+                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.install.coisubmitdate}
               </span>
               {/if}
-              {#if rellist.installtillonair.coic_approval_status}
+              {#if rellist.install.coiapprovedate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.installtillonair.coic_approval_status}
+                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.install.coiapprovedate}
               </span>
               {/if}
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start justify-center">
-              {#if rellist.installtillonair.pnoc_ho_trigger_date && rellist.installtillonair.pnoc_ho_trigger_date != '1976-01-01'}
+              {#if rellist.install.coicsubmitdate}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.installtillonair.pnoc_ho_trigger_date}
+                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.install.coicsubmitdate}
               </span>
               {/if}
-              {#if rellist.installtillonair.pnoc_ho_complete_date && rellist.installtillonair.pnoc_ho_complete_date != '1976-01-01'}
+              {#if rellist.install.coicapprovestatus}
               <span class="dark:text-gray-400 flex items-center jusitfy-center">
-                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.installtillonair.pnoc_ho_complete_date}
+                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.install.coicapprovestatus}
+              </span>
+              {/if}
+            </div>
+          </TableBodyCell>
+          <TableBodyCell class="py-2">
+            <div class="flex flex-col items-start justify-center">
+              {#if rellist.install.pnochotriggerdate}
+              <span class="dark:text-gray-400 flex items-center jusitfy-center">
+                <Icon icon="mdi:alpha-s-box-outline" class="text-sky-500" />{rellist.install.pnochotriggerdate}
+              </span>
+              {/if}
+              {#if rellist.install.pnochocompletedate}
+              <span class="dark:text-gray-400 flex items-center jusitfy-center">
+                <Icon icon="mdi:alpha-a-box-outline" class="text-sky-500" />{rellist.install.pnochocompletedate}
               </span>
               {/if}
             </div>
@@ -355,7 +365,7 @@
                 </span>
 
                 <Button
-                  on:click={() => {siteId = rellist.installtillonair.id; installUpdateModal = true}}
+                  on:click={() => {siteId = rellist.install.id; installUpdateModal = true}}
                   size="sm" 
                   class="rounded-md px-2 bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-600"
                 >
@@ -364,7 +374,7 @@
                 <Tooltip color="yellow">Install Info Update</Tooltip>
     
                 <Button
-                  on:click={() => {siteId = rellist.installtillonair.id; installDeleteModal = true}}
+                  on:click={() => {siteId = rellist.install.id; installDeleteModal = true}}
                   size="sm" 
                   color="red" 
                   class="rounded-md px-2"
@@ -381,7 +391,7 @@
   </Table>
 
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, regions, install_start, install_complete, integration_date, integration_turnon, onair_date, coi_submit_date, coi_approval_date, coic_submit_date, coic_approval_status, pnoc_ho_trigger_date, pnoc_ho_complete_date}} />
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, doissuedate, startdate, completedate, integrationdate, integrationondate, oaairdate, coisubmitdate, coiapprovedate, coicsubmitdate, coicapprovestatus, pnochotriggerdate, pnochocompletedate}} />
 
   <!-- Drawer -->
   <InstalldetailDrawer bind:installdetaildrawer={installdetaildrawer} {selectedRellist} />

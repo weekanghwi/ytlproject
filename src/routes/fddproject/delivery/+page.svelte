@@ -15,11 +15,10 @@
   // Pagination variables
   let paginationurl = 'fddproject/delivery'
   let sitebasicinfo = '';
-  let do_number = '';
   let contracttype = '';
-  let do_issue_date = '';
-  let cod_submit_to_ytl_date = '';
-  let cod_approval_date = '';
+  let doissuedate = '';
+  let codsubmitdate = '';
+  let codapprovedate = '';
 
   //Drawer
   let dodetaildrawer = true;
@@ -41,21 +40,19 @@
     params.set('limit', limit.toString());
     params.set('offset', '0');
     params.set('sitebasicinfo', sitebasicinfo);
-    params.set('do_number', do_number);
     params.set('contracttype', contracttype);
-    params.set('do_issue_date', do_issue_date ? do_issue_date.toString() : '');
-    params.set('cod_submit_to_ytl_date', cod_submit_to_ytl_date);
-    params.set('cod_approval_date', cod_approval_date);
+    params.set('doissuedate', doissuedate ? doissuedate.toString() : '');
+    params.set('codsubmitdate', codsubmitdate);
+    params.set('codapprovedate', codapprovedate);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
   function resetFilters() {
     sitebasicinfo = '';
-    do_number = '';
     contracttype = '';
-    do_issue_date = '';
-    cod_submit_to_ytl_date = '';
-    cod_approval_date = '';
+    doissuedate = '';
+    codsubmitdate = '';
+    codapprovedate = '';
     search();
   }
 
@@ -98,33 +95,30 @@
     <Search size='md' class="flex gap-2 items-center" placeholder="Search Site ID..." bind:value={sitebasicinfo} on:keypress="{checkForEnter}">
     </Search>
 
-    <Search size='md' class="flex gap-2 items-center" placeholder="Search DO Number ..." bind:value={do_number} on:keypress="{checkForEnter}">
-    </Search>
-
     <DropdownMulti
-      options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse-Replace']}
+      options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse_Replace']}
       bind:selectedOptions={contracttype}
       onOptionChange={search}
       placeholder="Contract type" 
     />
 
     <DropdownMulti
-      options={['Null', 'Not Null']}
-      bind:selectedOptions={do_issue_date}
+      options={['Null', 'Not Null', 'All']}
+      bind:selectedOptions={doissuedate}
       onOptionChange={search}
       placeholder="DO Date" 
     />
 
     <DropdownMulti
       options={['Null', 'Not Null']}
-      bind:selectedOptions={cod_submit_to_ytl_date}
+      bind:selectedOptions={codsubmitdate}
       onOptionChange={search}
       placeholder="COD Submit Date" 
     />
 
     <DropdownMulti
       options={['Null', 'Not Null']}
-      bind:selectedOptions={cod_approval_date}
+      bind:selectedOptions={codapprovedate}
       onOptionChange={search}
       placeholder="COD Approval Date" 
     />
@@ -143,7 +137,6 @@
     <TableHead>
       <TableHeadCell class="py-4 text-sm">Site ID</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
-      <TableHeadCell class="py-4 text-sm">DO Number</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">DO Date</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">COD Submit Date</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">COD Approve Date</TableHeadCell>
@@ -152,12 +145,11 @@
     <TableBody tableBodyClass="border-none">
       {#each data.reldata.data.results as rellist}
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.sitebasicinfo.site_id}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.sitebasicinfo.siteid}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.sitebasicinfo.contracttype}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.doinfo.do_number}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.doinfo.do_issue_date}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.doinfo.cod_submit_to_ytl_date}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.doinfo.cod_approval_date}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.doissuedate}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.codsubmitdate}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.codapprovedate}</span></TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
               <div class="flex gap-1">
@@ -169,7 +161,7 @@
                 </span>
 
                 <Button
-                  on:click={() => {siteId = rellist.doinfo.id; doUpdateModal = true}}
+                  on:click={() => {siteId = rellist.do.id; doUpdateModal = true}}
                   size="sm" 
                   class="rounded-md px-2 bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-600"
                 >
@@ -178,7 +170,7 @@
                 <Tooltip color="yellow">DOinfo Update</Tooltip>
     
                 <Button
-                  on:click={() => {siteId = rellist.doinfo.id; doDeleteModal = true}}
+                  on:click={() => {siteId = rellist.do.id; doDeleteModal = true}}
                   size="sm" 
                   color="red" 
                   class="rounded-md px-2"
@@ -195,7 +187,7 @@
   </Table>
 
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, do_number, contracttype, do_issue_date, cod_submit_to_ytl_date, cod_approval_date}} />
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, doissuedate, codsubmitdate, codapprovedate}} />
 
   <!-- Drawer -->
   <DodetailDrawer bind:dodetaildrawer={dodetaildrawer} {selectedRellist} />
@@ -208,6 +200,6 @@
 
   <UpdateDOModal
     bind:doUpdateModal={doUpdateModal} {siteId}
-    on:doCreated={search}
+    on:doUpdated={search}
   />
 </div>

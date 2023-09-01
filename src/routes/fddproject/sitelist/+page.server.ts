@@ -7,10 +7,10 @@ export async function load({ url, fetch }) {
   params.set('regions', params.get('region') || '');
   params.set('state', params.get('state') || '');
   params.set('contracttype', params.get('contracttype') || '');
-  params.set('optcategory', params.get('optcategory') || '');
+  params.set('siteconfig', params.get('siteconfig') || '');
 
   async function getSitelist(){
-    const res = await fetch(`http://10.24.8.115:8000/api/v2/siteinfo/?${params.toString()}`)
+    const res = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/?${params.toString()}`)
     if (res.ok) {
       const data = await res.json()
       return {

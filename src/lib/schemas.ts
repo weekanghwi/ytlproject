@@ -2,20 +2,15 @@ import { z } from 'zod';
 
 export const SiteFormSchema = z.object({
   id: z.number(),
-  site_id: z.string().min(8).nonempty({message: 'Site ID is required'}),
-  site_name: z.string().min(2).nonempty({message: 'Site Name is required'}),
+  siteid: z.string().min(8).nonempty({message: 'Site ID is required'}),
+  sitename: z.string().min(2).nonempty({message: 'Site Name is required'}),
   cluster: z.string().min(2).nonempty({message: 'Cluster is required'}),
   contracttype: z.string().min(1),
-  optcategory: z.string().min(1),
-  antennatype: z.string().min(1),
-  regions: z.string().min(1),
+  siteconfig: z.string().min(1),
+  region: z.string().min(1),
   state: z.string().min(1),
-  lat: z.number().min(-1).max(10),
-  lon: z.number().min(98).max(120),
-  wimax_id: z.string().nullable(),
-  candidateid: z.string().nullable(),
-  school_code: z.string().nullable(),
-  remark: z.string(),
+  lat: z.string().min(1),
+  lon: z.string().min(1),
 })
 
 export const PhysicalSiteFormSchema = z.object({
@@ -47,14 +42,9 @@ export const PhysicalSiteFormSchema = z.object({
 export const DoFormSchema = z.object({
   id: z.number(),
   sitebasicinfo: z.string().min(1).nullable(),
-  do_number: z.string().min(1).nullable(),
-  do_issue_date: z.string().nullable(),
-  do_delay_detail: z.string().nullable(),
-  cod_submit_to_ytl_date: z.string().nullable(),
-  cod_approval_date: z.string().nullable(),
-  cod_delay_detail: z.string().nullable(),
-  do_delay: z.number().nullable(),
-  cod_delay: z.number().nullable(),
+  doissuedate: z.string().nullable(),
+  codsubmitdate: z.string().nullable(),
+  codapprovedate: z.string().nullable(),
 })
 
 export const InstallFormSchema = z.object({

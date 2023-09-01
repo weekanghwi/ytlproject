@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Drawer, Button, CloseButton, Timeline, TimelineItem, TimelineItemVertical } from 'flowbite-svelte';
+  import { Drawer, Button, CloseButton } from 'flowbite-svelte';
   import Icon from '@iconify/svelte';
   import { sineIn } from 'svelte/easing'
   import UpdateInstallModal from '../crud/UpdateInstallModal.svelte';
@@ -28,10 +28,10 @@
   <div class="flex flex-col gap-1 mb-6">
     <div class="flex flex-col mb-3 items-center justify-center">
       <p class="text-lg text-slate-500 dark:text-slate-400">
-        {selectedRellist.installtillonair.sitebasicinfo}
+        {selectedRellist.install.sitebasicinfo}
       </p>
       <p class="text-xs text-slate-500 dark:text-slate-400">
-        {selectedRellist.sitebasicinfo.site_name}
+        {selectedRellist.sitebasicinfo.sitename}
       </p>
     </div>
     <div class="flex items-center justify-center gap-2">
@@ -48,19 +48,10 @@
       {/if}
       <div class="flex items-center">
         <span class="text-xs text-slate-500 dark:text-slate-200 rounded-sm py-0.5 px-3 bg-slate-600 w-fit">
-          {selectedRellist.sitebasicinfo.regions}
+          {selectedRellist.sitebasicinfo.region}
         </span>
       </div>
-      <div class="flex items-center">
-        <span class="text-xs text-slate-500 dark:text-slate-200 rounded-sm py-0.5 px-3 bg-slate-600 w-fit">
-          {#if selectedRellist.installtillonair.subcon}
-            {selectedRellist.installtillonair.subcon}
-          {:else}
-            No Subcon
-          {/if}
-        </span>
-      </div>
-      {#if selectedRellist.doinfo.do_number}
+      {#if selectedRellist.do.doissuedate}
       <div class="flex items-center">
         <span class="text-xs text-slate-500 dark:text-slate-900 rounded-sm py-0.5 px-3 bg-lime-400 w-fit">
           Delivered
@@ -87,19 +78,19 @@
       </div>
       <div class="flex items-center justify-between">
         <p class="text-sm text-slate-500 dark:text-slate-400">Start Date</p>
-        <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.install_start}</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.startdate}</p>
       </div>
       <div class="flex items-center justify-between">
         <p class="text-sm text-slate-500 dark:text-slate-400">Complete Date</p>
-        {#if selectedRellist.installtillonair.install_complete}
-          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.install_complete}</p>
+        {#if selectedRellist.install.completedate}
+          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.completedate}</p>
         {:else}
-          <p class="text-sm text-rose-400">{selectedRellist.installtillonair.installdelay}</p>
+          <p class="text-sm text-rose-400">Pending</p>
         {/if}
       </div>
-      {#if selectedRellist.installtillonair.install_start && !selectedRellist.installtillonair.install_complete}
+      {#if selectedRellist.install.startdate && !selectedRellist.install.completedate}
       <div class="flex flex-col">
-        <p class="text-xs text-rose-400">{selectedRellist.installtillonair.installdelay_detail}</p>
+        <p class="text-xs text-rose-400">Pending Install Complete</p>
       </div>
       {/if}
     </div>
@@ -112,27 +103,27 @@
       </div>
       <div class="flex items-center justify-between">
         <p class="text-sm text-slate-500 dark:text-slate-400">Integration Date</p>
-        <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.integration_date}</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.integrationdate}</p>
       </div>
       <div class="flex items-center justify-between">
         <p class="text-sm text-slate-500 dark:text-slate-400">TurnOn Date</p>
-        {#if selectedRellist.installtillonair.integration_turnon}
-          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.integration_turnon}</p>
+        {#if selectedRellist.install.integrationondate}
+          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.integrationondate}</p>
         {:else}
-          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.integratedelay}</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Pending</p>
         {/if}
       </div>
       <div class="flex items-center justify-between">
         <p class="text-sm text-slate-500 dark:text-slate-400">OnAir Date</p>
-        {#if selectedRellist.installtillonair.onair_date}
-          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.onair_date}</p>
+        {#if selectedRellist.install.oaairdate}
+          <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.oaairdate}</p>
         {:else}
-          <p class="text-sm text-slate-500 dark:text-rose-400">{selectedRellist.installtillonair.onairdelay}</p>
+          <p class="text-sm text-slate-500 dark:text-rose-400">Pending</p>
         {/if}
       </div>
-      {#if selectedRellist.installtillonair.integration_turnon && !selectedRellist.installtillonair.onair_date}
+      {#if selectedRellist.install.integrationondate && !selectedRellist.install.oaairdate}
       <div class="flex flex-col">
-        <p class="text-xs text-rose-400">{selectedRellist.installtillonair.onairdelay_detail}</p>
+        <p class="text-xs text-rose-400">Pending OnAir</p>
       </div>
       {/if}
     </div>
@@ -146,70 +137,70 @@
         </div>
 
         <!-- COI -->
-        {#if selectedRellist.installtillonair.onair_date && selectedRellist.installtillonair.coi_submit_date}
+        {#if selectedRellist.install.oaairdate && selectedRellist.install.coisubmitdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-slate-400">COI Submit Date</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.coi_submit_date}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.coisubmitdate}</p>
           </div>
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-slate-400">COI Approval Date</p>
-            {#if selectedRellist.installtillonair.coi_approval_date}
-              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.coi_approval_date}</p>
+            {#if selectedRellist.install.coiapprovedate}
+              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.coiapprovedate}</p>
             {:else}
-              <p class="text-sm text-rose-400">{selectedRellist.installtillonair.coidelay}</p>
+              <p class="text-sm text-rose-400">Pending</p>
             {/if}
           </div>
-          {#if selectedRellist.installtillonair.coi_submit_date && !selectedRellist.installtillonair.coi_approval_date}
+          {#if selectedRellist.install.coisubmitdate && !selectedRellist.install.coiapprovedate}
             <div class="flex flex-col">
-              <p class="text-xs text-rose-400">{selectedRellist.installtillonair.coidelay_detail}</p>
+              <p class="text-xs text-rose-400">Pending COI Approve</p>
             </div>
           {/if}
-        {:else if selectedRellist.installtillonair.onair_date && !selectedRellist.installtillonair.coi_submit_date}
+        {:else if selectedRellist.install.oaairdate && !selectedRellist.install.coisubmitdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-rose-400">Pending COI submit to YTLC</p>
           </div>
         {/if}
 
         <!-- COI&C -->
-        {#if selectedRellist.installtillonair.onair_date && selectedRellist.installtillonair.coic_submit_date}
+        {#if selectedRellist.install.oaairdate && selectedRellist.install.coicsubmitdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-slate-400">COI&C Submit Date</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.coic_submit_date}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.coicsubmitdate}</p>
           </div>
           <div class="flex items-center justify-between">
-            <p class="text-sm text-slate-500 dark:text-slate-400">COI&C Approval Date</p>
-            {#if selectedRellist.installtillonair.coic_approval_status}
-              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.coic_approval_status}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">COI&C Approval Status</p>
+            {#if selectedRellist.install.coicapprovestatus}
+              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.coicapprovestatus}</p>
             {:else}
-              <p class="text-sm text-rose-400">{selectedRellist.installtillonair.coicdelay}</p>
+              <p class="text-sm text-rose-400">Pending</p>
             {/if}
           </div>
-          {#if selectedRellist.installtillonair.coic_submit_date && !selectedRellist.installtillonair.coic_approval_status}
+          {#if selectedRellist.install.coicsubmitdate && !selectedRellist.install.coicapprovestatus}
             <div class="flex flex-col">
-              <p class="text-xs text-rose-400">{selectedRellist.installtillonair.coicdelay_detail}</p>
+              <p class="text-xs text-rose-400">Pending COI&C Approve</p>
             </div>
           {/if}
-        {:else if selectedRellist.installtillonair.onair_date && !selectedRellist.installtillonair.coic_submit_date}
+        {:else if selectedRellist.install.oaairdate && !selectedRellist.install.coicsubmitdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-rose-400">Pending COI&C submit to YTLC</p>
           </div>
         {/if}
 
         <!-- PNOC -->
-        {#if selectedRellist.installtillonair.onair_date && selectedRellist.installtillonair.pnoc_ho_trigger_date && selectedRellist.installtillonair.pnoc_ho_trigger_date !== "1976-01-01"}
+        {#if selectedRellist.install.oaairdate && selectedRellist.install.pnochotriggerdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-slate-400">PNOC HO Trigger date</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.pnoc_ho_trigger_date}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.pnochotriggerdate}</p>
           </div>
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-slate-400">PNOC HO Complete date</p>
-            {#if selectedRellist.installtillonair.pnoc_ho_complete_date}
-              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.installtillonair.pnoc_ho_complete_date}</p>
+            {#if selectedRellist.install.pnochocompletedate}
+              <p class="text-sm text-slate-500 dark:text-slate-400">{selectedRellist.install.pnochocompletedate}</p>
             {:else}
               <p class="text-sm text-rose-400">Pending HO</p>
             {/if}
           </div>
-        {:else if selectedRellist.installtillonair.onair_date && !selectedRellist.installtillonair.pnoc_ho_trigger_date || selectedRellist.installtillonair.pnoc_ho_trigger_date === "1976-01-01"}
+        {:else if selectedRellist.install.oaairdate && !selectedRellist.install.pnochotriggerdate}
           <div class="flex items-center justify-between">
             <p class="text-sm text-slate-500 dark:text-rose-400">Pending PNOC HO Trigger</p>
           </div>
@@ -226,7 +217,7 @@
   
   <div class="grid grid-cols-2 gap-4">
     <Button color="blue"
-      on:click={() => {siteId = selectedRellist.installtillonair.id; installUpdateModal = true }}>
+      on:click={() => {siteId = selectedRellist.install.id; installUpdateModal = true }}>
       Update Install
     </Button>
     <Button on:click={() => (installdetaildrawer = true)} class="px-4"><Icon icon="ph:x" class="me-1" /> Close</Button>

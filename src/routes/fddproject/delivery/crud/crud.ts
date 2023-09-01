@@ -1,5 +1,5 @@
 export async function fetchDOData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/doinfo/${id}/`);
+  const response = await fetch(`http://10.24.8.120:8000/api/do/${id}/`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -9,7 +9,7 @@ export async function fetchDOData(id: string) {
 }
 
 export async function createDOData(data: any) {
-  const response = await fetch('http://10.24.8.115:8000/api/v2/doinfo/', {
+  const response = await fetch('http://10.24.8.120:8000/api/do/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export async function createDOData(data: any) {
 }
 
 export async function updateDOData(id: string, updatedData: any) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/doinfo/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/do/${id}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export async function updateDOData(id: string, updatedData: any) {
 }
 
 export async function deleteDOData(id: string) {
-  const response = await fetch(`http://10.24.8.115:8000/api/v2/doinfo/${id}/`, {
+  const response = await fetch(`http://10.24.8.120:8000/api/do/${id}/`, {
     method: 'DELETE',
   });
 

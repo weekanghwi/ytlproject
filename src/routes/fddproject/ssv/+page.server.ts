@@ -4,21 +4,21 @@ export async function load({ url, fetch }) {
     params.set('offset', params.get('offset') || '0');
     params.set('sitebasicinfo', params.get('sitebasicinfo') || '');
     params.set('contracttype', params.get('contracttype') || '');
-    params.set('regions', params.get('regions') || '');
+    params.set('region', params.get('region') || '');
 
-    params.set('onair_date', params.get('onair_date') || '');
-    params.set('ssv_start_date', params.get('ssv_start_date') || '');
-    params.set('ssv_complete_date', params.get('ssv_complete_date') || '');
-    params.set('ssv_submit_date', params.get('ssv_submit_date') || '');
-    params.set('bs_receive_date', params.get('bs_receive_date') || '');
-    params.set('bs_submit_date', params.get('bs_submit_date') || '');
-    params.set('bs_approval_date', params.get('bs_approval_date') || '');
-    params.set('ic_submit_date', params.get('ic_submit_date') || '');
-    params.set('subcon', params.get('subcon') || '');
+    params.set('oaairdate', params.get('oaairdate') || '');
+    params.set('ssvstartdate', params.get('ssvstartdate') || '');
+    params.set('ssvcompletedate', params.get('ssvcompletedate') || '');
+    params.set('ssvsubmitdate', params.get('ssvsubmitdate') || '');
+    params.set('bsreceivedate', params.get('bsreceivedate') || '');
+    params.set('bssubmitdate', params.get('bssubmitdate') || '');
+    params.set('bsapprovedate', params.get('bsapprovedate') || '');
+    params.set('icsubmitdate', params.get('icsubmitdate') || '');
+    params.set('ssvsubcon', params.get('ssvsubcon') || '');
   
     async function getReldataList(){
-      const res = await fetch(`http://10.24.8.115:8000/api/v2/totalrelated/?${params.toString()}`)
-      const ressubcon = await fetch('http://10.24.8.115:8000/api/v2/subcon/')
+      const res = await fetch(`http://10.24.8.120:8000/api/alltable/?${params.toString()}`)
+      const ressubcon = await fetch('http://10.24.8.120:8000/api/subcon/')
       if (res.ok && ressubcon.ok) {
         const data = await res.json()
         const subcon = await ressubcon.json()
