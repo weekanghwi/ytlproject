@@ -2,10 +2,11 @@
   import { Drawer, Button, CloseButton } from 'flowbite-svelte';
   import Icon from '@iconify/svelte';
   import { sineIn } from 'svelte/easing'
-  // import UpdateInstallModal from '../crud/UpdateInstallModal.svelte';
+  import UpdatessvModal from '../crud/UpdatessvModal.svelte';
 
   export let selectedRellist:any = {};
   export let ssvdetaildrawer = true;
+  export let search: () => Promise<void>;
   let transitionParamsRight = {
     x: 320,
     duration: 200,
@@ -14,6 +15,12 @@
 
   let siteId = '';
   let ssvUpdateModal = false;
+
+  async function refreshData() {
+    if (search) {
+      await search();
+    }
+  }
 </script>
 
 <Drawer width="w-96" placement="right" transitionType="fly" transitionParams={transitionParamsRight} bind:hidden={ssvdetaildrawer} id="dodetaildrawer">
@@ -82,6 +89,13 @@
     <div class="flex">
       <p class="text-slate-400 text-xs">This site no need to check SSV information because this site is not confirm meterial or Reuse-Replace site. SSV scope is YTLC</p>
     </div>
+    {:else if !selectedRellist.do.doissuedate}
+      <p class="text-slate-400">No request material deliver from YTLC</p>
+    {:else if selectedRellist.do.doissuedate && !selectedRellist.install.oaairdate}
+    <div class="flex flex-col">
+      <p class="text-slate-400">Meterial deliveried but not onair yet</p>
+      <p class="text-slate-400">Material deliveried date: {selectedRellist.do.doissuedate}</p>
+    </div>
     {:else if selectedRellist.install.oaairdate && !selectedRellist.ssv.ssvstartdate}
       <!-- Pending -->
       <div class="flex flex-col mb-2 gap-2">
@@ -92,9 +106,7 @@
           </p>
         <div class="flex items-center gap-2">
           <p class="text-xs text-rose-400">Pending to start SSV</p>
-          <p class="text-xs text-slate-900 rounded-full bg-rose-400 py-0.5 px-2">{selectedRellist.ssv.ssvdelaycategory}</p>
         </div>
-        <p class="text-slate-400 text-xs">{selectedRellist.ssv.bs_delay_detail}</p>
       </div>
     {:else}
       <!-- SSV Activity -->
@@ -165,14 +177,12 @@
         </div> 
         {#if selectedRellist.ssv.ssvsubmitdate && !selectedRellist.ssv.bssubmitdate}
         <div class="flex flex-col items-center justify-center">
-          <p class="text-slate-400 text-xs">Pending BS Report Submit due to</p>
-          <p class="text-rose-400 text-xs">{selectedRellist.ssv.bssubmitdelaycategory}</p>
+          <p class="text-slate-400 text-xs">Pending BS Report Submit to YTLC</p>
         </div>
         {/if}
         {#if selectedRellist.ssv.bssubmitdate && !selectedRellist.ssv.bsapprovedate}
         <div class="flex flex-col items-center justify-center">
-          <p class="text-slate-400 text-xs">Pending BS Report Approve due to</p>
-          <p class="text-rose-400 text-xs">{selectedRellist.ssv.bsapprovaldelaycategory}</p>
+          <p class="text-slate-400 text-xs">Pending BS Report Approve</p>
         </div>
         {/if}
         
@@ -205,3 +215,8 @@
   </div>
 
 </Drawer>
+
+<!-- Modal -->
+<UpdatessvModal 
+  bind:ssvUpdateModal={ssvUpdateModal} {siteId} {search}
+/>

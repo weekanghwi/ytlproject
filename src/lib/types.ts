@@ -35,56 +35,30 @@ export function createInitialSiteData(): SiteData {
 }
 
 export interface PhysicalSiteData {
-  cellidentity: number;
-  sitebasicinfo: number;
+  id: number;
+  sitebasicinfo: string;
   antennatype: string;
-  sitestatus: string;
-  sectorid: number;
-  enbid: string;
-  portnumber: number;
-  siteconfig: string;
-  sectorconfig: number;
-  channelcard: string;
+  uid: string;
+  secid: number;
+  portnum: number;
+  band: number;
   antennaheight: number;
   azimuth: number;
   mtilt: number;
-  etilt: number;
-  earfcndl: number;
-  earfcnul: number;
-  pci: number;
-  rsi: number;
-  tac: number;
-  pss: number;
-  sss: number;
-  txattn: number;
-  update_status: string;
 }
 
 export function createInitialphySiteData(): PhysicalSiteData {
   return {
-    cellidentity: 0,
-    sitebasicinfo: 0,
+    id: 0,
+    sitebasicinfo: '',
     antennatype: '',
-    sitestatus: '',
-    sectorid: 0,
-    enbid: '',
-    portnumber: 0,
-    siteconfig: '',
-    sectorconfig: 0,
-    channelcard: '',
+    uid: '',
+    secid: 0,
+    portnum: 0,
+    band: 0,
     antennaheight: 0,
     azimuth: 0,
     mtilt: 0,
-    etilt: 0,
-    earfcndl: 0,
-    earfcnul: 0,
-    pci: 0,
-    rsi: 0,
-    tac: 0,
-    pss: 0,
-    sss: 0,
-    txattn: 0,
-    update_status: '',
   }
 }
 
@@ -113,7 +87,6 @@ export function createInitialdoData(): doData {
 export interface InstallData {
   id: number,
   sitebasicinfo: string,
-  subcon: string,
   startdate: string,
   completedate: string,
   integrationdate: string,
@@ -130,9 +103,8 @@ export interface InstallData {
 
 export function createInitialInstallData(): InstallData {
   return {
-    id: 0,
+  id: 0,
   sitebasicinfo: '',
-  subcon: '',
   startdate: '',
   completedate: '',
   integrationdate: '',
@@ -145,5 +117,75 @@ export function createInitialInstallData(): InstallData {
   pnochotriggerdate: '',
   pnochocompletedate: '',
   modify_date: '',
+  }
+}
+
+export interface SSVData {
+  id: number,
+  sitebasicinfo: string,
+  ssvstartdate: string,
+  ssvcompletedate: string,
+  ssvsubmitdate: string,
+  bsreceivedate: string,
+  bssubmitdate: string,
+  bsapprovedate: string,
+  ssvsubcon: string,
+}
+
+export function createInitialSSVData(): SSVData {
+  return {
+    id: 0,
+  sitebasicinfo: '',
+  ssvstartdate: '',
+  ssvcompletedate: '',
+  ssvsubmitdate: '',
+  bsreceivedate: '',
+  bssubmitdate: '',
+  bsapprovedate: '',
+  ssvsubcon: '',
+  }
+}
+
+export interface OPTData {
+  id: number,
+  sitebasicinfo: string,
+  optstartdate: string,
+  optcompletedate: string,
+  optsubmitdate: string,
+  optapprovedate: string,
+  opttype: string,
+  optsubcon: string,
+}
+
+export function createInitialOPTData(): OPTData {
+  return {
+    id: 0,
+  sitebasicinfo: '',
+  optstartdate: '',
+  optcompletedate: '',
+  optsubmitdate: '',
+  optapprovedate: '',
+  opttype: '',
+  optsubcon: '',
+  }
+}
+
+export interface CertiData {
+  id: number,
+  sitebasicinfo: string,
+  pacsubmitdate: string,
+  facsubmitdate: string,
+  pacapprovestatus: string,
+  facapprovestatus: string,
+}
+
+export function createInitialCertiData(): CertiData {
+  return {
+  id: 0,
+  sitebasicinfo: '',
+  pacsubmitdate: '',
+  facsubmitdate: '',
+  pacapprovestatus: '',
+  facapprovestatus: '',
   }
 }

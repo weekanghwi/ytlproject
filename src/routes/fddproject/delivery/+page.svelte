@@ -7,7 +7,6 @@
   import DropdownMulti from '../../../components/DropdownMulti.svelte';
   import PaginationComponent from '../../../components/PaginationComponent.svelte';
   import DodetailDrawer from './detail/DodetailDrawer.svelte';
-  import CreateDOModal from './crud/CreateDOModal.svelte';
   import UpdateDOModal from './crud/UpdateDOModal.svelte';
 
   export let data;
@@ -26,9 +25,7 @@
 
   // Modal
   let siteId = '';
-  let doCreateModal = false
   let doUpdateModal = false
-  let doDeleteModal = false
 
   // Pagination
   let limit = Number($page.url.searchParams.get('limit')) || 5;
@@ -80,14 +77,6 @@
   <!-- Table Title -->
   <div class="flex items-center gap-4 mb-3">
     <h5 class="text-2xl text-gray-800 dark:text-gray-300">Delivery Order Information</h5>
-    <Button 
-      size="sm" 
-      color="purple" 
-      class="py-1.5 px-3"
-      on:click={() => {doCreateModal=true}}
-    >
-      <Icon icon="system-uicons:button-add" class="text-2xl me-2" /> Add new delivery order
-    </Button>
   </div>
 
   <!-- search -->
@@ -137,6 +126,8 @@
     <TableHead>
       <TableHeadCell class="py-4 text-sm">Site ID</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
+      <TableHeadCell class="py-4 text-sm">DU Material</TableHeadCell>
+      <TableHeadCell class="py-4 text-sm">RU Material</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">DO Date</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">COD Submit Date</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">COD Approve Date</TableHeadCell>
@@ -147,6 +138,8 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.sitebasicinfo.siteid}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.sitebasicinfo.contracttype}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.material.dumaterial}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.material.rumaterial}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.doissuedate}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.codsubmitdate}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{rellist.do.codapprovedate}</span></TableBodyCell>
@@ -168,16 +161,7 @@
                   <Icon icon="ri:edit-line" />
                 </Button>
                 <Tooltip color="yellow">DOinfo Update</Tooltip>
-    
-                <Button
-                  on:click={() => {siteId = rellist.do.id; doDeleteModal = true}}
-                  size="sm" 
-                  color="red" 
-                  class="rounded-md px-2"
-                >
-                  <Icon icon="ri:delete-bin-line" />
-                </Button>
-                <Tooltip color="red">DOinfo Delete</Tooltip>
+                
               </div>
             </span>
           </TableBodyCell>
@@ -190,16 +174,8 @@
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, doissuedate, codsubmitdate, codapprovedate}} />
 
   <!-- Drawer -->
-  <DodetailDrawer bind:dodetaildrawer={dodetaildrawer} {selectedRellist} />
+  <DodetailDrawer bind:dodetaildrawer={dodetaildrawer} {selectedRellist} {search} />
 
   <!-- CRUD Modal -->
-  <CreateDOModal
-    bind:doCreateModal={doCreateModal}
-    on:doCreated={search}
-  />
-
-  <UpdateDOModal
-    bind:doUpdateModal={doUpdateModal} {siteId}
-    on:doUpdated={search}
-  />
+  <UpdateDOModal bind:doUpdateModal={doUpdateModal} {siteId} {search} />
 </div>

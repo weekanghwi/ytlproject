@@ -6,6 +6,7 @@
 
   export let selectedRellist:any = {};
   export let installdetaildrawer = true;
+  export let search: () => Promise<void>;
   let transitionParamsRight = {
     x: 320,
     duration: 200,
@@ -14,6 +15,12 @@
 
   let siteId = '';
   let installUpdateModal = false;
+
+  async function refreshData() {
+    if (search) {
+      await search();
+    }
+  }
 </script>
 
 <Drawer width="w-96" placement="right" transitionType="fly" transitionParams={transitionParamsRight} bind:hidden={installdetaildrawer} id="dodetaildrawer">
@@ -225,6 +232,4 @@
 </Drawer>
 
 <!-- Modal -->
-<UpdateInstallModal 
-bind:installUpdateModal={installUpdateModal} {siteId} 
-/>
+<UpdateInstallModal bind:installUpdateModal={installUpdateModal} {siteId} {search} />

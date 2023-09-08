@@ -92,7 +92,6 @@
 
   // Modal
   let siteId = '';
-  let installCreateModal = false
   let installUpdateModal = false
   let installDeleteModal = false
   
@@ -110,14 +109,6 @@
   <!-- Table Title -->
   <div class="flex items-center gap-4 mb-3">
     <h5 class="text-2xl text-gray-800 dark:text-gray-300">Installation Information</h5>
-    <Button 
-      size="sm" 
-      color="purple" 
-      class="py-1.5 px-3"
-      on:click={() => {installCreateModal=true}}
-    >
-      <Icon icon="system-uicons:button-add" class="text-2xl me-2" /> Add new install info
-    </Button>
   </div>
 
     <!-- search -->
@@ -229,7 +220,7 @@
           />
     
           <DropdownMulti
-            options={['Null', 'Not Null']}
+          options={['Dato Approved', 'Pending Dato', 'Pending ASN Manager', '-']}
             bind:selectedOptions={coicapprovestatus}
             onOptionChange={search}
             placeholder="COI&C Approve" 
@@ -372,16 +363,6 @@
                   <Icon icon="ri:edit-line" />
                 </Button>
                 <Tooltip color="yellow">Install Info Update</Tooltip>
-    
-                <Button
-                  on:click={() => {siteId = rellist.install.id; installDeleteModal = true}}
-                  size="sm" 
-                  color="red" 
-                  class="rounded-md px-2"
-                >
-                  <Icon icon="ri:delete-bin-line" />
-                </Button>
-                <Tooltip color="red">Install Info Delete</Tooltip>
               </div>
             </span>
           </TableBodyCell>
@@ -394,11 +375,10 @@
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, doissuedate, startdate, completedate, integrationdate, integrationondate, oaairdate, coisubmitdate, coiapprovedate, coicsubmitdate, coicapprovestatus, pnochotriggerdate, pnochocompletedate}} />
 
   <!-- Drawer -->
-  <InstalldetailDrawer bind:installdetaildrawer={installdetaildrawer} {selectedRellist} />
+  <InstalldetailDrawer bind:installdetaildrawer={installdetaildrawer} {selectedRellist} {search} />
 
   <!-- Modal -->
   <UpdateInstallModal 
-    bind:installUpdateModal={installUpdateModal} {siteId} 
-    on:installUpdated={search}
+    bind:installUpdateModal={installUpdateModal} {siteId} {search}
   />
 </div>

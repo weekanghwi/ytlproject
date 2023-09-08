@@ -6,6 +6,8 @@
   
   import PaginationComponent from '../../../components/PaginationComponent.svelte';
   import DropdownMulti from '../../../components/DropdownMulti.svelte';
+  import CertidetailDrawer from './detail/CertidetailDrawer.svelte';
+  import UpdatecertModal from './crud/UpdatecertModal.svelte';
   
   export let data;
 
@@ -13,12 +15,12 @@
   let paginationurl = 'fddproject/certification'
   let sitebasicinfo = '';
   let contracttype = '';
-  let regions = '';
-  let opt_approval_date = '';
-  let pac_submit_date = '';
-  let fac_submit_date = '';
-  let pac_status = '';
-  let fac_status = '';
+  let region = '';
+  let optapprovedate = '';
+  let pacsubmitdate = '';
+  let facsubmitdate = '';
+  let pacapprovestatus = '';
+  let facapprovestatus = '';
 
   let limit = Number($page.url.searchParams.get('limit')) || 5;
   $: totalPages = (Number(data?.reldata?.totalPages) || 0);
@@ -31,24 +33,24 @@
     params.set('offset', '0');
     params.set('sitebasicinfo', sitebasicinfo);
     params.set('contracttype', contracttype);
-    params.set('regions', regions);
-    params.set('opt_approval_date', opt_approval_date);
-    params.set('pac_submit_date', pac_submit_date);
-    params.set('fac_submit_date', fac_submit_date);
-    params.set('pac_status', pac_status);
-    params.set('fac_status', fac_status);
+    params.set('region', region);
+    params.set('optapprovedate', optapprovedate);
+    params.set('pacsubmitdate', pacsubmitdate);
+    params.set('facsubmitdate', facsubmitdate);
+    params.set('pacapprovestatus', pacapprovestatus);
+    params.set('facapprovestatus', facapprovestatus);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
   function resetFilters() {
     sitebasicinfo = '';
     contracttype = '';
-    regions = '';
-    opt_approval_date = '';
-    pac_submit_date = '';
-    fac_submit_date = '';
-    pac_status = '';
-    fac_status = '';
+    region = '';
+    optapprovedate = '';
+    pacsubmitdate = '';
+    facsubmitdate = '';
+    pacapprovestatus = '';
+    facapprovestatus = '';
     search();
   }
 
@@ -58,11 +60,18 @@
     }
   }
 
+    //Drawer
+  let certidetaildrawer = true;
+  let selectedRellist: any = {};
+
+  function showDrawer(rellist) {
+    selectedRellist = rellist;
+    certidetaildrawer = false;
+  }
+
   // Modal
   let siteId = '';
-  let certiCreateModal = false
-  let certiUpdateModal = false
-  let certiDeleteModal = false
+  let certificationUpdateModal = false
 
 </script>
 
@@ -71,20 +80,12 @@
   <Breadcrumb aria-label="siteinfo breadcrumb" class="mb-6">
     <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
     <BreadcrumbItem href="/fddproject">FDD Project</BreadcrumbItem>
-    <BreadcrumbItem>Certification</BreadcrumbItem>
+    <BreadcrumbItem>certificationfication</BreadcrumbItem>
   </Breadcrumb>
 
   <!-- Table Title -->
   <div class="flex items-center gap-4 mb-3">
-    <h5 class="text-2xl text-gray-800 dark:text-gray-300">Certification Information</h5>
-    <Button 
-      size="sm" 
-      color="purple" 
-      class="py-1.5 px-3"
-      on:click={() => {certiCreateModal=true}}
-    >
-      <Icon icon="system-uicons:button-add" class="text-2xl me-2" /> Add new Certi info
-    </Button>
+    <h5 class="text-2xl text-gray-800 dark:text-gray-300">Certificationfication Information</h5>
   </div>
 
   <!-- search -->
@@ -99,7 +100,7 @@
     
         <DropdownMulti
           options={['Central', 'Northern', 'Southern', 'Eastern', 'Sabah', 'Sarawak']}
-          bind:selectedOptions={regions}
+          bind:selectedOptions={region}
           onOptionChange={search}
           placeholder="Region" 
         />
@@ -128,28 +129,28 @@
       <div class="grid grid-cols-7 items-center w-full gap-2">
         <DropdownMulti
           options={['Null', 'Not Null']}
-          bind:selectedOptions={pac_submit_date}
+          bind:selectedOptions={pacsubmitdate}
           onOptionChange={search}
           placeholder="PAC Submit" 
         />
 
         <DropdownMulti
-          options={['SSO', 'CLOPT', 'IBS', 'Dismantle', 'TDD']}
-          bind:selectedOptions={fac_submit_date}
+          options={['Null', 'Not Null']}
+          bind:selectedOptions={facsubmitdate}
           onOptionChange={search}
           placeholder="FAC Submit" 
         />
 
         <DropdownMulti
-          options={['Dato Approved', 'Pending Dato Approval', 'Pending SeckFoo Approval']}
-          bind:selectedOptions={pac_status}
+          options={['Dato Approved', 'Pending Dato', 'Pending ASN Manager']}
+          bind:selectedOptions={pacapprovestatus}
           onOptionChange={search}
           placeholder="PAC Status" 
         />
       
         <DropdownMulti
-          options={['Dato Approved', 'Pending Dato Approval', 'Pending SeckFoo Approval']}
-          bind:selectedOptions={fac_status}
+          options={['Dato Approved', 'Pending Dato', 'Pending ASN Manager']}
+          bind:selectedOptions={facapprovestatus}
           onOptionChange={search}
           placeholder="FAC Status" 
         />
@@ -175,61 +176,51 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="py-2">
             <div class="flex flex-col items-start">
-              <span class="dark:text-gray-400">{rellist.certi.sitebasicinfo}</span>
-              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.regions}</span>
+              <span class="dark:text-gray-400">{rellist.certification.sitebasicinfo}</span>
+              <span class="dark:text-gray-400 text-xs">{rellist.sitebasicinfo.region}</span>
             </div>
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">{rellist.sitebasicinfo.contracttype}</span>
           </TableBodyCell>
           <TableBodyCell class="py-2">
-            {#if rellist.certi.pac_submit_date}
-            <span class="dark:text-gray-400">{rellist.certi.pac_submit_date}</span>
+            {#if rellist.certification.pacsubmitdate}
+            <span class="dark:text-gray-400">{rellist.certification.pacsubmitdate}</span>
             {/if}
           </TableBodyCell>
           <TableBodyCell class="py-2">
-            {#if rellist.certi.fac_submit_date}
-            <span class="dark:text-gray-400">{rellist.certi.fac_submit_date}</span>
+            {#if rellist.certification.facsubmitdate}
+            <span class="dark:text-gray-400">{rellist.certification.facsubmitdate}</span>
             {/if}
           </TableBodyCell>
           <TableBodyCell class="py-2">
-            {#if rellist.certi.pac_status}
-            <span class="dark:text-gray-400">{rellist.certi.pac_status}</span>
+            {#if rellist.certification.pacapprovestatus}
+            <span class="dark:text-gray-400">{rellist.certification.pacapprovestatus}</span>
             {/if}
           </TableBodyCell>
           <TableBodyCell class="py-2">
-            {#if rellist.certi.fac_status}
-            <span class="dark:text-gray-400">{rellist.certi.fac_status}</span>
+            {#if rellist.certification.facapprovestatus}
+            <span class="dark:text-gray-400">{rellist.certification.facapprovestatus}</span>
             {/if}
           </TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
               <div class="flex gap-1">
                 <span>
-                  <Button size="sm" color="purple" class="rounded-md px-2">
+                  <Button size="sm" color="purple" class="rounded-md px-2" on:click={() => showDrawer(rellist)}>
                     <Icon icon="bx:detail" />
                   </Button>
-                  <Tooltip color="green">Certi Info Detail</Tooltip>
+                  <Tooltip color="green">Certification Info Detail</Tooltip>
                 </span>
 
                 <Button
-                  on:click={() => {siteId = rellist.certi.id; certiUpdateModal = true}}
+                  on:click={() => {siteId = rellist.certification.id; certificationUpdateModal = true}}
                   size="sm" 
                   class="rounded-md px-2 bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:border-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 dark:focus:ring-sky-400 dark:focus:border-sky-700"
                 >
                   <Icon icon="ri:edit-line" />
                 </Button>
-                <Tooltip color="yellow">Certi Info Update</Tooltip>
-    
-                <Button
-                  on:click={() => {siteId = rellist.certi.id; certiDeleteModal = true}}
-                  size="sm" 
-                  color="red" 
-                  class="rounded-md px-2"
-                >
-                  <Icon icon="ri:delete-bin-line" />
-                </Button>
-                <Tooltip color="red">Certi Info Delete</Tooltip>
+                <Tooltip color="yellow">Certification Info Update</Tooltip>
               </div>
             </span>
           </TableBodyCell>
@@ -239,5 +230,13 @@
   </Table>
 
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, regions, opt_approval_date, pac_submit_date, fac_submit_date, pac_status, fac_status}} />
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, optapprovedate, pacsubmitdate, facsubmitdate, pacapprovestatus, facapprovestatus}} />
+
+  <!-- Drawer -->
+  <CertidetailDrawer bind:certidetaildrawer={certidetaildrawer} {selectedRellist} {search} />
+
+    <!-- Modal -->
+  <UpdatecertModal 
+    bind:certificationUpdateModal={certificationUpdateModal} {siteId} {search}
+  />
 </div>

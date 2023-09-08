@@ -4,15 +4,15 @@ export async function load({ url, fetch }) {
   params.set('offset', params.get('offset') || '0');
   params.set('sitebasicinfo', params.get('sitebasicinfo') || '');
   params.set('contracttype', params.get('contracttype') || '');
-  params.set('regions', params.get('regions') || '');
+  params.set('region', params.get('region') || '');
 
-  params.set('pac_submit_date', params.get('pac_submit_date') || '');
-  params.set('fac_submit_date', params.get('fac_submit_date') || '');
-  params.set('pac_status', params.get('pac_status') || '');
-  params.set('fac_status', params.get('fac_status') || '');
+  params.set('pacsubmitdate', params.get('pacsubmitdate') || '');
+  params.set('facsubmitdate', params.get('facsubmitdate') || '');
+  params.set('pacapprovestatus', params.get('pacapprovestatus') || '');
+  params.set('facapprovestatus', params.get('facapprovestatus') || '');
 
   async function getReldataList(){
-    const res = await fetch(`http://10.24.8.115:8000/api/v2/totalrelated/?${params.toString()}`)
+    const res = await fetch(`http://10.24.8.120:8000/api/alltable/?${params.toString()}`)
     if (res.ok) {
       const data = await res.json()
       return {

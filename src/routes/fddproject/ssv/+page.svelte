@@ -7,6 +7,7 @@
   import PaginationComponent from '../../../components/PaginationComponent.svelte';
   import DropdownMulti from '../../../components/DropdownMulti.svelte';
   import SSVdetailDrawer from './detail/SSVdetailDrawer.svelte';
+  import UpdatessvModal from './crud/UpdatessvModal.svelte';
   
   export let data;
 
@@ -88,9 +89,7 @@
 
   // Modal
   let siteId = '';
-  let ssvCreateModal = false
   let ssvUpdateModal = false
-  let ssvDeleteModal = false
 
 </script>
 
@@ -105,14 +104,6 @@
   <!-- Table Title -->
   <div class="flex items-center gap-4 mb-3">
     <h5 class="text-2xl text-gray-800 dark:text-gray-300">SSV Information</h5>
-    <Button 
-      size="sm" 
-      color="purple" 
-      class="py-1.5 px-3"
-      on:click={() => {ssvCreateModal=true}}
-    >
-      <Icon icon="system-uicons:button-add" class="text-2xl me-2" /> Add new SSV info
-    </Button>
   </div>
 
   <!-- search -->
@@ -332,16 +323,6 @@
                   <Icon icon="ri:edit-line" />
                 </Button>
                 <Tooltip color="yellow">SSV Info Update</Tooltip>
-    
-                <Button
-                  on:click={() => {siteId = rellist.ssv.id; ssvDeleteModal = true}}
-                  size="sm" 
-                  color="red" 
-                  class="rounded-md px-2"
-                >
-                  <Icon icon="ri:delete-bin-line" />
-                </Button>
-                <Tooltip color="red">SSV Info Delete</Tooltip>
               </div>
             </span>
           </TableBodyCell>
@@ -354,5 +335,10 @@
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, oaairdate, ssvstartdate, ssvcompletedate, ssvsubmitdate, bsreceivedate, bssubmitdate, bsapprovedate, icsubmitdate, ssvsubcon}} />
 
   <!-- Drawer -->
-  <SSVdetailDrawer bind:ssvdetaildrawer={ssvdetaildrawer} {selectedRellist} />
+  <SSVdetailDrawer bind:ssvdetaildrawer={ssvdetaildrawer} {selectedRellist} {search} />
+
+    <!-- Modal -->
+  <UpdatessvModal 
+    bind:ssvUpdateModal={ssvUpdateModal} {siteId} {search}
+  />
 </div>

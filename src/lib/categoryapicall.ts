@@ -1,5 +1,5 @@
 export async function fetchClusterData(query: string) {
-  const response = await fetch(`http://10.24.8.120:8000/api/cluster/?cluster=${query}`);
+  const response = await fetch(`http://10.24.8.120:8000/api/clusters/?cluster=${query}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -19,7 +19,12 @@ export async function fetchRegionData() {
 }
 
 export async function fetchStateData(query: string) {
-  const response = await fetch(`http://10.24.8.120:8000/api/state/?region=${query}`);
+  let url = 'http://10.24.8.120:8000/api/state/';
+  if (query) {
+    url += `?region=${query}`;
+  }
+  const response = await fetch(url);
+  
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -76,4 +81,14 @@ export async function fetchCOICApproveStatusData() {
   const data = await response.json();
   const coicapprovestatus = data.results;
   return coicapprovestatus;
+}
+
+export async function fetchOPTTypeData() {
+  const response = await fetch('http://10.24.8.120:8000/api/opttype/');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const opttype = data.results;
+  return opttype
 }

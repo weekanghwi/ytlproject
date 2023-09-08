@@ -3,7 +3,7 @@
   import { fetchSubconData, fetchCOICApproveStatusData } from '$lib/categoryapicall';
   import { createEventDispatcher } from 'svelte';
   import { fetchInstallData, updateInstallData } from './crud'
-  import { Modal, Label, Input, Button, Select, Tabs, TabItem, Textarea } from 'flowbite-svelte';
+  import { Modal, Label, Input, Button, Select, Tabs, TabItem } from 'flowbite-svelte';
   import { z } from 'zod'
   import { InstallFormSchema } from '$lib/schemas';
   import Icon from '@iconify/svelte';
@@ -12,6 +12,8 @@
 
   export let installUpdateModal = false;
   export let siteId: string;
+  export let search: () => Promise<void>;
+
   let subconSelectData: { value: string; name: string }[] = [];
   let coicapproveStatusData: { value: string; name: string }[] = [];
 
@@ -26,7 +28,7 @@
     try {
       const data = await fetchSubconData();
       subconSelectData = data
-        .filter(subconcategory => subconcategory.type === 'Service')
+        .filter(subconcategory => subconcategory.type === 'Install')
         .map(subcon => ({ value: subcon.id, name: subcon.subcon}));
       return data;
     } catch (error) {
@@ -41,7 +43,7 @@
     try {
       const data = await fetchCOICApproveStatusData();
       coicapproveStatusData = data
-        .map(coicapproveState => ({ value: coicapproveState.coiapprovestatus, name: coicapproveState.coiapprovestatus}));
+        .map(coicapproveState => ({ value: coicapproveState.coicapprovestatus, name: coicapproveState.coicapprovestatus}));
       return data;
     } catch (error) {
       console.error('Error:', error);
@@ -68,11 +70,18 @@
     // siteData.cluster = selectedCluster ? selectedCluster.cluster_name : siteData.cluster;
 
     try {
+      for (const [key, value] of Object.entries(installData)) {
+        // "as"를 사용하여 타입을 명확하게 지정해줍니다.
+        (installData as {[key: string]: any})[key] = value === '' ? null : value;
+      }
       crudSchema.parse(installData);
       await updateInstallData(siteId, installData);
       installUpdateModal = false;
       errors = {};
-      dispatch('installUpdated');
+      // dispatch('installUpdated');
+      if (search) {
+        await search();
+      }
     } catch (error) {
       console.error('Failed to update install data:', error);
       if (error instanceof z.ZodError) {

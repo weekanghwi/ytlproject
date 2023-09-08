@@ -11,6 +11,7 @@
 
   export let doUpdateModal = false;
   export let siteId: string;
+  export let search: () => Promise<void>;
 
   let doData: doData = createInitialdoData();
   let errors: ErrorsRecord = {}
@@ -39,7 +40,11 @@
       await updateDOData(siteId, doData);
       doUpdateModal = false;
       errors = {};
-      dispatch('doUpdated');
+      // dispatch('doUpdated');
+
+      if (search) {
+        await search();
+      }
     } catch (error) {
       console.error('Failed to update site data:', error);
       if (error instanceof z.ZodError) {

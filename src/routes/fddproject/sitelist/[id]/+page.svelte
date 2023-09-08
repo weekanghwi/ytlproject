@@ -7,48 +7,50 @@
   import Createphyinfo from './crud/Createphyinfo.svelte';
 	import Updatephyinfo from './crud/Updatephyinfo.svelte';
   import Deletephyinfo from './crud/Deletephyinfo.svelte';
-  import { Breadcrumb, BreadcrumbItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Tabs, TabItem, Button, Badge, Timeline, TimelineItem } from 'flowbite-svelte';
+  import { Breadcrumb, BreadcrumbItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Tabs, TabItem, Button } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 
   export let data: PageData;
-  let physicaldata:any = [];
+  let btsmanagerdata:any = [];
 
-  async function fetchPhysicalData() {
-    const res = await fetch(`http://10.24.8.120:8000/api/physiteinfo/?sitebasicinfo_id=${data.sitedata.id}`)
-    const resphyData = await res.json();
-    const phyData_base = resphyData.results.filter((item:any) => item.sitebasicinfo_id == data.sitedata.id)
-    const phyData_800 = resphyData.results.filter((item:any) => item.earfcndl == 6245)
-    const phyData_2300 = resphyData.results.filter((item:any) => item.earfcndl >= 38101)
-    const phyData_2600 = resphyData.results.filter((item:any) => item.earfcndl == 38100)
+  async function fetchBTSmanagerData() {
+    const res = await fetch(`http://10.24.8.120:8000/api/btsmanager/?siteid=${data.sitedata.siteid}`)
+    const resBTSmanagerData = await res.json();
+    const BTSmanager_all = resBTSmanagerData.results;
+    const BTSmanager_800 = resBTSmanagerData.results.filter((item:any) => item.freqband == 20);
+    const BTSmanager_2300 = resBTSmanagerData.results.filter((item:any) => item.freqband == 40);
+    const BTSmanager_2600 = resBTSmanagerData.results.filter((item:any) => item.freqband == 38);
     return {
-      phyData_base,
-      phyData_800,
-      phyData_2300,
-      phyData_2600
-    };
+      BTSmanager_all,
+      BTSmanager_800,
+      BTSmanager_2300,
+      BTSmanager_2600
+    }
   }
 
   onMount(async () => {
-    physicaldata = await fetchPhysicalData();
-    physicaldata = {...physicaldata};
+    btsmanagerdata = await fetchBTSmanagerData();
+    btsmanagerdata = {...btsmanagerdata}
+
   });
 
   let _cellidentity: string = '';
+  let _physiteinfoid: string = '';
   let siteId: string = ''
   let physiteinfoCreateModal = false
   let physiteinfoUpdateModal = false
   let physiteinfoDeleteModal = false
 
-  let relateDoinfo = data.relateddata.results[0].doinfo;
-  let relateInstallinfo = data.relateddata.results[0].installtillonair;
-  let relateSSVinfo = data.relateddata.results[0].ssvsection;
-  let relateOPTinfo = data.relateddata.results[0].optinformation;
-  let relateCerti = data.relateddata.results[0].certi;
+  let relateDoinfo = data.relateddata.results[0].do;
+  let relateInstallinfo = data.relateddata.results[0].install;
+  let relateSSVinfo = data.relateddata.results[0].ssv;
+  let relateOPTinfo = data.relateddata.results[0].optimization;
+  let relateCerti = data.relateddata.results[0].certification;
 
   async function handleRefrash() {
     let params = new URLSearchParams();
     params.set('refresh', Date.now().toString())
-    physicaldata = await fetchPhysicalData();
+    btsmanagerdata = await fetchBTSmanagerData();
     goto(`/fddproject/sitelist/${$page.params.id}/`)
   }
 
@@ -59,49 +61,61 @@
       <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
       <BreadcrumbItem href="/fddproject">FDD Project</BreadcrumbItem>
       <BreadcrumbItem href="/fddproject/sitelist">Site Lsit</BreadcrumbItem>
-      <BreadcrumbItem>{data.sitedata.site_id} Detail</BreadcrumbItem>
+      <BreadcrumbItem>{data.sitedata.siteid} Detail</BreadcrumbItem>
     </Breadcrumb>
-
     <!-- site detail title-->
     <div class="flex flex-col mb-6">
       <h2 class="text-slate-400 text-lg">{data.sitedata.siteid} Site Detail Informations</h2>
-      <p class="text-xs text-slate-400 dark:text-gray-400">{data.sitedata.sitename}</p>
+      <p class="text-xs text-slate-400 dark:text-gray-400">{data.sitedata.sitename} - {data.sitedata.cluster}</p>
     </div>
 
     <!-- Physical Info -->
     <div class="flex flex-col mb-6">
-      <div class="flex items-center gap-2 mb-4">
+      <div class="flex items-center gap-2 mb-1">
         <h4 class="text-slate-400 dark:text-slate-400">Site Physical Information</h4>
-        {#if physicaldata.phyData_base && physicaldata.phyData_base.length > 0}
+        {#if relateInstallinfo && relateInstallinfo.oaairdate && relateInstallinfo.oaairdate.length > 0}
         <div 
           class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
-          {physicaldata.phyData_base[0].sitestatus === 'OnAir' ? 'bg-green-400' : 'bg-rose-400'}">
-          {physicaldata.phyData_base[0].sitestatus}
-        </div>
-        <div 
-          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
-          {physicaldata.phyData_base[0].channelcard === 'LCC2_B1' ? 'bg-green-400' : 'bg-rose-400'}">
-          {physicaldata.phyData_base[0].channelcard}
-        </div>
-        <div 
-          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm bg-green-400">
-          {physicaldata.phyData_base[0].siteconfig}
+          {relateInstallinfo.oaairdate ? 'bg-green-400' : 'bg-rose-400'}">
+          OnAir
         </div>
         {/if}
-        <Button
-          size="xs" 
-          class="py-1.5 px-3 rounded-sm"
-          on:click={() => {siteId=data.sitedata.site_id; physiteinfoCreateModal = true}}>Add New</Button>
+        {#if btsmanagerdata.BTSmanager_all && btsmanagerdata.BTSmanager_all.length > 0}
+        <div 
+          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
+          {btsmanagerdata.BTSmanager_all[0].channelcard ? 'bg-green-400' : 'bg-rose-400'}">
+          {btsmanagerdata.BTSmanager_all[0].channelcard}
+        </div>
+        {:else}
+        <div class="py-1.5 px-3 text-xs text-slate-800 rounded-sm bg-rose-400">
+          No BTS Manager data found
+        </div>
+        {/if}
+        {#if data.sitedata.siteconfig && data.sitedata.siteconfig.length > 0}
+        <div 
+          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
+          {data.sitedata.siteconfig ? 'bg-green-400' : 'bg-rose-400'}">
+          {data.sitedata.siteconfig}
+        </div>
+        {/if}
       </div>
+
+      <p class="text-slate-500 text-xs mb-4">
+        LSM & RET informations are no need to update here because it will be updated automatically (once a week will automatically updated LSM, RET and TX Attn informations.)
+      </p>
+
+      <!-- Site Phy&LSM info table-->
       <Tabs style="underline" contentClass="py-4 bg-white rounded-lg dark:bg-gray-800">
-        {#if physicaldata.phyData_800 && physicaldata.phyData_800.length > 0}
+
+        <!-- L800 BTS Information -->
+        {#if btsmanagerdata.BTSmanager_800 && btsmanagerdata.BTSmanager_800.length > 0}
         <TabItem open 
           activeClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50 bg-primary-600 dark:bg-indigo-600"
           inactiveClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50">
           <div slot="title" class="flex items-center">
             FDD-800
             <p class="text-xs h-5 w-5 bg-slate-50 rounded-full flex items-center justify-center ms-1 dark:text-indigo-500 text-slate-500">
-              {physicaldata.phyData_800.length}
+              {btsmanagerdata.BTSmanager_800.length}
             </p>
           </div>
           <Table shadow>
@@ -116,22 +130,22 @@
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
-              {#each physicaldata.phyData_800 as item}
+              {#each btsmanagerdata.BTSmanager_800 as item}
               <TableBodyRow>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennatype}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennaheight}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.azimuth}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.mtilt}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                 </TableBodyCell>
@@ -142,14 +156,15 @@
         </TabItem>
         {/if}
 
-        {#if physicaldata.phyData_2300 && physicaldata.phyData_2300.length > 0}
+        <!-- L2300 BTS Information -->
+        {#if btsmanagerdata.BTSmanager_2300 && btsmanagerdata.BTSmanager_2300.length > 0}
         <TabItem open 
           activeClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50 bg-primary-600 dark:bg-indigo-600"
           inactiveClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50">
           <div slot="title" class="flex items-center">
-            TDD-2.3
+            TDD-2.3GHz
             <p class="text-xs h-5 w-5 bg-slate-50 rounded-full flex items-center justify-center ms-1 dark:text-indigo-500 text-slate-500">
-              {physicaldata.phyData_2300.length}
+              {btsmanagerdata.BTSmanager_2300.length}
             </p>
           </div>
           <Table shadow>
@@ -164,22 +179,22 @@
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
-              {#each physicaldata.phyData_2300 as item}
+              {#each btsmanagerdata.BTSmanager_2300 as item}
               <TableBodyRow>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennatype}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennaheight}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.azimuth}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.mtilt}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                 </TableBodyCell>
@@ -190,14 +205,15 @@
         </TabItem>
         {/if}
 
-        {#if physicaldata.phyData_2600 && physicaldata.phyData_2600.length > 0}
+        <!-- L2600 BTS Information -->
+        {#if btsmanagerdata.BTSmanager_2600 && btsmanagerdata.BTSmanager_2600.length > 0}
         <TabItem open 
           activeClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50 bg-primary-600 dark:bg-indigo-600"
           inactiveClasses="px-3 py-2 text-primary-50 bg-gray-100 rounded-t-md dark:bg-gray-800 dark:text-indigo-50">
           <div slot="title" class="flex items-center">
-            TDD-2.6
+            TDD-2.6GHz
             <p class="text-xs h-5 w-5 bg-slate-50 rounded-full flex items-center justify-center ms-1 dark:text-indigo-500 text-slate-500">
-              {physicaldata.phyData_2600.length}
+              {btsmanagerdata.BTSmanager_2600.length}
             </p>
           </div>
           <Table shadow>
@@ -212,22 +228,22 @@
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
-              {#each physicaldata.phyData_2600 as item}
+              {#each btsmanagerdata.BTSmanager_2600 as item}
               <TableBodyRow>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennatype}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.antennaheight}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.azimuth}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.mtilt}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.cellidentity; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                 </TableBodyCell>
@@ -237,6 +253,7 @@
           </Table>
         </TabItem>
         {/if}
+
       </Tabs>
     </div>
 
@@ -251,7 +268,7 @@
   bind:physiteinfoCreateModal={physiteinfoCreateModal} {siteId}
   on:physiteCreated={handleRefrash} />
 <Updatephyinfo
-  bind:physiteinfoUpdateModal={physiteinfoUpdateModal} {_cellidentity}
+  bind:physiteinfoUpdateModal={physiteinfoUpdateModal} {_cellidentity} {_physiteinfoid}
   on:physiteUpdated={handleRefrash} />
 <Deletephyinfo
   bind:physiteinfoDeleteModal={physiteinfoDeleteModal} {_cellidentity}

@@ -121,7 +121,7 @@
     />
 
     <DropdownMulti
-      options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse-Replace']}
+      options={['Confirm', 'Reuse_Material', 'KIV', 'Drop', 'TDD Only', 'Reuse_Replace']}
       bind:selectedOptions={contracttype}
       onOptionChange={search}
       placeholder="Contract type" 
@@ -151,7 +151,7 @@
       <TableHeadCell class="py-4 text-sm">Region</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">state</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
-      <TableHeadCell class="py-4 text-sm">OPT Type</TableHeadCell>
+      <TableHeadCell class="py-4 text-sm">Site Config</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Action</TableHeadCell>
     </TableHead>
     <TableBody tableBodyClass="border-none">

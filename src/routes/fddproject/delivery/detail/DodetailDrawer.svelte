@@ -2,13 +2,23 @@
   import { Drawer, Button, CloseButton, Timeline, TimelineItem, TimelineItemVertical } from 'flowbite-svelte';
   import Icon from '@iconify/svelte';
   import { sineIn } from 'svelte/easing'
+  import UpdateDoModal from '../crud/UpdateDOModal.svelte';
 
   export let selectedRellist:any = {};
   export let dodetaildrawer = true;
+  export let search: () => Promise<void>;
+  let siteId = '';
+  let doUpdateModal = false
   let transitionParamsRight = {
     x: 320,
     duration: 200,
     easing: sineIn
+  }
+
+  async function refreshData() {
+    if (search) {
+      await search();
+    }
   }
 
   // style condition
@@ -130,8 +140,18 @@
   </div>
   
   <div class="grid grid-cols-2 gap-4">
-    <Button color="light" href="#">Update DO</Button>
+    <Button color="blue"
+      on:click={() => {
+        siteId = selectedRellist.ssv.id; 
+        doUpdateModal = true 
+    }}>
+      Update DO
+    </Button>
     <Button on:click={() => (dodetaildrawer = true)} class="px-4"><Icon icon="ph:x" class="me-1" /> Close</Button>
   </div>
 </Drawer>
+
+<UpdateDoModal
+  bind:doUpdateModal={doUpdateModal} {siteId} {search}
+/>
 

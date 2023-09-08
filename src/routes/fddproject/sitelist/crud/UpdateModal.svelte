@@ -156,6 +156,8 @@
     event.preventDefault();
     // siteData.cluster = selectedCluster ? selectedCluster.cluster_name : siteData.cluster;
     siteData.cluster = selectedClusterName !== '' ? selectedClusterName : siteData.cluster;
+    siteData.lat = parseFloat(siteData.lat as any);
+    siteData.lon = parseFloat(siteData.lon as any);
 
     try {
       crudSchema.parse(siteData);
@@ -249,7 +251,7 @@
                   type="button" 
                   on:click={() => handleClusterSelection(result)}
                 >
-                  {result.cluster_name}
+                  {result.cluster}
                 </button>
               {/each}
             </div>
@@ -353,22 +355,6 @@
             {#each siteconfigResults as siteconfigs (siteconfigs.id)}
               <option value={siteconfigs.siteconfig}>{siteconfigs.siteconfig}</option>
             {/each}
-          </select>
-        </Label>
-
-        <Label class="space-y-2 w-full">
-          <span class="text-slate-800 dark:text-slate-400">
-            Antenna Type {#if errors.antennatype}<span class="text-rose-600 text-xs">{errors.antennatype}</span>{/if}
-          </span>
-          <select 
-            class="w-full text-sm py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600" 
-            name="antennatype" 
-            placeholder="Antenna Type" 
-            bind:value={siteData.antennatype}
-          >
-          {#each antennatypeResults as antennatypes (antennatypes.id)}
-            <option value={antennatypes.antennatype}>{antennatypes.antennatype}</option>
-          {/each}
           </select>
         </Label>
       </div>
