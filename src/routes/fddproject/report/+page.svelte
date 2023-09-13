@@ -70,6 +70,10 @@
         <Icon icon="formkit:week" />
         Weekly Report
       </div>
+      <div class="grid grid-cols-4 space-x-4 mb-4">
+        <button on:click={downloadInternaldailReport} class="text-xs py-1 px-2 rounded-md bg-lime-400 hover:bg-lime-500 focus:ring-4 focus:ring-lime-600">FDD Master Tracker</button>
+        <button on:click={downloadIntegrationReport} class="text-xs py-1 px-2 rounded-md bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:ring-indigo-600">Integration Staus Tracker</button>
+      </div>
       <div class="grid grid-cols-4 items-center space-x-2 mb-4 bg-indigo-500 text-slate-800 px-4 py-2 rounded-sm">
         <h4 class="col-span-2 font-bold"> Weekly performance for All Work Progress</h4>
         <p class="text-xs col-span-2">Week: {weekNumber} ({formattedStartOfWeek} ~ {formattedEndOfWeek}) </p>
