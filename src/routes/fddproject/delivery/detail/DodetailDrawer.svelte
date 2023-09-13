@@ -20,33 +20,6 @@
       await search();
     }
   }
-
-  // style condition
-  $: dodate = selectedRellist.do?.doissuedate; // reactive statement
-  $: codsubmitdate = selectedRellist.do?.codsubmitdate; // reactive statement
-  $: codapprovaldate = selectedRellist.do?.codapprovedate; // reactive statement
-
-  $: spanClass = `flex absolute left-1 justify-center items-center w-4 h-4 ${
-    dodate
-        ? 'bg-lime-400 rounded-full ring-8 ring-lime-500' // 둘 다 참일 때
-      : '' // 그 외의 경우
-  }`; // reactive statement
-
-  $: spanClassSubmit = `flex absolute left-1 justify-center items-center w-4 h-4 ${
-    dodate
-      ? codsubmitdate
-        ? 'bg-lime-400 rounded-full ring-8 ring-lime-500' // 둘 다 참일 때
-        : 'bg-rose-400 rounded-full ring-8 ring-rose-500' // dodate만 참일 때
-      : '' // 그 외의 경우
-  }`; // reactive statement
-
-  $: spanClassApproval = `flex absolute left-1 justify-center items-center w-4 h-4 ${
-    codsubmitdate
-      ? codapprovaldate
-        ? 'bg-lime-400 rounded-full ring-8 ring-lime-500' // 둘 다 참일 때
-        : 'bg-rose-400 rounded-full ring-8 ring-rose-500' // dodate만 참일 때
-      : '' // 그 외의 경우
-  }`; // reactive statement
 </script>
 
 
@@ -63,81 +36,103 @@
     <p class="text-sm text-slate-500 dark:text-slate-400">
       {selectedRellist.sitebasicinfo.siteid} DO Detail Information
     </p>
-    {#if selectedRellist.do.doissuedate}
-      <p class="text-sm text-slate-500 dark:text-slate-400">
-        DO Status: <span class="text-lime-500">Complete Delivery</span>
-      </p>
-    {:else}
-      <p class="text-sm text-slate-500 dark:text-slate-400">
-        DO Status: <span class="text-rose-500">No DO ({selectedRellist.sitebasicinfo.contracttype})</span>
-      </p>
-    {/if}
   </div>
 
-  <!-- DO Detail content -->
-  <div class="flex flex-col ps-4 mb-4">
-    <p class="mb-6 text-sm text-slate-500 dark:text-slate-400">
-    {#if selectedRellist.do.doissuedate}
-    <Timeline order="vertical">
-      <!-- DO Issue -->
-      <TimelineItemVertical
-        title="DO Issue date"
-        date="{selectedRellist.do.doissuedate}"
-        h3Class="flex items-center mb-1 text-sm font-semibold text-slate-900 dark:text-slate-300"
-      >
-        <svelte:fragment slot="icon">
-          <span class={spanClass}>
-            <Icon icon="charm:git-request" class="w-3 h-3 text-slate-800" />
-          </span>
-        </svelte:fragment>
-      </TimelineItemVertical>
+  <div class="flex items-center mb-6">
+    <p class="text-slate-400 text-xs font-bold me-2">Site Category</p>
+    <p class="rounded-md py-0.5 px-2 text-xs text-slate-800"
+      class:bg-lime-400={selectedRellist.sitebasicinfo.contracttype.startsWith('Confirm')}
+      class:bg-rose-400={!selectedRellist.sitebasicinfo.contracttype.startsWith('Confirm')}
+    >
+      {selectedRellist.sitebasicinfo.contracttype}
+    </p>
+  </div>
 
-      <!-- COD Submit -->
-      <TimelineItemVertical
-        title="COD Submit date" 
-        date="{selectedRellist.do.codsubmitdate ? selectedRellist.do.codsubmitdate : 'Pending COD submit to YTLC'}"
-        h3Class="flex items-center mb-1 text-sm font-semibold text-slate-900 dark:text-slate-300"
-        timeClass = "block mb-2 text-sm font-normal leading-none {selectedRellist.do.codsubmitdate ? 'text-lime-400' : 'text-rose-400'}"     
-      >
-        <svelte:fragment slot="icon">
-          <span class={spanClassSubmit}>
-            <Icon icon="fe:document" class="w-3 h-3 text-slate-800" />
-          </span>
-        </svelte:fragment>
-        {#if selectedRellist.do.doissuedate && !selectedRellist.do.codsubmitdate}
-        <p class="mb-4 text-base font-normal text-slate-500 dark:text-slate-400">
-          Pending COD Submit
-        </p>
-        {/if}
-      </TimelineItemVertical>
+  <hr class="mb-3 border border-slate-700/80">
 
-      <!-- COD Approval -->
-      {#if selectedRellist.do.codsubmitdate}
-      <TimelineItemVertical
-        title="COD Approve date" 
-        date="{selectedRellist.do.codapprovedate ? selectedRellist.do.codapprovedate : 'Pending COD approval'}"
-        h3Class="flex items-center mb-1 text-sm font-semibold text-slate-900 dark:text-slate-300"
-        timeClass = "block mb-2 text-sm font-normal leading-none {selectedRellist.do.codapprovedate ? 'text-lime-400' : 'text-rose-400'}"            
-      >
-        <svelte:fragment slot="icon">
-          <span class={spanClassApproval}>
-            <Icon icon="material-symbols:order-approve-outline" class="w-3 h-3 text-slate-800" />
-          </span>
-        </svelte:fragment>
-        {#if selectedRellist.do.codsubmitdate && !selectedRellist.do.codapprovedate}
-        <p class="mb-4 text-base font-normal text-slate-500 dark:text-slate-400">
-          Pending COD Approved
-        </p>
-        {/if}
-      </TimelineItemVertical>
-      {/if}
-    </Timeline>
+  {#if selectedRellist.sitebasicinfo.contracttype.startsWith('Confirm') || selectedRellist.sitebasicinfo.contracttype === 'Reuse_Replace'}
+    {#if !selectedRellist.do.doissuedate}
+      <p class="text-rose-400 text-sm me-2 mb-6">Pending Delivery</p>
     {:else}
-      <div class="flex items-center justify-center mt-6">
-        <Icon icon="streamline:computer-desktop-delete-device-remove-display-computer-deny-desktop-fail-failure" class="text-7xl text-rose-300"/>
+      <div class="grid grid-cols-3 text-sm me-2 mb-6  py-4">
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="rounded-full h-6 w-6 bg-lime-100 flex items-center justify-center ring-4 ring-lime-500">
+            <Icon icon="carbon:delivery-add" />
+          </p>
+          <p class="text-xs text-slate-400">DO Issue</p>
+          <p class="text-xs text-slate-400">{selectedRellist.do.doissuedate}</p>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="rounded-full h-6 w-6 bg-lime-100 flex items-center justify-center ring-4 ring-lime-500">
+            <Icon icon="carbon:directory-domain" />
+          </p>
+          <p class="text-xs text-slate-400">DU Materail</p>
+          <p class="text-xs text-slate-400">
+            {#if selectedRellist.material.dumaterial === 'Samsung-Material'}
+              Samsung
+            {:else}
+              Re-Use
+            {/if}
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="rounded-full h-6 w-6 bg-lime-100 flex items-center justify-center ring-4 ring-lime-500">
+            <Icon icon="fluent:branch-16-regular" />
+          </p>
+          <p class="text-xs text-slate-400">DU Materail</p>
+          <p class="text-xs text-slate-400">
+            {#if selectedRellist.material.rumaterial === 'Samsung-Material'}
+              Samsung
+            {:else}
+              Re-Use
+            {/if}
+            </p>
+        </div>
+
+        <div class="flex col-span-3 justify-center mt-6">
+          <button class="col-span-3 py-2 px-3 bg-lime-400 text-slate-900 text-xs font-bold rounded-lg hover:bg-lime-500 focus:ring-4 focus:ring-lime-600">Update Material</button>
+        </div>
+        
       </div>
     {/if}
-  </div>
+
+    <hr class="mb-6 border border-slate-700/80">
+
+    {#if !selectedRellist.do.codsubmitdate}
+      <p class="text-rose-400 text-sm me-2 mb-6">Pending COD Submit</p>
+    {:else}
+      <div class="grid grid-cols-2 items-center justify-center mb-6">
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="rounded-full h-6 w-6 bg-lime-100 flex items-center justify-center ring-4 ring-lime-500">
+            <Icon icon="iconoir:submit-document" />
+          </p>
+          <p class="text-xs text-slate-400">COD Submit Date</p>
+          <p class="text-xs text-slate-400">
+            {selectedRellist.do.codsubmitdate}
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="rounded-full h-6 w-6  flex items-center justify-center ring-4 {selectedRellist.do.codapprovedate ? 'bg-lime-100 ring-lime-500' : 'bg-rose-100 ring-rose-500'} ">
+            <Icon icon="material-symbols:order-approve-outline" />
+          </p>
+          <p class="text-xs text-slate-400">COD Approve Date</p>
+          <p class="text-xs text-slate-400">
+            {#if selectedRellist.do.codapprovedate}
+            {selectedRellist.do.codapprovedate}
+            {:else}
+            Pending COD Approve
+            {/if}
+            </p>
+        </div>
+      </div>
+    {/if}
+
+  {/if}
+
+  <!-- DO Detail content -->
   
   <div class="grid grid-cols-2 gap-4">
     <Button color="blue"

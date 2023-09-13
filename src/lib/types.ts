@@ -45,6 +45,7 @@ export interface PhysicalSiteData {
   antennaheight: number;
   azimuth: number;
   mtilt: number;
+  etilt: number;
 }
 
 export function createInitialphySiteData(): PhysicalSiteData {
@@ -59,6 +60,7 @@ export function createInitialphySiteData(): PhysicalSiteData {
     antennaheight: 0,
     azimuth: 0,
     mtilt: 0,
+    etilt: 0,
   }
 }
 

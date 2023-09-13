@@ -17,7 +17,7 @@
         <SidebarGroup>
           <SidebarItem label="Map" href="/fddproject/map" active={selectedMenu === 'Map'} on:click={() => selectMenuHandler('Map')}>
             <svelte:fragment slot="icon">
-              <Icon icon="heroicons-outline:chart-pie" class="text-xl" />
+              <Icon icon="vscode-icons:file-type-map" class="text-xl" />
             </svelte:fragment>
           </SidebarItem>
 

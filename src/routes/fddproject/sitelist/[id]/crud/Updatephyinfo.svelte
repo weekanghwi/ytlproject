@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fetchphysiteData, updatephySiteData } from './crudphy'
+  import { fetchphysiteData, updatephySiteData, fetchLSMData } from './crudphy'
   import { type PhysicalSiteData, type ErrorsRecord, createInitialphySiteData } from '$lib/types';
   import { PhysicalSiteFormSchema } from '$lib/schemas';
   import { createEventDispatcher, onMount } from 'svelte';
@@ -16,6 +16,7 @@
   let errors: ErrorsRecord = {}
   let previousIdentity: string;
   let antennaTypes: string[] = [];
+  let lsm: any;
 
   const dispatch = createEventDispatcher();
   const crudSchema = PhysicalSiteFormSchema.extend({
@@ -68,7 +69,9 @@
       }
     }
   }
+
 </script>
+
 
 
 <Modal bind:open={physiteinfoUpdateModal} size="xs" autoclose={false} class="w-full">
@@ -77,13 +80,22 @@
       <Icon icon="codicon:radio-tower" class="font-semibold text-lg text-slate-400"/>
       <p class="text-slate-400 text-lg">Physical Site Info Update</p>
     </div>
+    <Input class="py-1.5 px-3 w-full text-red-500" bind:value={physiteData.id} type="hidden" />
 
-    <div class="grid grid-cols-3 items-center justify-center mb-4 text-center bg-indigo-400 rounded-lg p-2">
-      <p class="text-slate-800 text-sm mb-2">Site ID</p>
-      <p class="text-slate-800 text-sm mb-2">Sector</p>
-      <p class="text-slate-800 text-sm mb-2">Band</p>
-      <p class="text-slate-800 text-xs">{physiteData.sitebasicinfo}</p>
-      <p class="text-slate-800 text-xs">
+    <div class="grid grid-cols-3 items-center justify-center space-x-2 mb-4">
+      <p class="text-slate-800 rounded-md bg-slate-400 flex justify-center text-xs py-1">{physiteData.sitebasicinfo}</p>
+      <p class="text-slate-800 rounded-md bg-slate-400 flex justify-center text-xs py-1">
+        {#if physiteData.band === 20}
+          800MHz
+        {:else if physiteData.band === 38}
+          2.6GHz
+        {:else}
+          2.3GHz
+        {/if}
+      <p class="text-slate-800 rounded-md flex justify-center text-xs py-1"
+          class:bg-rose-400={physiteData.secid === 0 || physiteData.secid === 3}
+          class:bg-green-400={physiteData.secid === 1 || physiteData.secid === 4}
+          class:bg-blue-400={physiteData.secid === 2 || physiteData.secid === 5}>
         {#if physiteData.secid === 0 || physiteData.secid === 3}
           Alpha
         {:else if physiteData.secid === 1 || physiteData.secid === 4}
@@ -91,23 +103,11 @@
         {:else}
           Gamma
         {/if}
-      </p>
-      <p class="text-slate-800 text-xs">
-        {#if physiteData.band === 20}
-          FDD 800MHz
-        {:else if physiteData.band === 40}
-          TDD 2.3GHz
-        {:else}
-          TDD 2.6GHz
-        {/if}
-      </p>
     </div>
-    <!-- sitebasicinfo hidden input -->
-    <Input class="py-1.5 px-3 w-full text-red-500" bind:value={physiteData.id} type="hidden" />
 
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-1">
-        <Label class="mb-1">Antenna Type</Label>
+        <Label class="mb-1 flex items-center"><Icon icon="tabler:category" class="me-1 text-md" />Antenna Type</Label>
         <Select bind:value={physiteData.antennatype}>
           {#each antennaTypes as antennaType}
           <option value={antennaType}>{antennaType}</option>
@@ -119,7 +119,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <Label class="mb-1">Antenna Height</Label>
+        <Label class="mb-1 flex items-center"><Icon icon="tabler:arrow-autofit-height" class="me-1 text-md" />Antenna Height</Label>
         <NumberInput bind:value={physiteData.antennaheight} />
         {#if errors.antennaheight}
         <p class="text-red-500 text-sm">{errors.antennaheight}</p>
@@ -127,7 +127,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <Label class="mb-1">Azimuth</Label>
+        <Label class="mb-1 flex items-center"><Icon icon="mdi:sun-azimuth" class="me-1 text-md"/>Azimuth</Label>
         <NumberInput bind:value={physiteData.azimuth} />
         {#if errors.azimuth}
         <p class="text-red-500 text-sm">{errors.azimuth}</p>
@@ -135,10 +135,22 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <Label class="mb-1">M-Tilt</Label>
+        <Label class="mb-1 flex items-center"><Icon icon="mdi:slope-downhill" class="me-1 text-md" />M-Tilt</Label>
         <NumberInput bind:value={physiteData.mtilt} />
         {#if errors.mtilt}
         <p class="text-red-500 text-sm">{errors.mtilt}</p>
+        {/if}
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <Label class="mb-1 flex items-center">
+          <Icon icon="mdi:slope-downhill" class="me-1 text-md" />
+          E-Tilt
+          <small class="text-xs text-slate-500 ms-3">(No need to update ETILT if RET installed site)</small>
+        </Label>
+        <NumberInput bind:value={physiteData.etilt} />
+        {#if errors.etilt}
+        <p class="text-red-500 text-sm">{errors.etilt}</p>
         {/if}
       </div>
 

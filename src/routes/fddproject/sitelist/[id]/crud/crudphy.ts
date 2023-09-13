@@ -9,6 +9,15 @@ export async function fetchphysiteData(physiteinfoid: string) {
   return physiteData
 }
 
+export async function fetchLSMData(physiteinfoid: string) {
+  const res = await fetch(`http://10.24.8.120:8000/api/sitelsminfo/?uid=${physiteinfoid}`);
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`)
+  }
+  const lsmData = await res.json()
+  return lsmData
+}
+
 export async function fetchsiteData(siteId: string) {
   const res = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/?siteid=${siteId}`)
   if (!res.ok) {

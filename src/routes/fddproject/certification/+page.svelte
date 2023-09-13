@@ -80,7 +80,7 @@
   <Breadcrumb aria-label="siteinfo breadcrumb" class="mb-6">
     <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
     <BreadcrumbItem href="/fddproject">FDD Project</BreadcrumbItem>
-    <BreadcrumbItem>certificationfication</BreadcrumbItem>
+    <BreadcrumbItem>Certification</BreadcrumbItem>
   </Breadcrumb>
 
   <!-- Table Title -->
@@ -106,7 +106,7 @@
         />
       
         <DropdownMulti
-          options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse-Replace']}
+          options={['Confirm', 'ReUse', 'KIV', 'Drop', 'TDD Only', 'Reuse_Replace']}
           bind:selectedOptions={contracttype}
           onOptionChange={search}
           placeholder="Contract type" 

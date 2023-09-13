@@ -92,7 +92,7 @@
   <Breadcrumb aria-label="siteinfo breadcrumb" class="mb-6">
     <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
     <BreadcrumbItem href="/fddproject">FDD Project</BreadcrumbItem>
-    <BreadcrumbItem>SSV Information</BreadcrumbItem>
+    <BreadcrumbItem>Optimization</BreadcrumbItem>
   </Breadcrumb>
 
   <!-- Table Title -->
@@ -199,7 +199,7 @@
       <TableHeadCell class="py-4 text-sm">Site ID</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">OPT Category</TableHeadCell>
-      <TableHeadCell class="py-4 text-sm">optsubcon</TableHeadCell>
+      <TableHeadCell class="py-4 text-sm">OPT Subcon</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">SSV Comp</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">OPTIMIZATION</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">REPORT</TableHeadCell>

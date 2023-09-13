@@ -140,14 +140,22 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
+                  {#if !item.phyinfo.antennatype}
+                  <Button size="xs" color="blue" class="rounded-md px-2"
+                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                    <Icon icon="gridicons:create" />
+                  </Button>
+                  {/if}
+                  {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
+                  {/if}
                 </TableBodyCell>
               </TableBodyRow>
               {/each}
@@ -189,14 +197,22 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
+                  {#if !item.phyinfo.antennatype}
+                  <Button size="xs" color="blue" class="rounded-md px-2"
+                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                    <Icon icon="gridicons:create" />
+                  </Button>
+                  {/if}
+                  {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
+                  {/if}
                 </TableBodyCell>
               </TableBodyRow>
               {/each}
@@ -238,14 +254,22 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
+                  {#if !item.phyinfo.antennatype}
+                  <Button size="xs" color="blue" class="rounded-md px-2"
+                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                    <Icon icon="gridicons:create" />
+                  </Button>
+                  {/if}
+                  {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.phyinfo.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
+                  {/if}
                 </TableBodyCell>
               </TableBodyRow>
               {/each}
@@ -265,7 +289,7 @@
   </div>
 <!-- CRUD Modal -->
 <Createphyinfo
-  bind:physiteinfoCreateModal={physiteinfoCreateModal} {siteId}
+  bind:physiteinfoCreateModal={physiteinfoCreateModal} {_physiteinfoid}
   on:physiteCreated={handleRefrash} />
 <Updatephyinfo
   bind:physiteinfoUpdateModal={physiteinfoUpdateModal} {_cellidentity} {_physiteinfoid}

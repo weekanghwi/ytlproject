@@ -92,3 +92,23 @@ export async function fetchOPTTypeData() {
   const opttype = data.results;
   return opttype
 }
+
+export async function fetchPACApproveStatusData() {
+  const response = await fetch('http://10.24.8.120:8000/api/pacapprovestatus/');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const pacapprovestatus = data.results;
+  return pacapprovestatus
+}
+
+export async function fetchFACApproveStatusData() {
+  const response = await fetch('http://10.24.8.120:8000/api/facapprovestatus/');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const facapprovestatus = data.results;
+  return facapprovestatus
+}

@@ -58,10 +58,10 @@
 
   <!-- Optimization act information -->
   {#if selectedRellist.install.oaairdate === null}
-    Site Not OnAir Yet
+    <p class="text-rose-400 mb-4">Site Not OnAir Yet</p>
   {:else if selectedRellist.optimization.optstartdate == null}
-    Pending optimization start
-  {:else if selectedRellist.optimization.optcompletedate}
+  <p class="text-rose-400 mb-4">Pending optimization start</p>
+  {:else if selectedRellist.optimization.optstartdate}
     <div class="grid grid-cols-3 p-4 rounded-lg border border-slate-700 mb-4">
       <div class="flex flex-col items-center justify-center">
         <p class="rounded-full h-8 w-8 flex items-center justify-center mb-4  text-lime-400 ring-4 ring-lime-400">

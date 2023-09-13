@@ -15,14 +15,14 @@ export const SiteFormSchema = z.object({
 
 export const PhysicalSiteFormSchema = z.object({
   id: z.number(),
-  uid: z.string().min(1).nullable(),
+  uid: z.string().nullable(),
   secid: z.number().nullable(),
   portnum: z.number().nullable(),
   band: z.number().nullable(),
   antennaheight: z.number().nullable(),
   azimuth: z.number().min(0).max(359).nullable(),
   mtilt: z.number().nullable(),
-  sitebasicinfo: z.string().min(1).nullable(),
+  sitebasicinfo: z.string().nullable(),
   antennatype: z.string().min(1).nullable(),
 })
 

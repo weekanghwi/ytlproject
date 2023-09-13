@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type CertiData, type ErrorsRecord, createInitialCertiData } from '$lib/types';
-  import { fetchOPTTypeData, fetchSubconData } from '$lib/categoryapicall';
+  import { fetchPACApproveStatusData, fetchFACApproveStatusData } from '$lib/categoryapicall';
   import { fetchCertiData, updateCertiData } from './crud'
   import { Modal, Label, Input, Button, Select, Tabs, TabItem } from 'flowbite-svelte';
   import { z } from 'zod'
@@ -10,8 +10,8 @@
   export let certificationUpdateModal = false;
   export let siteId: string;
   export let search: () => Promise<void>;
-  let subconSelectData: { value: string; name: string }[] = [];
-  let opttypeSelectData: { value: string; name: string }[] = [];
+  let pacapprovestatusData: { value: string; name: string } [] = [];
+  let facapprovestatusData: { value: string; name: string } [] = [];
 
   let CertiData: CertiData = createInitialCertiData();
   let errors: ErrorsRecord = {}
@@ -20,34 +20,33 @@
     id: CertiFormSchema.shape.id.optional(),
   })
 
-  async function fetchAndSetSubconData() {
+  async function fetchAndSetPACApproveStatusData() {
     try {
-      const data = await fetchSubconData();
-      subconSelectData = data
-        .filter(subconcategory => subconcategory.type === 'Service')
-        .map(subcon => ({ value: subcon.subcon, name: subcon.subcon}));
-      return data;
+      const data = await fetchPACApproveStatusData();
+      pacapprovestatusData = data
+        .map(pacapprovestatus => ({ value: pacapprovestatus.pacapprovestatus, name: pacapprovestatus.pacapprovestatus}));
+        return data;
     } catch (error) {
       console.error('Error:', error);
-      subconSelectData = [];
-      return [];
+      pacapprovestatusData = [];
+      return []
     }
   }
-  $: fetchAndSetSubconData();
+  $: fetchAndSetPACApproveStatusData()
 
-  async function fetchAndSetOpttype() {
+  async function fetchAndSetFACApproveStatusData() {
     try {
-      const data = await fetchOPTTypeData();
-      opttypeSelectData = data
-        .map(opttype => ({ value: opttype.opttype, name: opttype.opttype}))
-      return data;
+      const data = await fetchFACApproveStatusData();
+      facapprovestatusData = data
+        .map(facapprovestatus => ({ value: facapprovestatus.facapprovestatus, name: facapprovestatus.facapprovestatus}));
+        return data;
     } catch (error) {
       console.error('Error:', error);
-      opttypeSelectData = [];
-      return [];
+      facapprovestatusData = [];
+      return []
     }
   }
-  $: fetchAndSetOpttype();
+  $: fetchAndSetFACApproveStatusData()
 
   $: if (siteId) {
     (async () => {
@@ -93,10 +92,64 @@
     <Input class="py-1.5 px-3 w-full text-red-500" bind:value={CertiData.id} type="hidden" />
 
     <!-- Optimization form data -->
+    <div class="grid grid-2 items-center">
+      <div class="flex mb-3">
+        <Label for="pacsubmitdate">PAC Submit Date</Label>
+      </div>
+      <div class="flex mb-3">
+        <Input 
+          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          name="pacsubmitdate" 
+          placeholder="PAC Submit Date" 
+          bind:value={CertiData.pacsubmitdate} type="date"
+        />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.pacsubmitdate}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.pacsubmitdate}</span>{/if}
+      </div>
+
+      <div class="flex mb-4">
+        <Label for="facsubmitdate">FAC Submit Date</Label>
+      </div>
+      <div class="flex mb-3">
+        <Input 
+          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          name="facsubmitdate" 
+          placeholder="FAC Submit Date" 
+          bind:value={CertiData.facsubmitdate} type="date"
+        />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.facsubmitdate}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.facsubmitdate}</span>{/if}
+      </div>
+
+      <div class="flex mb-3">
+        <Label for="pacapprovestatus">PAC Approve Status</Label>
+      </div>
+      <div class="flex mb-3">
+        <Select
+          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          items={pacapprovestatusData} bind:value={CertiData.pacapprovestatus} />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.pacapprovestatus}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.pacapprovestatus}</span>{/if}
+      </div>
+
+      <div class="flex mb-3">
+        <Label for="facapprovestatus">FAC Approve Status</Label>
+      </div>
+      <div class="flex mb-3">
+        <Select
+          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          items={facapprovestatusData} bind:value={CertiData.facapprovestatus} />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.facapprovestatus}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.facapprovestatus}</span>{/if}
+      </div>
 
 
     <div class="flex gap-4 mt-5">
-      <Button color="green" type="submit" class="w-fit py-1.5 px-3">Update SSV info</Button>
+      <Button color="green" type="submit" class="w-fit py-1.5 px-3">Update Certi</Button>
       <Button color='red' on:click={() => {certificationUpdateModal = false}} class="w-fit py-1.5 px-3">Cancel</Button>
     </div>
   </form>
