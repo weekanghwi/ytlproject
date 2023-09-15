@@ -59,6 +59,7 @@
     try {
       const data = await fetchStateData(region);
       stateResults = Array.isArray(data) ? data: [];
+      siteData.state = stateResults[17]?.state || '';
     } catch (error) {
       console.error('Error:', error);
       stateResults = [];
@@ -138,6 +139,10 @@
       });
       }
     }
+  }
+
+  $: if (siteCreateModal) {
+    selectedClusterName = '';
   }
  
 </script>

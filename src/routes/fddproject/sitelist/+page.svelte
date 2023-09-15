@@ -152,6 +152,7 @@
       <TableHeadCell class="py-4 text-sm">state</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Site Config</TableHeadCell>
+      <TableHeadCell class="py-4 text-sm">Operation</TableHeadCell>
       <TableHeadCell class="py-4 text-sm">Action</TableHeadCell>
     </TableHead>
     <TableBody tableBodyClass="border-none">
@@ -159,13 +160,22 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="flex flex-col py-2">
             <span class="text-sm dark:text-gray-400">{sites.siteid}</span>
-            <span class="text-xs dark:text-gray-500">{sites.sitename}</span>
+            <span class="text-xs dark:text-gray-500 truncate w-[160px] inline-block">{sites.sitename}</span>
           </TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.cluster}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.region}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.state}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.siteconfig}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400">
+            {#if sites.btsmanager_count}
+            <Icon icon="akar-icons:gear" class="text-lime-400" />
+            <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-lime-400 py-1 px-2" type="custom">In LSM</Tooltip>
+            {:else}
+            <Icon icon="pepicons-pop:gear-off" class="text-rose-400" />
+            <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-rose-400 py-1 px-2" type="custom">No LSM Data</Tooltip>
+            {/if}
+          </span></TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
               <div class="flex gap-1">
@@ -204,6 +214,28 @@
   <!-- Pagination -->
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, siteconfig}} />
 
+
+  <!-- Pending physical site data update list -->
+  <div class="mt-7 text-slate-400">
+    <p class="text-lg font-bold">Pending Physical site date update list</p>
+
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell class="py-4 text-sm">Site ID</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">Cluster</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">Region</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">state</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">Site Config</TableHeadCell>
+        <TableHeadCell class="py-4 text-sm">Action</TableHeadCell>
+      </TableHead>
+      <TableBody tableBodyClass="border-none">
+      </TableBody>
+    </Table>
+  </div>
+  
+</div>
+
   <!-- CRUD Modal -->
   <CreateModal
     bind:siteCreateModal={siteCreateModal}
@@ -217,5 +249,3 @@
     bind:siteDeleteModal={siteDeleteModal} {siteId}
     on:siteDeleted={search}
   />
-
-</div>

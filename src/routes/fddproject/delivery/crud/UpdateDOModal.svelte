@@ -35,6 +35,11 @@
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
 
+    if (!doData.doissuedate || doData.doissuedate === "") {
+        doData.doissuedate = null;
+    }
+
+
     try {
       crudSchema.parse(doData);
       await updateDOData(siteId, doData);

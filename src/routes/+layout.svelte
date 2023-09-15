@@ -23,10 +23,10 @@
 		<div class="flex">
 			<NavUl {hidden}>
 				<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
-				<NavLi href="/tddproject" class="font-semibold">TDD Project</NavLi>
+				<NavLi href="#" class="font-semibold">TDD Project</NavLi>
 				<NavLi href="/fddproject" class="font-semibold">FDD Project</NavLi>
-				<NavLi href="/swapproject" class="font-semibold">Swap Project</NavLi>
-				<NavLi href="/sitelist" class="font-semibold">Site List</NavLi>
+				<NavLi href="#" class="font-semibold">Swap Project</NavLi>
+				<NavLi href="#" class="font-semibold">Site List</NavLi>
 			</NavUl>
 			<DarkMode {btnClass} />
 		</div>

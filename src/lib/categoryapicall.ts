@@ -112,3 +112,13 @@ export async function fetchFACApproveStatusData() {
   const facapprovestatus = data.results;
   return facapprovestatus
 }
+
+export async function fetchBTSManagerData() {
+  const response = await fetch('http://10.24.8.120:8000/api/btsmanager/')
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const btsmanager = data.results;
+  return btsmanager
+}

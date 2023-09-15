@@ -66,21 +66,21 @@ export function createInitialphySiteData(): PhysicalSiteData {
 
 export interface doData {
   id: number;
-  sitebasicinfo: string;
-  doissuedate: string;
-  codsubmitdate: string;
-  codapprovedate: string;
-  create_at: string;
-  update_at: string;
+  sitebasicinfo: string | null;
+  doissuedate: string | null;
+  codsubmitdate: string | null;
+  codapprovedate: string | null;
+  create_at: string | null;
+  update_at: string | null;
 }
 
 export function createInitialdoData(): doData {
   return {
     id: 0,
     sitebasicinfo: '',
-    doissuedate: '',
-    codsubmitdate: '',
-    codapprovedate: '',
+    doissuedate: null,
+    codsubmitdate: null,
+    codapprovedate: null,
     create_at: '',
     update_at: '',
   }
