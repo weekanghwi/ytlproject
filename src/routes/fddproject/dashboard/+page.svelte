@@ -25,12 +25,18 @@
         <Icon icon="line-md:list-3" class="text-2xl text-purple-600 me-2"/>DO Status
       </h1>
 
-      <div class="grid grid-cols-2 items-center w-full">
+      <div class="grid grid-cols-3 items-center w-full">
+        <p class="text-xs font-bold text-slate-400 flex justify-start">Item</p>
+        <p class="text-xs font-bold text-slate-400 flex justify-center">Week</p>
+        <p class="text-xs font-bold text-slate-400 flex justify-end">Total</p>
         <p class="text-xs text-slate-400 flex justify-start">DO Issue</p>
+        <p class="text-md text-slate-400 flex justify-center">{data.dashboardData.data.doissue_week.length}</p>
         <p class="text-md text-slate-400 flex justify-end">{data.dashboardData.data.total_doissue}</p>
         <p class="text-xs text-slate-400 flex justify-start">COD Submit</p>
+        <p class="text-md text-slate-400 flex justify-center">{data.dashboardData.data.codsubmit_week.length}</p>
         <p class="text-md text-slate-400 flex justify-end">{data.dashboardData.data.total_codsubmit}</p>
         <p class="text-xs text-slate-400 flex justify-start">COD Approve</p>
+        <p class="text-md text-slate-400 flex justify-center">{data.dashboardData.data.codapprove_week.length}</p>
         <p class="text-md text-slate-400 flex justify-end">{data.dashboardData.data.total_codapprove}</p>
       </div>
     </div>

@@ -65,7 +65,25 @@
     </Breadcrumb>
     <!-- site detail title-->
     <div class="flex flex-col mb-6">
-      <h2 class="text-slate-400 text-lg">{data.sitedata.siteid} Site Detail Informations</h2>
+      <h2 class="text-slate-400 text-lg">
+        {data.sitedata.siteid}
+        (
+          {#if data.sitedata.region === 'Central'}
+            eNB_1{data.sitedata.siteid.substring(5, 10)}
+          {:else if data.sitedata.region === 'Northern'}
+            eNB_2{data.sitedata.siteid.substring(5, 10)}
+          {:else if data.sitedata.region === 'Southern'}
+            eNB_3{data.sitedata.siteid.substring(5, 10)}
+          {:else if data.sitedata.region === 'Eastern'}
+            eNB_4{data.sitedata.siteid.substring(5, 10)}
+          {:else if data.sitedata.region === 'Sabah'}
+            eNB_5{data.sitedata.siteid.substring(5, 10)}
+          {:else}
+            eNB_6{data.sitedata.siteid.substring(5, 10)}
+          {/if}
+        )
+         Site Detail Informations
+      </h2>
       <p class="text-xs text-slate-400 dark:text-gray-400">{data.sitedata.sitename} - {data.sitedata.cluster}</p>
     </div>
 
@@ -120,6 +138,7 @@
           </div>
           <Table shadow>
             <TableHead>
+              <TableHeadCell padding="py-4 px-6">ECGI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Type</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Height</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Azimuth</TableHeadCell>
@@ -127,11 +146,15 @@
               <TableHeadCell padding="py-4 px-6">ETILT</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PCI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
               {#each btsmanagerdata.BTSmanager_800 as item}
               <TableBodyRow>
+                <TableBodyCell tdClass="px-6 py-3">{item.cellidentity}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
@@ -139,6 +162,9 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
@@ -177,6 +203,7 @@
           </div>
           <Table shadow>
             <TableHead>
+              <TableHeadCell padding="py-4 px-6">ECGI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Type</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Height</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Azimuth</TableHeadCell>
@@ -184,11 +211,15 @@
               <TableHeadCell padding="py-4 px-6">ETILT</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PCI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
               {#each btsmanagerdata.BTSmanager_2300 as item}
               <TableBodyRow>
+                <TableBodyCell tdClass="px-6 py-3">{item.cellidentity}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
@@ -196,6 +227,9 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
@@ -234,6 +268,7 @@
           </div>
           <Table shadow>
             <TableHead>
+              <TableHeadCell padding="py-4 px-6">ECGI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Type</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Height</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Azimuth</TableHeadCell>
@@ -241,11 +276,15 @@
               <TableHeadCell padding="py-4 px-6">ETILT</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PCI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
               {#each btsmanagerdata.BTSmanager_2600 as item}
               <TableBodyRow>
+                <TableBodyCell tdClass="px-6 py-3">{item.cellidentity}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennatype}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
@@ -253,6 +292,9 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"

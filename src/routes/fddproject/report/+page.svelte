@@ -2,6 +2,8 @@
 	import { Breadcrumb, BreadcrumbItem, Button, TabItem, Tabs } from "flowbite-svelte";
   import Icon from '@iconify/svelte';
 
+  export let data;
+
   const downloadInternaldailReport = () => {
     window.location.href = 'http://10.24.8.120:8000/api/fddmastertracker/'
   }
@@ -74,38 +76,71 @@
         <button on:click={downloadInternaldailReport} class="text-xs py-1 px-2 rounded-md bg-lime-400 hover:bg-lime-500 focus:ring-4 focus:ring-lime-600">FDD Master Tracker</button>
         <button on:click={downloadIntegrationReport} class="text-xs py-1 px-2 rounded-md bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:ring-indigo-600">Integration Staus Tracker</button>
       </div>
-      <div class="grid grid-cols-4 items-center space-x-2 mb-4 bg-indigo-500 text-slate-800 px-4 py-2 rounded-sm">
+
+      <!-- Dailly & Weekly Report Title -->
+      <div class="flex items-center gap-4 mb-4 bg-indigo-500 text-slate-800 px-4 py-2 rounded-sm">
         <h4 class="col-span-2 font-bold"> Weekly performance for All Work Progress</h4>
         <p class="text-xs col-span-2">Week: {weekNumber} ({formattedStartOfWeek} ~ {formattedEndOfWeek}) </p>
       </div>
 
-      <div class="grid grid-cols-4 space-x-4">
-        <div class="flex flex-col rounded-md border border-indigo-500 p-4">
-          <h4 class="text-indigo-500 mb-4 font-bold">Install & Integration</h4>
-          <div class="grid grid-cols-4 items-center text-slate-400 text-xs">
-            <p class="font-bold col-span-2 mb-2">Items</p>
-            <p class="font-bold mb-2">Today</p>
-            <p class="font-bold mb-2">Week</p>
+      <!-- Dailly & Weekly Data -->
+      <div class="grid grid-cols-3 space-x-4">
 
-            <p class="text-slate-400 col-span-2">Installation</p>
-            <p class="text-slate-400">Today</p>
-            <p class="text-slate-400">Week</p>
+        <!-- Install & OnAir-->
+        <div class="flex flex-col border border-slate-700 p-4">
+          <h1 class="font-bold text-xl text-slate-400 mb-3">Install & OnAir</h1>
 
-            <p class="text-slate-400 col-span-2">Integraion</p>
-            <p class="text-slate-400">Today</p>
-            <p class="text-slate-400">Week</p>
+          <div class="grid grid-cols-5 space-x-1 items-center justify-center">
+            <div class="flex flex-col justify-start">
+              <p class="font-bold text-xs text-slate-400 mb-1">Activities</p>
+              <p class="text-xs text-slate-400">Installation</p>
+              <p class="text-xs text-slate-400">Integration</p>
+              <p class="text-xs text-slate-400">OnAir</p>
+              <p class="text-xs text-slate-400">Dismantled</p>
+            </div>
 
-            <p class="text-slate-400 col-span-2">OnAir</p>
-            <p class="text-slate-400">Today</p>
-            <p class="text-slate-400">Week</p>
+            <div class="flex flex-col justify-start">
+              <p class="font-bold text-xs text-slate-400 mb-1">Plan</p>
+              <p class="text-xs text-slate-400">4170</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.total_installcomplete}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.total_integration}</p>
+              <p class="text-xs text-slate-400">0</p>
+            </div>
 
-            <p class="text-slate-400 col-span-2">Dismantle</p>
-            <p class="text-slate-400">Today</p>
-            <p class="text-slate-400">Week</p>
+            <div class="flex flex-col justify-start">
+              <p class="font-bold text-xs text-slate-400 mb-1">By W:{weekNumber - 1}</p>
+              <p class="text-xs text-slate-400">
+                {data.dashboardData.data.total_installcomplete - data.dashboardData.data.installcomplete_week.length}
+              </p>
+              <p class="text-xs text-slate-400">
+                {data.dashboardData.data.total_integration - data.dashboardData.data.integration_week.length}
+              </p>
+              <p class="text-xs text-slate-400">
+                {data.dashboardData.data.total_onair - data.dashboardData.data.onair_week.length}
+              </p>
+              <p class="text-xs text-slate-400">0</p>
+            </div>
+
+            <div class="flex flex-col justify-start">
+              <p class="font-bold text-xs text-slate-400 mb-1">Total</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.total_installcomplete}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.total_integration}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.total_onair}</p>
+              <p class="text-xs text-slate-400">0</p>
+            </div>
+
+            <div class="flex flex-col justify-start">
+              <p class="font-bold text-xs text-slate-400 mb-1">Week: {weekNumber}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.installcomplete_week.length}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.integration_week.length}</p>
+              <p class="text-xs text-slate-400">{data.dashboardData.data.onair_week.length}</p>
+              <p class="text-xs text-slate-400">0</p>
+            </div>
           </div>
         </div>
-        
+
       </div>
+
 
     </TabItem>
   </Tabs>

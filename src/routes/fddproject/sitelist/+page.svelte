@@ -20,6 +20,8 @@
   let state = '';
   let contracttype = '';
   let siteconfig = '';
+  let btsmanager_count = ''
+  let antennatypes = ''
 
   // Pagination
   let limit = Number($page.url.searchParams.get('limit')) || 5;
@@ -36,6 +38,8 @@
     params.set('state', state);
     params.set('contracttype', contracttype);
     params.set('siteconfig', siteconfig);
+    params.set('btsmanager_count', btsmanager_count);
+    params.set('antennatypes', antennatypes);
     goto(`/${paginationurl}/?${params.toString()}`);
   }
 
@@ -46,6 +50,8 @@
     state = '';
     contracttype = '';
     siteconfig = '';
+    btsmanager_count = '';
+    antennatypes = ''
     search();
   }
 
@@ -99,12 +105,16 @@
   </div>
 
   <!-- search -->
-  <div class="flex items-center gap-2 mb-4 full">
-    <Search size='md' class="flex gap-2 items-center" placeholder="Search Site ID or Name ..." bind:value={q} on:keypress="{checkForEnter}">
-    </Search>
+  <div class="grid grid-cols-8 items-center gap-2 mb-1 full">
+    <div class="col-span-2">
+      <Search size='md' class="flex gap-2 items-center" placeholder="Search Site ID or Name ..." bind:value={q} on:keypress="{checkForEnter}">
+      </Search>
+    </div>
 
-    <Search size='md' class="flex gap-2 items-center" placeholder="Search cluster ..." bind:value={cluster} on:keypress="{checkForEnter}">
-    </Search>
+    <div class="col-span-2">
+      <Search size='md' class="flex gap-2 items-center" placeholder="Search cluster ..." bind:value={cluster} on:keypress="{checkForEnter}">
+      </Search>
+    </div>
 
     <DropdownMulti
       options={['Central', 'Northern', 'Southern', 'Eastern', 'Sabah', 'Sarawak']}
@@ -133,6 +143,24 @@
       onOptionChange={search}
       placeholder="Site Config" 
     />
+  </div>
+
+  <div class="grid grid-cols-8 gap-2 mb-4 full">
+    <DropdownMulti
+      options={['Null', 'Not Null']}
+      bind:selectedOptions={btsmanager_count}
+      onOptionChange={search}
+      placeholder="LSM Info" 
+    />
+
+    <div class="col-span-2">
+      <DropdownMulti
+        options={['Updated', 'Pending']}
+        bind:selectedOptions={antennatypes}
+        onOptionChange={search}
+        placeholder="Phyinfo Update Status" 
+      />
+    </div>
     
     <Button size="sm" color="light" on:click={search}>
       <Icon icon="ri:search-line" /> <span class="ms-2">Search</span>
@@ -168,13 +196,24 @@
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.siteconfig}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">
-            {#if sites.btsmanager_count}
-            <Icon icon="akar-icons:gear" class="text-lime-400" />
-            <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-lime-400 py-1 px-2" type="custom">In LSM</Tooltip>
-            {:else}
-            <Icon icon="pepicons-pop:gear-off" class="text-rose-400" />
-            <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-rose-400 py-1 px-2" type="custom">No LSM Data</Tooltip>
-            {/if}
+            <div class="flex items-center gap-2">
+              {#if sites.btsmanager_count}
+                <p class="rounded-full h-6 w-6 ring-1 ring-lime-400 flex items-center justify-center">
+                  <Icon icon="akar-icons:gear" class="text-lime-400" />
+                  <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-lime-400 py-1 px-2" type="custom">In LSM</Tooltip>
+                </p>
+              {:else}
+                <p class="rounded-full h-6 w-6 ring-1 ring-rose-400 flex items-center justify-center">
+                  <Icon icon="pepicons-pop:gear-off" class="text-rose-400" />
+                  <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-rose-400 py-1 px-2" type="custom">No LSM Data</Tooltip>
+                </p>
+              {/if}
+              {#if sites.antennatypes === 'Updated' && sites.btsmanager_count > 0}
+                <p class="text-lime-400 text-xs">{sites.antennatypes}</p>
+              {:else}
+                <p class="text-rose-400 text-xs"></p>
+              {/if}
+            </div>
           </span></TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
@@ -212,27 +251,7 @@
   </Table>
   
   <!-- Pagination -->
-  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, siteconfig}} />
-
-
-  <!-- Pending physical site data update list -->
-  <div class="mt-7 text-slate-400">
-    <p class="text-lg font-bold">Pending Physical site date update list</p>
-
-    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
-      <TableHead>
-        <TableHeadCell class="py-4 text-sm">Site ID</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">Cluster</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">Region</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">state</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">Contract Type</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">Site Config</TableHeadCell>
-        <TableHeadCell class="py-4 text-sm">Action</TableHeadCell>
-      </TableHead>
-      <TableBody tableBodyClass="border-none">
-      </TableBody>
-    </Table>
-  </div>
+  <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, siteconfig, btsmanager_count, antennatypes}} />
   
 </div>
 
