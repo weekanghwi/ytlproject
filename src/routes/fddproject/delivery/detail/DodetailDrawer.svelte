@@ -3,12 +3,14 @@
   import Icon from '@iconify/svelte';
   import { sineIn } from 'svelte/easing'
   import UpdateDoModal from '../crud/UpdateDOModal.svelte';
+  import UpdateMaterialModal from '../crud/UpdateMaterialModal.svelte';
 
   export let selectedRellist:any = {};
   export let dodetaildrawer = true;
   export let search: () => Promise<void>;
   let siteId = '';
   let doUpdateModal = false
+  let materialUpdateModal = false
   let transitionParamsRight = {
     x: 320,
     duration: 200,
@@ -71,8 +73,10 @@
           <p class="text-xs text-slate-400">
             {#if selectedRellist.material.dumaterial === 'Samsung-Material'}
               Samsung
-            {:else}
+            {:else if selectedRellist.material.dumaterial === 'Reuse-Material'}
               Re-Use
+            {:else if !selectedRellist.material.dumaterial}
+              <p class="text-rose-400">Pending Update</p>
             {/if}
             </p>
         </div>
@@ -85,14 +89,20 @@
           <p class="text-xs text-slate-400">
             {#if selectedRellist.material.rumaterial === 'Samsung-Material'}
               Samsung
-            {:else}
+            {:else if selectedRellist.material.rumaterial === 'Reuse-Material'}
               Re-Use
+            {:else if !selectedRellist.material.rumaterial}
+              <p class="text-rose-400">Pending Update</p>
             {/if}
             </p>
         </div>
 
         <div class="flex col-span-3 justify-center mt-6">
-          <button class="col-span-3 py-2 px-3 bg-lime-400 text-slate-900 text-xs font-bold rounded-lg hover:bg-lime-500 focus:ring-4 focus:ring-lime-600">Update Material</button>
+          <button 
+            class="col-span-3 py-2 px-3 bg-lime-400 text-slate-900 text-xs font-bold rounded-lg hover:bg-lime-500 focus:ring-4 focus:ring-lime-600"
+            on:click={() => {siteId = selectedRellist.material.id; materialUpdateModal = true}}>
+            Update Material
+          </button>
         </div>
         
       </div>
@@ -137,7 +147,7 @@
   <div class="grid grid-cols-2 gap-4">
     <Button color="blue"
       on:click={() => {
-        siteId = selectedRellist.ssv.id; 
+        siteId = selectedRellist.do.id; 
         doUpdateModal = true 
     }}>
       Update DO
@@ -150,3 +160,6 @@
   bind:doUpdateModal={doUpdateModal} {siteId} {search}
 />
 
+<UpdateMaterialModal
+  bind:materialUpdateModal={materialUpdateModal} {siteId} {search}
+/>

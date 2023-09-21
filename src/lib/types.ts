@@ -64,6 +64,24 @@ export function createInitialphySiteData(): PhysicalSiteData {
   }
 }
 
+export interface MaterialData {
+  id: number,
+  sitebasicinfo: string | null;
+  dumaterial: string | null;
+  rumaterial: string | null;
+  remark: string | null;
+}
+
+export function createInitialmaterialData(): MaterialData {
+  return {
+    id: 0,
+    sitebasicinfo: '',
+    dumaterial: null,
+    rumaterial: null,
+    remark: null,
+  }
+}
+
 export interface doData {
   id: number;
   sitebasicinfo: string | null;
@@ -132,6 +150,8 @@ export interface SSVData {
   bssubmitdate: string,
   bsapprovedate: string,
   ssvsubcon: string,
+  ssvissuetype: string,
+  ssvissuedetail: string
 }
 
 export function createInitialSSVData(): SSVData {
@@ -145,6 +165,8 @@ export function createInitialSSVData(): SSVData {
   bssubmitdate: '',
   bsapprovedate: '',
   ssvsubcon: '',
+  ssvissuetype: '',
+  ssvissuedetail: '',
   }
 }
 
@@ -157,6 +179,8 @@ export interface OPTData {
   optapprovedate: string,
   opttype: string,
   optsubcon: string,
+  optissuetype: string,
+  optissuedetail: string,
 }
 
 export function createInitialOPTData(): OPTData {
@@ -169,6 +193,8 @@ export function createInitialOPTData(): OPTData {
   optapprovedate: '',
   opttype: '',
   optsubcon: '',
+  optissuetype: '',
+  optissuedetail: '',
   }
 }
 

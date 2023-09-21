@@ -1,8 +1,8 @@
 <script lang="ts">
   import { type OPTData, type ErrorsRecord, createInitialOPTData } from '$lib/types';
-  import { fetchOPTTypeData, fetchSubconData } from '$lib/categoryapicall';
+  import { fetchOPTTypeData, fetchSubconData, fetchOPTIssueData } from '$lib/categoryapicall';
   import { fetchOPTData, updateOPTData } from './crud'
-  import { Modal, Label, Input, Button, Select, Tabs, TabItem } from 'flowbite-svelte';
+  import { Modal, Label, Input, Button, Select, Tabs, TabItem, Textarea } from 'flowbite-svelte';
   import { z } from 'zod'
   import { OPTFormSchema } from '$lib/schemas';
   import Icon from '@iconify/svelte';
@@ -12,6 +12,7 @@
   export let search: () => Promise<void>;
   let subconSelectData: { value: string; name: string }[] = [];
   let opttypeSelectData: { value: string; name: string }[] = [];
+  let optissueSelectData: { value: string; name: string }[] = [];
 
   let OPTData: OPTData = createInitialOPTData();
   let errors: ErrorsRecord = {}
@@ -34,6 +35,20 @@
     }
   }
   $: fetchAndSetSubconData();
+
+  async function fetchAndSetOPTIssueData() {
+    try {
+      const data = await fetchOPTIssueData();
+      optissueSelectData = data
+        .map(optissue => ({ value: optissue.optissuetype, name: optissue.optissuetype }));
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      optissueSelectData = [];
+      return [];
+    }
+  }
+  $: fetchAndSetOPTIssueData();
 
   async function fetchAndSetOpttype() {
     try {
@@ -177,9 +192,32 @@
         {#if errors.optapprovedate}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.optapprovedate}</span>{/if}
       </div>
 
+      <div class="flex mb-3">
+        <Label for="optapprovedate">OPT Issue</Label>
+      </div>
+      <div class="flex mb-3">
+        <Select
+          class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          items={optissueSelectData} bind:value={OPTData.optissuetype} />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.optissuetype}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.optissuetype}</span>{/if}
+      </div>
+
+      {#if OPTData.optissuetype}
+      <div class="flex col-span-2 mb-3">
+        <Textarea
+          class="rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+          placeholder="SSV Issue Detail"
+          rows="2" 
+          bind:value={OPTData.optissuedetail} />
+      </div>
+      <div class="flex itemx-center col-span-2 mb-2">
+        {#if errors.optissuedetail}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.optissuedetail}</span>{/if}
+      </div>
+      {/if}
 
     </div>
-
 
     <div class="flex gap-4 mt-5">
       <Button color="green" type="submit" class="w-fit py-1.5 px-3">Update SSV info</Button>

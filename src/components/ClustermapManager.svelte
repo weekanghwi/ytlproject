@@ -6,7 +6,7 @@
   let regionLayers: { [region: string]: LayerGroup } = {};
   let selectedRegion: any | null = null;
 
-  const regionMapping = {
+  const regionMapping: { [key: string]: string} = {
     1: 'Central',
     2: 'Northern',
     3: 'Southern',
@@ -32,9 +32,10 @@
   }
 
   function showPolygonInfo(cluster: Cluster, latlng: L.LatLng) {
+    const regionName = regionMapping[cluster.region] || 'Unknown';
     const info = `
-      <strong>Cluster</strong> ${cluster.cluster}<br>
-      <strong>Region</strong> ${cluster.region}
+      <strong>Cluster: </strong> ${cluster.cluster}<br>
+      <strong>Region: </strong> ${regionName}
     `;
     L.popup()
       .setLatLng(latlng)
@@ -46,51 +47,50 @@
     if (!L || !map) return;
 
     try {
+      const allClusters: Cluster[] = []; // 모든 클러스터를 저장할 배열
       const regionParams = regions.map(r => `region=${r}`).join('&');
       const regionKey = regions.join(',');
-      const response = await fetch(`http://10.24.8.120:8000/api/clusters?${regionParams}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} `);
+      let nextUrl: string | null = `http://10.24.8.120:8000/api/clusters?${regionParams}`;
+
+      while (nextUrl) {
+        const response = await fetch(nextUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const { results, next }: { results: Cluster[], next: string | null } = await response.json();
+        allClusters.push(...results);
+
+        nextUrl = next;  // 다음 페이지의 URL
       }
 
-      const clustersData: Cluster[] = await response.json();
-      
-      regions.forEach(region => {
-        regionLayers[region]?.clearLayers();
-      })
-
-      clustersData.forEach(cluster => {
-        const coordinates = cluster.polygon.coordinates[0].map(coord => [coord[1], coord[0]]);
-        const polygon = L.polygon(coordinates, { color: 'green' });
-
-        polygon.on('click', (event: L.LeafletMouseEvent) => {
-          const clickLocation = event.latlng
-          showPolygonInfo(cluster, clickLocation);
+      if (Array.isArray(allClusters)) {
+        regions.forEach(region => {
+          regionLayers[region]?.clearLayers();
         });
 
-        if (!regionLayers[regionKey]) {
-          regionLayers[regionKey] = L.layerGroup();
-        }
-        regionLayers[regionKey].addLayer(polygon);
-      });
+        allClusters.forEach(cluster => {
+          const coordinates = cluster.polygon.coordinates[0].map(coord => [coord[1], coord[0]]);
+          const polygon = L.polygon(coordinates, { color: 'green' });
 
-      regionLayers[regionKey]?.addTo(map);
+          polygon.on('click', (event: L.LeafletMouseEvent) => {
+            const clickLocation = event.latlng;
+            showPolygonInfo(cluster, clickLocation);
+          });
+
+          if (!regionLayers[regionKey]) {
+            regionLayers[regionKey] = L.layerGroup();
+          }
+          regionLayers[regionKey].addLayer(polygon);
+        });
+
+        regionLayers[regionKey]?.addTo(map);
+      } else {
+        console.error('ClusterData is not an array:', allClusters);
+      }
+
     } catch (error) {
-      console.error('An error occurred while fetching clusters:', error)
-    }
-  }
-
-  function toggleAllRegions() {
-    if (map === null) {
-      return;  // map이 null인 경우 함수를 빠져나갑니다.
-    }
-
-    if (selectedRegion === 'all') {
-      Object.values(regionLayers).forEach(layerGroup => layerGroup.remove());
-      selectedRegion = null;
-    } else {
-      Object.values(regionLayers).forEach(layerGroup => layerGroup.addTo(map));
-      selectedRegion = 'all';
+      console.error('An error occurred while fetching clusters:', error);
     }
   }
 

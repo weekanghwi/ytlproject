@@ -83,6 +83,16 @@ export async function fetchCOICApproveStatusData() {
   return coicapprovestatus;
 }
 
+export async function fetchSSVIssueData() {
+  const response = await fetch('http://10.24.8.120:8000/api/ssvissue/');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  const ssvissue = data.results;
+  return ssvissue
+}
+
 export async function fetchOPTTypeData() {
   const response = await fetch('http://10.24.8.120:8000/api/opttype/');
   if (!response.ok) {
@@ -91,6 +101,16 @@ export async function fetchOPTTypeData() {
   const data = await response.json()
   const opttype = data.results;
   return opttype
+}
+
+export async function fetchOPTIssueData() {
+  const response = await fetch('http://10.24.8.120:8000/api/optissue/');
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const optissue = data.results;
+  return optissue
 }
 
 export async function fetchPACApproveStatusData() {

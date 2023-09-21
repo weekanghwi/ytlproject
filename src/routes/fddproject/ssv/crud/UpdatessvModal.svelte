@@ -1,8 +1,8 @@
 <script lang="ts">
   import { type SSVData, type ErrorsRecord, createInitialSSVData } from '$lib/types';
-  import { fetchSubconData } from '$lib/categoryapicall';
+  import { fetchSubconData, fetchSSVIssueData } from '$lib/categoryapicall';
   import { fetchSSVData, updateSSVData } from './crud'
-  import { Modal, Label, Input, Button, Select, Tabs, TabItem } from 'flowbite-svelte';
+  import { Modal, Label, Input, Button, Select, Tabs, TabItem, Textarea } from 'flowbite-svelte';
   import { z } from 'zod'
   import { SSVFormSchema } from '$lib/schemas';
   import Icon from '@iconify/svelte';
@@ -11,6 +11,7 @@
   export let siteId: string;
   export let search: () => Promise<void>;
   let subconSelectData: { value: string; name: string }[] = [];
+  let ssvIssueSelectData: { value: string; name: string }[] = [];
 
   let SSVData: SSVData = createInitialSSVData();
   let errors: ErrorsRecord = {}
@@ -33,6 +34,20 @@
     }
   }
   $: fetchAndSetSubconData();
+
+  async function fetchAndSetSSVIssueData() {
+    try {
+      const data = await fetchSSVIssueData();
+      ssvIssueSelectData = data
+        .map(ssvissue => ({ value: ssvissue.ssvissuetype, name: ssvissue.ssvissuetype}));
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      ssvIssueSelectData = []
+      return []
+    }
+  }
+  $: fetchAndSetSSVIssueData();
 
   $: if (siteId) {
     (async () => {
@@ -81,10 +96,6 @@
     <!-- Form data-->
     <div class="flex flex-col">
       <!-- Basic Information -->
-      <div class="flex gap-4 mb-4">
-        <p class="text-slate-400">{SSVData.sitebasicinfo}</p>
-        <p class="text-slate-400">{SSVData.sitebasicinfo}</p>
-      </div>
 
       <div class="grid grid-cols-2 items-center px-2 w-full mb-3">
         <div class="flex items-center">
@@ -215,6 +226,37 @@
             {#if errors.bsapprovedate}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.bsapprovedate}</span>{/if}
           </div>
         </div>
+
+        
+
+        <div class="grid grid-cols-2 items-center px-2 w-full mb-3">
+          <div class="flex items-center">
+            <Label for="ssvcompletedate">SSV Issue</Label>
+          </div>
+          <div class="flex items-center">
+            <Select
+              class="py-1.5 px-2 rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2" 
+              items={ssvIssueSelectData} bind:value={SSVData.ssvissuetype} />
+          </div>
+          <div class="flex itemx-center col-span-2">
+            {#if errors.ssvissuetype}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.ssvissuetype}</span>{/if}
+          </div>
+        </div>
+        {#if SSVData.ssvissuetype}
+        <div class="grid grid-cols-2 items-center px-2 w-full mb-3">
+          
+          <div class="flex col-span-2 items-center w-full">
+            <Textarea
+              class="rounded bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 col-span-2 w-full"
+              placeholder="SSV Issue Detail"
+              rows="2" 
+              bind:value={SSVData.ssvissuedetail} />
+          </div>
+          <div class="flex itemx-center col-span-2">
+            {#if errors.ssvissuedetail}<span class="text-rose-600 text-xs col-span-2 mb-4"> !{errors.ssvissuedetail}</span>{/if}
+          </div>
+        </div>
+        {/if}
       </div>
     </div>
     <div class="flex gap-4 mt-5">

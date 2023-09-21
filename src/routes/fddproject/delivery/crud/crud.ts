@@ -8,6 +8,16 @@ export async function fetchDOData(id: string) {
   return doData;
 }
 
+export async function fetchMaterialData(id: string) {
+  const response = await fetch(`http://10.24.8.120:8000/api/material/${id}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const materialData = await response.json();
+  return materialData
+}
+
 export async function createDOData(data: any) {
   const response = await fetch('http://10.24.8.120:8000/api/do/', {
     method: 'POST',
@@ -43,6 +53,20 @@ export async function updateDOData(id: string, updatedData: any) {
 export async function deleteDOData(id: string) {
   const response = await fetch(`http://10.24.8.120:8000/api/do/${id}/`, {
     method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+}
+
+export async function updateMaterialData(id: string, updatedData: any) {
+  const response = await fetch(`http://10.24.8.120:8000/api/material/${id}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatedData)
   });
 
   if (!response.ok) {

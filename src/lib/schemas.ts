@@ -26,6 +26,14 @@ export const PhysicalSiteFormSchema = z.object({
   antennatype: z.string().min(1).nullable(),
 })
 
+export const MaterialFormSchema = z.object({
+  id: z.number(),
+  sitebasicinfo: z.string().nullable(),
+  dumaterial: z.string().nullable(),
+  rumaterial: z.string().nullable(),
+  remark: z.string().nullable(),
+})
+
 export const DoFormSchema = z.object({
   id: z.number(),
   sitebasicinfo: z.string().min(1).nullable(),
@@ -60,6 +68,8 @@ export const SSVFormSchema = z.object({
   bssubmitdate: z.string().nullable(),
   bsapprovedate: z.string().nullable(),
   ssvsubcon: z.string().nullable(),
+  ssvissuetype: z.string().nullable(),
+  ssvissuedetail: z.string().nullable(),
 })
 
 export const OPTFormSchema = z.object({
@@ -71,6 +81,8 @@ export const OPTFormSchema = z.object({
   optapprovedate: z.string().nullable(),
   opttype: z.string().nullable(),
   optsubcon: z.string().nullable(),
+  optissuetype: z.string().nullable(),
+  optissuedetail: z.string().nullable(),
 })
 
 export const CertiFormSchema = z.object({
