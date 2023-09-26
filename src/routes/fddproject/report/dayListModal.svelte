@@ -71,7 +71,7 @@
         <TableHeadCell>Complete Date</TableHeadCell>
       </TableHead>
       <TableBody>
-        {#each data.dashboardData.data.bsapprove_today as item (item.id)}
+        {#each data.dashboardData.data.installcomplete_today as item (item.id)}
         <TableBodyRow color="green" > 
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
@@ -91,7 +91,7 @@
         <TableHeadCell>Integration Date</TableHeadCell>
       </TableHead>
       <TableBody>
-        {#each data.dashboardData.data.bsapprove_today as item (item.id)}
+        {#each data.dashboardData.data.integration_today as item (item.id)}
         <TableBodyRow color="green" > 
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
@@ -111,7 +111,7 @@
         <TableHeadCell>OnAir Date</TableHeadCell>
       </TableHead>
       <TableBody>
-        {#each data.dashboardData.data.bsapprove_today as item (item.id)}
+        {#each data.dashboardData.data.onair_today as item (item.id)}
         <TableBodyRow color="green" > 
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
@@ -128,16 +128,16 @@
     <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
       <TableHead>
         <TableHeadCell>Site ID</TableHeadCell>
-        <TableHeadCell>OnAir Date</TableHeadCell>
+        <TableHeadCell>Complete Date</TableHeadCell>
       </TableHead>
       <TableBody>
-        {#each data.dashboardData.data.bsapprove_today as item (item.id)}
+        {#each data.dashboardData.data.ssvcomplete_today as item (item.id)}
         <TableBodyRow color="green" > 
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
           </TableBodyCell>
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
-            <span class="dark:text-gray-900">{item.ssv.onairdate}</span>
+            <span class="dark:text-gray-900">{item.ssv.ssvcompletedate}</span>
           </TableBodyCell>
         </TableBodyRow>
         {/each}
@@ -147,16 +147,111 @@
     <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
       <TableHead>
         <TableHeadCell>Site ID</TableHeadCell>
-        <TableHeadCell>OnAir Date</TableHeadCell>
+        <TableHeadCell>Submit Date</TableHeadCell>
       </TableHead>
       <TableBody>
-        {#each data.dashboardData.data.bsapprove_today as item (item.id)}
+        {#each data.dashboardData.data.bssubmit_today as item (item.id)}
         <TableBodyRow color="green" > 
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
           </TableBodyCell>
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
             <span class="dark:text-gray-900">{item.ssv.bssubmitdate}</span>
+          </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+    {:else if name === 'OPT Complete Day'}
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell>Site ID</TableHeadCell>
+        <TableHeadCell>Complete Date</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each data.dashboardData.data.optcomplete_today as item (item.id)}
+        <TableBodyRow color="green" > 
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
+          </TableBodyCell>
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.optimization.optcompletedate}</span>
+          </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+  {:else if name === 'OPT Submit Day'}
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell>Site ID</TableHeadCell>
+        <TableHeadCell>Submit Date</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each data.dashboardData.data.optsubmit_today as item (item.id)}
+        <TableBodyRow color="green" > 
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
+          </TableBodyCell>
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.optimization.optsubmitdate}</span>
+          </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+  {:else if name === 'OPT Approve Day'}
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell>Site ID</TableHeadCell>
+        <TableHeadCell>Approve Date</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each data.dashboardData.data.optapprove_today as item (item.id)}
+        <TableBodyRow color="green" > 
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
+          </TableBodyCell>
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.optimization.optapprovedate}</span>
+          </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+  {:else if name === 'PAC Submit Day'}
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell>Site ID</TableHeadCell>
+        <TableHeadCell>PAC Submit Date</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each data.dashboardData.data.pacsubmit_today as item (item.id)}
+        <TableBodyRow color="green" > 
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
+          </TableBodyCell>
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.certification.pacsubmitdate}</span>
+          </TableBodyCell>
+        </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+  {:else if name === 'FAC Submit Day'}
+    <Table shadow={true} hoverable={true} customeColor={'bg-gray-400'} class="w-full">
+      <TableHead>
+        <TableHeadCell>Site ID</TableHeadCell>
+        <TableHeadCell>FAC Submit Date</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each data.dashboardData.data.facsubmit_today as item (item.id)}
+        <TableBodyRow color="green" > 
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
+          </TableBodyCell>
+          <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
+            <span class="dark:text-gray-900">{item.certification.facsubmitdate}</span>
           </TableBodyCell>
         </TableBodyRow>
         {/each}

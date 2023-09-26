@@ -198,6 +198,26 @@ export function createInitialOPTData(): OPTData {
   }
 }
 
+export interface OPTReviewData {
+  id: number,
+  sitebasicinfo: string,
+  reviewdate: string,
+  pic: string,
+  reviewstatus: string,
+  reviewdetail: string
+}
+
+export function createInitialOPTReviewData(): OPTReviewData {
+  return {
+    id: 0,
+    sitebasicinfo: '',
+    reviewdate: '',
+    pic: '',
+    reviewstatus: '',
+    reviewdetail: ''
+  }
+}
+
 export interface CertiData {
   id: number,
   sitebasicinfo: string,

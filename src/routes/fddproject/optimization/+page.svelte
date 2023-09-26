@@ -8,6 +8,7 @@
   import DropdownMulti from '../../../components/DropdownMulti.svelte';
   import OptdetailDrawer from './detail/OptdetailDrawer.svelte';
   import UpdateoptModal from './crud/UpdateoptModal.svelte';
+	import { fetchOPTReviewData } from './crud/crud';
   
   export let data;
 
@@ -75,9 +76,20 @@
   //Drawer
   let optdetaildrawer = true;
   let selectedRellist: any = {};
+  let reviewtarget: string = '';
+  let optReviewData: any = [];
 
-  function showDrawer(rellist) {
+  async function showDrawer(rellist: any) {
+    reviewtarget = rellist.sitebasicinfo.siteid
     selectedRellist = rellist;
+    try {
+      const data = await fetchOPTReviewData(reviewtarget);
+      optReviewData = data
+      console.log('Fetched OPT Review data: ', optReviewData);
+    } catch (error) {
+      console.error('Failed to fetch OPT Review data:', error);
+      optReviewData = [];
+    }
     optdetaildrawer = false;
   }
 
@@ -297,7 +309,7 @@
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{sitebasicinfo, contracttype, region, ssvcompletedate, opttype, optstartdate, optcompletedate, optsubmitdate, optapprovedate, optsubcon}} />
 
   <!-- Drawer -->
-  <OptdetailDrawer bind:optdetaildrawer={optdetaildrawer} {selectedRellist} {search} />
+  <OptdetailDrawer bind:optdetaildrawer={optdetaildrawer} {selectedRellist} {optReviewData} {search} />
 
     <!-- Modal -->
   <UpdateoptModal 

@@ -142,3 +142,23 @@ export async function fetchBTSManagerData() {
   const btsmanager = data.results;
   return btsmanager
 }
+
+export async function fetchPICData() {
+  const response = await fetch('http://10.24.8.120:8000/api/pic/')
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const pic = data.results;
+  return pic
+}
+
+export async function fetchOPTReviewStatusData() {
+  const response = await fetch('http://10.24.8.120:8000/api/optreviewstatus/')
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json()
+  const optreviewdata = data.results;
+  return optreviewdata
+}

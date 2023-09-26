@@ -220,7 +220,7 @@
     </div>
 
     <div class="flex gap-4 mt-5">
-      <Button color="green" type="submit" class="w-fit py-1.5 px-3">Update SSV info</Button>
+      <Button color="green" type="submit" class="w-fit py-1.5 px-3">Update OPT info</Button>
       <Button color='red' on:click={() => {optUpdateModal = false}} class="w-fit py-1.5 px-3">Cancel</Button>
     </div>
   </form>

@@ -85,6 +85,15 @@ export const OPTFormSchema = z.object({
   optissuedetail: z.string().nullable(),
 })
 
+export const OPTReviewFormSchema = z.object({
+  id: z.number(),
+  sitebasicinfo: z.string().nullable(),
+  reviewdate: z.string().nullable(),
+  reviewdetail: z.string().nullable(),
+  pic: z.string().nullable(),
+  reviewstatus: z.string().nullable(),
+})
+
 export const CertiFormSchema = z.object({
   id: z.number(),
   sitebasicinfo: z.string().nullable(),
