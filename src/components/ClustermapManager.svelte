@@ -5,6 +5,7 @@
   let L: any;
   let regionLayers: { [region: string]: LayerGroup } = {};
   let selectedRegion: any | null = null;
+  let selectedPolygon: L.Polygon | null = null;
 
   const regionMapping: { [key: string]: string} = {
     1: 'Central',
@@ -31,16 +32,33 @@
     });
   }
 
-  function showPolygonInfo(cluster: Cluster, latlng: L.LatLng) {
+
+  function showPolygonInfo(cluster: Cluster, latlng: L.LatLng, polygon: L.Polygon) {
     const regionName = regionMapping[cluster.region] || 'Unknown';
     const info = `
       <strong>Cluster: </strong> ${cluster.cluster}<br>
       <strong>Region: </strong> ${regionName}
     `;
+
+    if (selectedPolygon) {
+      selectedPolygon.setStyle({ color: 'green' });
+    }
+
+    polygon.setStyle({ color: 'red' });
+
+    selectedPolygon = polygon;
+
     L.popup()
       .setLatLng(latlng)
       .setContent(info)
       .openOn(map);
+  }
+
+  function onMapClick(event: L.LeafletMouseEvent) {
+    if (selectedPolygon) {
+      selectedPolygon.setStyle({ color: 'green' });
+      selectedPolygon = null;
+    }
   }
 
   async function fetchClustersByRegion(regions: number[]) {
@@ -75,7 +93,7 @@
 
           polygon.on('click', (event: L.LeafletMouseEvent) => {
             const clickLocation = event.latlng;
-            showPolygonInfo(cluster, clickLocation);
+            showPolygonInfo(cluster, clickLocation, polygon);
           });
 
           if (!regionLayers[regionKey]) {
@@ -105,9 +123,11 @@
     }
   }
 
-
+  // fetch cluster polygon from server and show menu
   $: if (map && L) {
     const regionsControl = L.control({ position: 'topleft' });
+
+    // map.on('click', onMapClick)
 
     regionsControl.onAdd = function () {
       const container = L.DomUtil.create('div', 'flex flex-col gap-1');

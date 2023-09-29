@@ -211,7 +211,7 @@
               {#if sites.antennatypes === 'Updated' && sites.btsmanager_count > 0}
                 <p class="text-lime-400 text-xs">{sites.antennatypes}</p>
               {:else}
-                <p class="text-rose-400 text-xs"></p>
+                <p class="text-rose-400 text-xs">{sites.antennatypes}</p>
               {/if}
             </div>
           </span></TableBodyCell>

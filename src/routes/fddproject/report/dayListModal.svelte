@@ -77,7 +77,7 @@
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
           </TableBodyCell>
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
-            <span class="dark:text-gray-900">{item.ssv.completedate}</span>
+            <span class="dark:text-gray-900">{item.install.completedate}</span>
           </TableBodyCell>
         </TableBodyRow>
         {/each}
@@ -97,7 +97,7 @@
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
           </TableBodyCell>
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
-            <span class="dark:text-gray-900">{item.ssv.integrationondate}</span>
+            <span class="dark:text-gray-900">{item.install.integrationondate}</span>
           </TableBodyCell>
         </TableBodyRow>
         {/each}
@@ -117,7 +117,7 @@
             <span class="dark:text-gray-900">{item.sitebasicinfo.siteid}</span>
           </TableBodyCell>
           <TableBodyCell tdClass="px-6 py-4 whitespace-nowrap text-xs">
-            <span class="dark:text-gray-900">{item.ssv.onairdate}</span>
+            <span class="dark:text-gray-900">{item.install.onairdate}</span>
           </TableBodyCell>
         </TableBodyRow>
         {/each}

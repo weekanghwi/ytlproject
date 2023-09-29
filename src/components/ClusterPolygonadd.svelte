@@ -1,10 +1,19 @@
-<script lang="ts">
+s<script lang="ts">
   import { onMount } from "svelte";
   import type { Map as LeafletMap } from 'leaflet';
   import * as L from 'leaflet';
 
   export let map: LeafletMap | null = null;
   let drawnItems: L.FeatureGroup;
+
+  const regions = [
+    { id: 1, name: 'Central' },
+    { id: 2, name: 'Northern' },
+    { id: 3, name: 'Southern' },
+    { id: 4, name: 'Eastern' },
+    { id: 5, name: 'Sabah' },
+    { id: 6, name: 'Sarawak' },
+  ]
 
   onMount(() => {
     if (typeof window !== 'undefined') {
@@ -27,10 +36,10 @@
               circle: false,
               marker: false,
             },
-            // edit: {
-            //   featureGroup: drawnItems,
-            //   remove: true
-            // }
+            edit: {
+              featureGroup: drawnItems,
+              remove: false
+            }
           });
 
           map.addControl(drawControl);
@@ -39,17 +48,24 @@
             const layer = event.layer;
             drawnItems.addLayer(layer);
 
+            const regionOptions = regions.map(region => {
+              return `<option value="${region.id}">${region.name}</option>`
+            }).join('');
+
             const popupContent = `
               <form id="polygon-info-form">
                 <div class="flex flex-col gap-4">
                   <div class="flex flex-col gap-2">
-                    <label for="cluster">Cluster</label>
+                    <label for="cluster">Cluster Name</label>
                     <input type="text" name="cluster" id="cluster" class="border border-gray-300 rounded-lg p-2" />
                   </div>
 
                   <div class="flex flex-col gap-2">
-                    <label for="region">region</label>
-                    <input type="text" name="region" id="region" class="border border-gray-300 rounded-lg p-2" />
+                    <label for="region">Region</label>
+                    <select name="region" class="border border-gray-300 rounded-lg p-2">
+                      <option value="" disabled selected>Select Region</option>
+                      ${regionOptions}
+                    </select>
                   </div>
 
                 <button type="submit" class="mt-4 rounded-lg p-2 bg-blue-500 text-white text-sm">Submit</button>
