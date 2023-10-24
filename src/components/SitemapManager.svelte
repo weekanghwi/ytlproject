@@ -1,15 +1,28 @@
 <script lang="ts">
-  import { Select, Input, Button } from 'flowbite-svelte';
-import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
+  import { Select, Input, Button, Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Checkbox } from 'flowbite-svelte';
+  import type { Map as LeafletMap, Marker, Circle, Polygon } from 'leaflet';
+  import TestresultUploadModal from '../routes/fddproject/map/crud/TestresultUploadModal.svelte';
+	import { onMount } from 'svelte';
+  import TestResult from './TestResult.svelte';
+  import L from 'leaflet'
+  import TestResultMapDrawer from '../routes/fddproject/map/TestResultMapDrawer.svelte';
+
   export let map: LeafletMap  | null;
-  let L: any;
+  // let L: any;
   let markers: Marker[] = [];
   let circles: Circle[] = [];
+  let polygons: Polygon[] = [];
 
   let region: string = '';
   let freqband: string = '20';
   let siteid: string = '';
   let radius: string = '3';
+
+  let siteId = '';
+  let testresultCreateModal = false;
+  let testdataUrl: string = ''
+
+  let selected_btsManagerData: any[] = [];
 
   let regions = [
     {value: 'Central', name: 'Central'},
@@ -34,11 +47,18 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
     {value: '15', name: '15Km'}
   ]
 
-  if (typeof window !== 'undefined') {
-    import('leaflet').then(leaflet => {
-      L = leaflet
-    });
-  }
+  // if (typeof window !== 'undefined') {
+  //   import('leaflet').then(leaflet => {
+  //     L = leaflet
+  //   });
+  // }
+  // onMount(() => {
+  //   if (typeof window !== 'undefined') {
+  //     import('leaflet').then(leaflet => {
+  //       L = leaflet
+  //     })
+  //   }
+  // })
 
   function calculateArcPoints(lat: number, lon: number, azimuth: number, angle: number, radius: number): number[][] {
     const sectorPoints: number[][] = [[lat, lon]];
@@ -69,12 +89,13 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
 
       // BTSManager data array
       const btsManagerData: any = [];
-
       // 기존 마커와 원을 지웁니다.
       markers.forEach(marker => marker.remove());
       circles.forEach(circle => circle.remove());
+      polygons.forEach(polygon => polygon.remove());
       markers = [];
       circles = [];
+      polygons = [];
 
       // 검색 사이트 정보.
       const firstResult = data.find((item: any) => item.siteid === siteid);
@@ -82,34 +103,28 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
       if (firstResult && firstResult.lat && firstResult.lon) {
         map?.flyTo([firstResult.lat, firstResult.lon], 13);
 
-        // const circle = L.circle([firstResult.lat, firstResult.lon], {
-        //   radius: parseInt(radius) * 1000,
-        //   color: 'black',
-        //   weight: 2,
-        //   fillOpacity: 0
-        // });
-        // circle.addTo(map);
-        // circles.push(circle);
-
         const siteIds = data.map((item: any) => item.siteid).join(',');
 
         const managerUrl = `http://10.24.8.120:8000/api/nonpagebtsmanager/?siteid=${siteIds}&freqband=${freqband}`;
         const managerResponse = await fetch(managerUrl);
         const managerData = await managerResponse.json();
+        
 
         btsManagerData.push(...managerData)
+        selected_btsManagerData = managerData;
+
 
         data.forEach((item: any) => {
           if (item.lat && item.lon) {
             const fillColor = item.siteid === siteid ? '#0000ff' : '#ff7800';
             const marker = L.circleMarker([item.lat, item.lon], {
               pane: 'overlayPane',
-              radius: 6,
+              radius: 4,
               fillColor: fillColor,
               color: '#000',
-              weight: 1,
+              weight: 0,
               opacity: 1,
-              fillOpacity: 0.8
+              fillOpacity: 1
             });
             marker.bindPopup(`
               <span class="text-xs font-bold">${item.siteid}</span><br>
@@ -130,14 +145,15 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
         const angle = item.angle;
         const radius = item.radius;
         const secid = item.phyinfo.secid;
+        const pss = item.pss
 
         let edgeColor;
 
-        if (secid === 0 || secid === 3) {
+        if (pss === 0 || pss === 3) {
           edgeColor = 'red';
-        } else if (secid === 1 || secid === 4) {
+        } else if (pss === 1 || pss === 4) {
           edgeColor = 'green';
-        } else if (secid === 2 || secid === 5) {
+        } else if (pss === 2 || pss === 5) {
           edgeColor = 'blue';
         } else {
           edgeColor = 'black'
@@ -148,7 +164,9 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
         const polygon = L.polygon(sectorPoints, {
           pane: 'mapPane',
           color: edgeColor
-        }).addTo(map);
+        });
+        polygon.addTo(map);
+        polygons.push(polygon);
 
         // add btsManager info click event
         const popupContent = `
@@ -164,7 +182,7 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
           <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">MTILT</span>
           <span class="font-bold text-xs py-0.5 px-1 m-0">${item.phyinfo.mtilt}</span>
           <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">ETILT</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.retinfo.ret}</span>
+          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.etilt}</span>
           <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">PCI</span>
           <span class="font-bold text-xs py-0.5 px-1 m-0">${item.pci}</span>
           <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">PSS</span>
@@ -179,23 +197,51 @@ import type { Map as LeafletMap, Marker, Circle } from 'leaflet';
     }
   }
 
+  let siteidInput: string = ''
+  let testResults: any[] = [];
+  let testresultDrawer = true;
+  async function handleSearch() {
+    siteid = siteidInput;
+    await fetchAndDisplayBTSInfo();
+    testresultDrawer = false
+
+    try {
+      const testResultUrl = `http://10.24.8.120:8000/api/testresult/?sitebasicinfo=${siteid}`;
+      const testResultResponse = await fetch(testResultUrl);
+      if (!testResultResponse.ok) {
+        throw new Error(`HTTP error! status: ${testResultResponse.status}`);
+      }
+
+      const testResultsData = await testResultResponse.json()
+      testResults = await testResultsData.results
+    } catch (error) {
+      console.error(`Error fetching test results:`, error);
+    }
+  }
+
 </script>
 
 <div class="btsload-container flex items-center gap-1">
-  <Select class="py-1.5 w-fit" size="sm" items={regions} bind:value={region}></Select>
-  <Select class="py-1.5 w-28" size="sm" items={freqbands} bind:value={freqband}></Select>
-  <Select class="py-1.5 w-24" size="sm" items={searchraidus} bind:value={radius}></Select>
-  <Input class="w-fit w-" size="sm" bind:value={siteid} placeholder="Search Full Site ID" />
-  <Button size="xs" color="purple" on:click={fetchAndDisplayBTSInfo}>Search</Button>
+  <Select class="py-1 w-fit" size="sm" items={regions} bind:value={region}></Select>
+  <Select class="py-1 w-28" size="sm" items={freqbands} bind:value={freqband}></Select>
+  <Select class="py-1 w-24" size="sm" items={searchraidus} bind:value={radius}></Select>
+  <Input id="mapSearchSiteid" class="w-fit py-1.5" size="sm" bind:value={siteidInput} placeholder="Search Full Site ID" />
+  <Button class="py-1.5" size="xs" color="purple" on:click={handleSearch}>Search</Button>
 </div>
+
+<TestresultUploadModal bind:testresultCreateModal={testresultCreateModal} {siteId} />
+<TestResult {map} {testdataUrl} {selected_btsManagerData} />
+
+<!-- Drawer -->
+<TestResultMapDrawer bind:testresultDrawer={testresultDrawer} {testResults} {selected_btsManagerData} {map} />
 
 <style>
   .btsload-container {
     position: absolute;
     top: 17px;
-    right: 10px;
-    z-index: 1000;
+    right: 20px;
+    z-index: 700;
   }
-  .leaflet-overlay-pane { z-index: 700; }
-  .leaflet-map-pane { z-index: 600; }
+  .leaflet-overlay-pane { z-index: 1000; }
+  .leaflet-map-pane { z-index: 900; }
 </style>

@@ -21,11 +21,11 @@
   }
 
   const downloadInternaldailReport = () => {
-    window.location.href = 'http://10.24.8.120:8000/api/fddmastertracker/'
+    window.location.href = 'http://10.24.8.120:8000/api/fddmastertracker2/'
   }
 
   const downloadIntegrationReport = () => {
-    window.location.href = 'http://10.24.8.120:8000/api/integrationstatus/'
+    window.location.href = 'http://10.24.8.120:8000/api/integrationstatus2/'
   }
 
   function getCustomWeekInfo(d: Date) {

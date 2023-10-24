@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { Map as LeafletMap, LayerGroup } from 'leaflet';
+  import * as L from 'leaflet';
+
 
   export let map: LeafletMap | null = null;
-  let L: any;
+  // let L: any;
   let regionLayers: { [region: string]: LayerGroup } = {};
   let selectedRegion: any | null = null;
   let selectedPolygon: L.Polygon | null = null;
@@ -26,11 +28,18 @@
   }
 
 
-  if (typeof window !== 'undefined') {
-    import('leaflet').then(leaflet => {
-      L = leaflet;
-    });
-  }
+  // if (typeof window !== 'undefined') {
+  //   import('leaflet').then(leaflet => {
+  //     L = leaflet;
+  //   });
+  // }
+  // onMount(() => {
+  //   if (typeof window !== 'undefined') {
+  //     import('leaflet').then(leaflet => {
+  //       L = leaflet
+  //     })
+  //   }
+  // })
 
 
   function showPolygonInfo(cluster: Cluster, latlng: L.LatLng, polygon: L.Polygon) {
@@ -51,7 +60,7 @@
     L.popup()
       .setLatLng(latlng)
       .setContent(info)
-      .openOn(map);
+      .openOn(map!);
   }
 
   function onMapClick(event: L.LeafletMouseEvent) {
@@ -89,7 +98,7 @@
 
         allClusters.forEach(cluster => {
           const coordinates = cluster.polygon.coordinates[0].map(coord => [coord[1], coord[0]]);
-          const polygon = L.polygon(coordinates, { color: 'green' });
+          const polygon = L.polygon(coordinates as L.LatLngExpression[], { color: 'green' });
 
           polygon.on('click', (event: L.LeafletMouseEvent) => {
             const clickLocation = event.latlng;

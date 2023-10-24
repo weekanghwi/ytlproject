@@ -65,7 +65,7 @@ export function createInitialphySiteData(): PhysicalSiteData {
 }
 
 export interface MaterialData {
-  id: number,
+  id: number;
   sitebasicinfo: string | null;
   dumaterial: string | null;
   rumaterial: string | null;
@@ -105,20 +105,20 @@ export function createInitialdoData(): doData {
 }
 
 export interface InstallData {
-  id: number,
-  sitebasicinfo: string,
-  startdate: string,
-  completedate: string,
-  integrationdate: string,
-  integrationondate: string,
-  oaairdate: string,
-  coisubmitdate: string,
-  coiapprovedate: string,
-  coicsubmitdate: string,
-  coicapprovestatus: string,
-  pnochotriggerdate: string,
-  pnochocompletedate: string,
-  modify_date: string,
+  id: number;
+  sitebasicinfo: string;
+  startdate: string;
+  completedate: string;
+  integrationdate: string;
+  integrationondate: string;
+  oaairdate: string;
+  coisubmitdate: string;
+  coiapprovedate: string;
+  coicsubmitdate: string;
+  coicapprovestatus: string;
+  pnochotriggerdate: string;
+  pnochocompletedate: string;
+  modify_date: string;
 }
 
 export function createInitialInstallData(): InstallData {
@@ -141,16 +141,16 @@ export function createInitialInstallData(): InstallData {
 }
 
 export interface SSVData {
-  id: number,
-  sitebasicinfo: string,
-  ssvstartdate: string,
-  ssvcompletedate: string,
-  ssvsubmitdate: string,
-  bsreceivedate: string,
-  bssubmitdate: string,
-  bsapprovedate: string,
-  ssvsubcon: string,
-  ssvissuetype: string,
+  id: number;
+  sitebasicinfo: string;
+  ssvstartdate: string;
+  ssvcompletedate: string;
+  ssvsubmitdate: string;
+  bsreceivedate: string;
+  bssubmitdate: string;
+  bsapprovedate: string;
+  ssvsubcon: string;
+  ssvissuetype: string;
   ssvissuedetail: string
 }
 
@@ -171,16 +171,16 @@ export function createInitialSSVData(): SSVData {
 }
 
 export interface OPTData {
-  id: number,
-  sitebasicinfo: string,
-  optstartdate: string,
-  optcompletedate: string,
-  optsubmitdate: string,
-  optapprovedate: string,
-  opttype: string,
-  optsubcon: string,
-  optissuetype: string,
-  optissuedetail: string,
+  id: number;
+  sitebasicinfo: string;
+  optstartdate: string;
+  optcompletedate: string;
+  optsubmitdate: string;
+  optapprovedate: string;
+  opttype: string;
+  optsubcon: string;
+  optissuetype: string;
+  optissuedetail: string;
 }
 
 export function createInitialOPTData(): OPTData {
@@ -199,12 +199,12 @@ export function createInitialOPTData(): OPTData {
 }
 
 export interface OPTReviewData {
-  id: number,
-  sitebasicinfo: string,
-  reviewdate: string,
-  pic: string,
-  reviewstatus: string,
-  reviewdetail: string
+  id: number;
+  sitebasicinfo: string;
+  reviewdate: string;
+  pic: string;
+  reviewstatus: string;
+  reviewdetail: string;
 }
 
 export function createInitialOPTReviewData(): OPTReviewData {
@@ -219,21 +219,56 @@ export function createInitialOPTReviewData(): OPTReviewData {
 }
 
 export interface CertiData {
-  id: number,
-  sitebasicinfo: string,
-  pacsubmitdate: string,
-  facsubmitdate: string,
-  pacapprovestatus: string,
-  facapprovestatus: string,
+  id: number;
+  sitebasicinfo: string;
+  pacsubmitdate: string;
+  facsubmitdate: string;
+  pacapprovestatus: string;
+  facapprovestatus: string;
 }
 
 export function createInitialCertiData(): CertiData {
   return {
-  id: 0,
-  sitebasicinfo: '',
-  pacsubmitdate: '',
-  facsubmitdate: '',
-  pacapprovestatus: '',
-  facapprovestatus: '',
+    id: 0,
+    sitebasicinfo: '',
+    pacsubmitdate: '',
+    facsubmitdate: '',
+    pacapprovestatus: '',
+    facapprovestatus: '',
   }
+}
+
+export interface TestResultData {
+  id: number;
+  sitebasicinfo: string | null;
+  cycle: string | null;
+  testdata: File | null
+}
+
+export function createInitialTestResultData(): TestResultData {
+  return {
+    id: 0,
+    sitebasicinfo: '',
+    cycle: null,
+    testdata: null,
+  }
+}
+
+export interface TestResult {
+  lon: number;
+  lat: number;
+  RSRP: number;
+  SINR: number;
+  Serving: number;
+  TOP1_PCI?: number;
+  TOP1_RSRP?: number;
+  TOP2_PCI?: number;
+  TOP2_RSRP?: number;
+  TOP3_PCI?: number;
+  TOP3_RSRP?: number;
+  TOP4_PCI?: number;
+  TOP4_RSRP?: number;
+  TOP5_PCI?: number;
+  TOP5_RSRP?: number;
+  [key: string]: number | undefined;
 }

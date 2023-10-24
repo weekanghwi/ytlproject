@@ -29,6 +29,7 @@
   }
 </script>
 
+
 <Drawer width="w-96" placement="right" transitionType="fly" transitionParams={transitionParamsRight} bind:hidden={optdetaildrawer} id="dodetaildrawer">
   <div class="flex items-center">
     <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-slate-500 dark:text-slate-400">

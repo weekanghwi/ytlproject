@@ -9,4 +9,9 @@ declare global {
 	}
 }
 
+declare module 'leaflet' {
+	export function curve(path: any[], options?: any): any;
+}
+
+
 export {};

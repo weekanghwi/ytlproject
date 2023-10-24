@@ -102,3 +102,13 @@ export const CertiFormSchema = z.object({
   pacapprovestatus: z.string().nullable(),
   facapprovestatus: z.string().nullable(),
 })
+
+export const TestresultSchema = z.object({
+  id: z.number(),
+  sitebasicinfo: z.string().nullable(),
+  cycle: z.string().nullable(),
+  testdata: z.custom<File | null>((val) => val instanceof File || val === null, {
+    message: "testdata must be a File object or null"
+  }).nullable()
+
+})

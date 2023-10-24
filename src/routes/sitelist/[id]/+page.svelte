@@ -3,12 +3,11 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import Icon from '@iconify/svelte';
-  
-  import Createphyinfo from './crud/Createphyinfo.svelte';
-	import Updatephyinfo from './crud/Updatephyinfo.svelte';
-  import Deletephyinfo from './crud/Deletephyinfo.svelte';
   import { Breadcrumb, BreadcrumbItem, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Tabs, TabItem, Button } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
+  import Createphyinfo from '../../fddproject/sitelist/[id]/crud/Createphyinfo.svelte';
+  import Updatephyinfo from '../../fddproject/sitelist/[id]/crud/Updatephyinfo.svelte';
+  import Deletephyinfo from '../../fddproject/sitelist/[id]/crud/Deletephyinfo.svelte';
 
   export let data: PageData;
   let btsmanagerdata:any = [];
@@ -59,13 +58,12 @@
     <!-- Breadcrumb -->
     <Breadcrumb aria-label="siteinfo breadcrumb" class="mb-6">
       <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-      <BreadcrumbItem href="/fddproject">FDD Project</BreadcrumbItem>
-      <BreadcrumbItem href="/fddproject/sitelist">Site Lsit</BreadcrumbItem>
+      <BreadcrumbItem href="/fddproject/sitelist">YTL LTE Site List</BreadcrumbItem>
       <BreadcrumbItem>{data.sitedata.siteid} Detail</BreadcrumbItem>
     </Breadcrumb>
     <!-- site detail title-->
     <div class="flex flex-col mb-6">
-      <h2 class="text-slate-400 text-lg">
+      <h2 class="text-slate-400 font-bold mb-1">
         {data.sitedata.siteid}
         (
           {#if data.sitedata.region === 'Central'}
@@ -84,7 +82,12 @@
         )
          Site Detail Informations
       </h2>
-      <p class="text-xs text-slate-400 dark:text-gray-400">{data.sitedata.sitename} - {data.sitedata.cluster}</p>
+      <div class="flex items-center">
+        <p class="text-xs text-slate-400">Site Name:</p>
+        <p class="text-xs text-slate-400 rounded-md bg-slate-600 py-0.5 px-2 ms-2 me-4">{data.sitedata.sitename}</p>
+        <p class="text-xs text-slate-400">Cluster:</p>
+        <p class="text-xs text-slate-400 rounded-md bg-slate-600 py-0.5 px-2 ms-2 me-6">{data.sitedata.cluster}</p>
+      </div>
     </div>
 
     <!-- Physical Info -->
@@ -93,33 +96,34 @@
         <h4 class="text-slate-400 dark:text-slate-400">Site Physical Information</h4>
         {#if relateInstallinfo && relateInstallinfo.oaairdate && relateInstallinfo.oaairdate.length > 0}
         <div 
-          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
+          class="py-0.5 px-3 text-xs text-slate-800 rounded-sm
           {relateInstallinfo.oaairdate ? 'bg-green-400' : 'bg-rose-400'}">
           OnAir
         </div>
         {/if}
         {#if btsmanagerdata.BTSmanager_all && btsmanagerdata.BTSmanager_all.length > 0}
         <div 
-          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
+          class="py-0.5 px-3 text-xs text-slate-800 rounded-sm
           {btsmanagerdata.BTSmanager_all[0].channelcard ? 'bg-green-400' : 'bg-rose-400'}">
           {btsmanagerdata.BTSmanager_all[0].channelcard}
         </div>
         {:else}
-        <div class="py-1.5 px-3 text-xs text-slate-800 rounded-sm bg-rose-400">
+        <div class="py-0.5 px-3 text-xs text-slate-800 rounded-sm bg-rose-400">
           No BTS Manager data found
         </div>
         {/if}
         {#if data.sitedata.siteconfig && data.sitedata.siteconfig.length > 0}
         <div 
-          class="py-1.5 px-3 text-xs text-slate-800 rounded-sm
+          class="py-0.5 px-3 text-xs text-slate-800 rounded-sm
           {data.sitedata.siteconfig ? 'bg-green-400' : 'bg-rose-400'}">
           {data.sitedata.siteconfig}
         </div>
         {/if}
       </div>
 
-      <p class="text-slate-500 text-xs mb-4">
-        LSM & RET informations are no need to update here because it will be updated automatically (once a week will automatically updated LSM, RET and TX Attn informations.)
+      <p class="text-slate-400 text-xs mb-4">
+        LSM & RET informations are no need to update here because it will be updated automatically 
+        (once a week will updated LSM, RET and TX Attn informations.)
       </p>
 
       <!-- Site Phy&LSM info table-->
