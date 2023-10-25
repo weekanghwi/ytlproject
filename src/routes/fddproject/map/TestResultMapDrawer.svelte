@@ -87,6 +87,7 @@
       for (const result of testResults) {
         const testdataUrl: string = result.testdata;
         const testresultData: TestResult[] = await fetchCSV(testdataUrl)
+        console.log(testresultData);
         generateServingLineGroup(testresultData);
         generateInterferenceTopGroups(testresultData);
         originalInterferenceTopGroups = JSON.parse(JSON.stringify(interferenceTopGroups));
@@ -105,7 +106,7 @@
         });
       }
     } catch (error) {
-      console.error('Error while fetching and parsing CSV:', JSON.stringify(error, null, 2));
+      console.error('Error :', JSON.stringify(error, null, 2));
     }
   }
 
@@ -463,7 +464,7 @@
                 <button
                   class="text-xs font-bold py-0.5 px-1 rounded-md border-[1px]
                   {item.PSS === 0 ? 'border-red-600 text-red-600 focus:bg-red-600 focus:text-red-50' : 
-                   item.PSS === 1 ? 'border-green-600 text-green-600 foucus:bg-green-600 foucs:text-green-50' : 
+                   item.PSS === 1 ? 'border-green-600 text-green-600 focus:bg-green-600 focus:text-green-50' : 
                   'border-blue-600 text-blue-600 focus:bg-blue-600 focus:text-blue-50'}" 
                   on:click={() => filterAndSortByServingPCI(item.PCI)}>
                   {item.ServingPCI}

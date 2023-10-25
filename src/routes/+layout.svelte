@@ -1,21 +1,35 @@
 <script lang="ts">
 	import '../app.postcss';
 	import { Button, DarkMode } from 'flowbite-svelte';
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte'
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Tooltip } from 'flowbite-svelte'
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
 	import { isLoggedIn, userId, Isstaff } from '../store/store'
+	import { goto } from '$app/navigation';
 
 
-	let spanClass = 'flex-1 ml-3 whitespace-nowrap';
 	let btnClass = 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-xl p-2';
 
-	function logout() {
-    localStorage.removeItem('token');
-		localStorage.removeItem('userId');
-		isLoggedIn.set(false);
-    console.log('Logged out');
-  }
+	async function logout_() {
+		try {
+			const response = await fetch('http://10.24.8.120:8000/api/logout/', {
+				method: 'POST',
+				headers: {
+					'Authorization': `Token ${localStorage.getItem('token')}`
+				}
+			});
+
+			if (response.ok) {
+				localStorage.removeItem('token');
+				localStorage.removeItem('userId');
+				isLoggedIn.set(false);
+				goto('/');
+			} else {
+				console.error('Error during logout');
+			}
+		} catch (error) {
+			console.error('Network error during logout:', error)
+		}
+	}
 
 </script>
 
@@ -32,7 +46,7 @@
 		<div class="flex items-center">
 			<NavUl {hidden}>
 				<div class="flex items-center gap-6">
-					{#if $isLoggedIn && $Isstaff === true}
+					{#if $isLoggedIn && $Isstaff}
 					<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
 					<NavLi href="/fddproject" class="font-semibold">FDD Project</NavLi>
 					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>
@@ -41,13 +55,24 @@
 					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>
 					{/if}
 					{#if $isLoggedIn}
-						<div class="flex items-center gap-2 ms-16">
-							<span class="text-slate-400">{$userId} {$Isstaff}</span>
-							<Button class="py-0.5 px-2" size="xs" color="red" on:click={logout}>Logout</Button>
+						<div class="flex items-center justify-center gap-1 ms-16">
+							<span class="text-slate-900 h-6 w-6 bg-lime-400 rounded-full text-center">{$userId?.slice(0, 2)}</span>
+							<Tooltip>{$userId}</Tooltip>
+							{#if $Isstaff}
+							<span class="text-slate-400"><Icon icon="eos-icons:admin-outlined" class="text-2xl text-lime-400"/></span>
+							<Tooltip>Staff</Tooltip>
+							{:else}
+							<span class="text-slate-400"><Icon icon="carbon:user-admin" class="text-2xl text-indigo-400"/></span>
+							<Tooltip>Normal</Tooltip>
+							{/if}
+							<Button class="ms-4" size="xs" color="red" on:click={logout_}>Logout</Button>
 						</div>
 					{:else}
 						<div class="flex items-center gap-2 ms-16">
-							<NavLi href="/auth/register" class="font-semibold">Register</NavLi>
+							<NavLi href="/auth/register" class="font-semibold">
+								<Icon icon="eos-icons:system-re-registered" class="text-2xl"/>
+							</NavLi>
+							<Tooltip>Register</Tooltip>
 							<NavLi href="/auth/login" class="font-semibold">Login</NavLi>
 						</div>
 					{/if}

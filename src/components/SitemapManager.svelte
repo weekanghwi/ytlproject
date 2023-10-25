@@ -62,9 +62,9 @@
 
   function calculateArcPoints(lat: number, lon: number, azimuth: number, angle: number, radius: number): number[][] {
     const sectorPoints: number[][] = [[lat, lon]];
-    const arcPoints: number[][] = [];
-    const startAngle = azimuth - angle / 2;
-    const endAngle = azimuth + angle / 2;
+    const correctedAzimuth = 90 - azimuth;
+    const startAngle = correctedAzimuth - angle / 2;
+    const endAngle = correctedAzimuth + angle / 2;
 
     for (let theta = startAngle; theta <= endAngle; theta += 1) {
       const dx = radius * Math.cos(theta * Math.PI / 180.0);
@@ -74,6 +74,7 @@
 
       const newLat = lat + (dy / R) * (180 / Math.PI);
       const newLon = lon + (dx / (R * Math.cos(lat * Math.PI / 180))) * (180 / Math.PI);
+
 
       sectorPoints.push([newLat, newLon]);
     }
@@ -170,23 +171,65 @@
 
         // add btsManager info click event
         const popupContent = `
-        <div class="grid grid-cols-2 items-center text-xs w-52 gap-1">
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">SiteID</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.siteid}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">Type</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.phyinfo.antennatype}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">Height</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.phyinfo.antennaheight}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">Azimuth</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.phyinfo.azimuth}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">MTILT</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.phyinfo.mtilt}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">ETILT</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.etilt}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">PCI</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.pci}</span>
-          <span class="text-xs text-center py-0.5 px-1 m-0 bg-purple-400 rounded-lg">PSS</span>
-          <span class="font-bold text-xs py-0.5 px-1 m-0">${item.pss}</span>
+        <div class="flex flex-col text-xs w-52">
+          <h1 class="text-md text-slate-900 font-bold mb-3">Site Info</h1>
+
+          <div class="flex items-start mb-2 gap-2">
+            <span class="text-xs text-slate-900 font-bold">${item.siteid}</span>
+            <span class="text-xs text-slate-900">Sector ID: ${item.phyinfo.secid}</span>
+          </div>
+
+          <h1 class="text-xs text-slate-50 text-start font-bold mb-1 rounded-md bg-purple-600 py-1 px-2">
+            Antenna information
+          </h1>
+          <div class="flex items-center justify-center mb-2 gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-purple-600">Type</span>
+              <span class="text-xs font-bold text-purple-600">${item.phyinfo.antennatype}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-purple-600">Height</span>
+              <span class="text-xs font-bold text-purple-600">${item.phyinfo.antennaheight}m</span>
+            </div>
+          </div>
+
+          <hr class="mb-2 border-1 border-slate-200">
+
+          <h1 class="text-xs text-slate-50 text-start font-bold mb-1 rounded-md bg-indigo-600 py-1 px-2">
+            Physical Parameter Information
+          </h1>
+          <div class="flex items-center justify-center mb-2 gap-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-600">Azimuth</span>
+              <span class="text-xs font-bold text-indigo-600">${item.phyinfo.azimuth}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-indigo-600">M-Tilt</span>
+              <span class="text-xs font-bold text-indigo-600">${item.phyinfo.mtilt}</span>
+            </div>
+          </div>
+
+          <hr class="mb-2 border-1 border-slate-200">
+
+          <h1 class="text-xs text-slate-50 text-start font-bold mb-1 rounded-md bg-rose-600 py-1 px-2">
+            Physical Parameter Information
+          </h1>
+          <div class="flex items-center justify-center mb-2 gap-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-rose-600">E-Tilt</span>
+              <span class="text-xs font-bold text-rose-600">${item.etilt}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-rose-600">PCI</span>
+              <span class="text-xs font-bold text-rose-600">${item.pci}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-rose-600">PSS</span>
+              <span class="text-xs font-bold text-rose-50 h-6 w-6 rounded-full flex items-center justify-center ${
+                item.pss === 0 ? 'bg-red-600' : 
+                item.pss === 1 ? 'bg-green-600' : 'bg-blue-600'}">${item.pss}</span>
+            </div>
+          </div>
         </div>
         `;
         polygon.bindPopup(popupContent)
