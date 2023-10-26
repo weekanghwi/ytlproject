@@ -47,7 +47,7 @@
 		<div class="flex items-center">
 			<NavUl {hidden}>
 				<div class="flex items-center gap-6">
-					{#if $userInfo?.is_staff}
+					{#if userInfo && userInfo.is_staff}
 					<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
 					<NavLi href="/fddproject" class="font-semibold">FDD Project</NavLi>
 					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>
@@ -55,11 +55,11 @@
 					<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
 					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>
 					{/if}
-					{#if $userInfo?.id}
+					{#if userInfo}
 						<div class="flex items-center justify-center gap-1 ms-16">
-							<span class="text-slate-900 h-6 w-6 bg-lime-400 rounded-full text-center">{$userInfo.username?.slice(0, 2)}</span>
-							<Tooltip>{$userInfo.username}</Tooltip>
-							{#if $userInfo.is_staff}
+							<span class="text-slate-900 h-6 w-6 bg-lime-400 rounded-full text-center">{userInfo.username?.slice(0, 2)}</span>
+							<Tooltip>{userInfo.username}</Tooltip>
+							{#if userInfo.is_staff}
 							<span class="text-slate-400"><Icon icon="eos-icons:admin-outlined" class="text-2xl text-lime-400"/></span>
 							<Tooltip>Staff</Tooltip>
 							{:else}

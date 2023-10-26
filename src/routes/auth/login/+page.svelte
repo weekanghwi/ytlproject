@@ -15,7 +15,7 @@
 
     if (response.ok) {
       const data = await response.json()
-      localStorage.setItem('jwt_token', data.token)
+      localStorage.setItem('jwt_token', data.access)
       await fetchUserInfo();
       goto('/sitelist')
     } else {
