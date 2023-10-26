@@ -214,7 +214,7 @@
           <h1 class="text-xs text-slate-50 text-start font-bold mb-1 rounded-md bg-rose-600 py-1 px-2">
             Physical Parameter Information
           </h1>
-          <div class="flex items-center justify-center mb-2 gap-4">
+          <div class="flex items-center justify-center mb-2 gap-2">
             <div class="flex items-center gap-2">
               <span class="text-xs text-rose-600">E-Tilt</span>
               <span class="text-xs font-bold text-rose-600">${item.etilt}</span>
@@ -225,9 +225,13 @@
             </div>
             <div class="flex items-center gap-2">
               <span class="text-xs text-rose-600">PSS</span>
-              <span class="text-xs font-bold text-rose-50 h-6 w-6 rounded-full flex items-center justify-center ${
+              <span class="text-xs font-bold text-rose-50 h-5 w-5 rounded-full flex items-center justify-center ${
                 item.pss === 0 ? 'bg-red-600' : 
                 item.pss === 1 ? 'bg-green-600' : 'bg-blue-600'}">${item.pss}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-rose-600">TX</span>
+              <span class="text-xs font-bold text-rose-600">${item.txinfo.txattn}</span>
             </div>
           </div>
         </div>

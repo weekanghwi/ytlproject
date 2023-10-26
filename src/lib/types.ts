@@ -156,7 +156,7 @@ export interface SSVData {
 
 export function createInitialSSVData(): SSVData {
   return {
-    id: 0,
+  id: 0,
   sitebasicinfo: '',
   ssvstartdate: '',
   ssvcompletedate: '',

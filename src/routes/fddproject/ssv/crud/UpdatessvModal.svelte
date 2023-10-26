@@ -66,6 +66,10 @@
     // siteData.cluster = selectedCluster ? selectedCluster.cluster_name : siteData.cluster;
 
     try {
+      for (const [key, value] of Object.entries(SSVData)) {
+        // "as"를 사용하여 타입을 명확하게 지정해줍니다.
+        (SSVData as {[key: string]: any})[key] = value === '' ? null : value;
+      }
       crudSchema.parse(SSVData);
       await updateSSVData(siteId, SSVData);
       ssvUpdateModal = false;
