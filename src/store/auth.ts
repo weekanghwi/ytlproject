@@ -10,9 +10,18 @@ export interface User {
 export const user = writable<User | null>(null);
 
 export async function fetchUserInfo() {
+  const token = localStorage.getItem('jwt_token');
+  if (!token) {
+    console.error('Token is not found')
+    return;
+  }
+
   const response = await fetch('http://10.24.8.120:8000/api/userinfo/', {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
     credentials: 'include',
   });
 

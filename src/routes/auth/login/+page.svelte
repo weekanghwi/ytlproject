@@ -14,6 +14,8 @@
     });
 
     if (response.ok) {
+      const data = await response.json()
+      localStorage.setItem('jwt_token', data.token)
       await fetchUserInfo();
       goto('/sitelist')
     } else {
