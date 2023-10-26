@@ -1,61 +1,29 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { user } from '../../../store/auth'
-  import type { User } from '../../../store/auth'
+  import { fetchUserInfo } from '../../../store/auth';
 
   let username: string = '';
   let password: string = '';
-  let message: string = '';
+  
+  async function login() {
+    const response = await fetch('http://10.24.8.120:8000/api/login_/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', },
+      credentials: 'include',
+      body: JSON.stringify({ username, password }),
+    });
 
-
-  const handleLogin = async () => {
-    try {
-      const res = await fetch('http://10.24.8.120:8000/api/login_/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username, password
-        }),
-        credentials: 'include'
-      });
-
-      if (res.ok) {
-        const userInfo = await getUserInfo();
-        user.set(userInfo);
-        message = 'Login sucessful';
-      } else {
-        const data = await res.json();
-        message = `Login failed: ${data.error}`;
-      }
-    } catch (error) {
-      message = `An error occurred: ${error.message}`
+    if (response.ok) {
+      await fetchUserInfo();
+      goto('/sitelist')
+    } else {
+      console.error('Login failed')
     }
   }
-
-  async function getUserInfo(): Promise<User> {
-    try {
-      const res = await fetch('http://10.24.8.120:8000/api/userinfo/', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (res.ok) {
-        return await res.json();
-      } else {
-        throw new Error('Failed to fetch user info');
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
-
 
   async function handleSubmit(event: Event) {
     event.preventDefault();
-    await handleLogin();
-    goto('/sitelist')
+    await login();
   }
 </script>
 
