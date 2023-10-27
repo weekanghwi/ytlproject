@@ -172,7 +172,7 @@
         // add btsManager info click event
         const popupContent = `
         <div class="flex flex-col text-xs w-52">
-          <h1 class="text-md text-slate-900 font-bold mb-3">Site Info</h1>
+          <h1 class="text-lg text-slate-900 font-bold mb-3">Site Info</h1>
 
           <div class="flex items-start mb-2 gap-2">
             <span class="text-xs text-slate-900 font-bold">${item.siteid}</span>

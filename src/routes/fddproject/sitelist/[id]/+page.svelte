@@ -149,6 +149,7 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TX</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -165,6 +166,7 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.txinfo.txattn}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
@@ -214,6 +216,7 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TX</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -230,6 +233,7 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.txinfo.txattn}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
@@ -279,6 +283,7 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">TX</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -295,6 +300,7 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.txinfo.txattn}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"

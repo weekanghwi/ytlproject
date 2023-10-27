@@ -6,7 +6,7 @@
   export let map: LeafletMap | null = null;
   // let L: any;
   let regionLayers: { [region: string]: LayerGroup } = {};
-  let selectedRegion: any | null = null;
+  let selectedRegion: number | null = null;
   let selectedPolygon: L.Polygon | null = null;
 
   const regionMapping: { [key: string]: string} = {
@@ -26,21 +26,6 @@
       coordinates: [[[number, number]]];
     }
   }
-
-
-  // if (typeof window !== 'undefined') {
-  //   import('leaflet').then(leaflet => {
-  //     L = leaflet;
-  //   });
-  // }
-  // onMount(() => {
-  //   if (typeof window !== 'undefined') {
-  //     import('leaflet').then(leaflet => {
-  //       L = leaflet
-  //     })
-  //   }
-  // })
-
 
   function showPolygonInfo(cluster: Cluster, latlng: L.LatLng, polygon: L.Polygon) {
     const regionName = regionMapping[cluster.region] || 'Unknown';
@@ -82,7 +67,7 @@
       while (nextUrl) {
         const response = await fetch(nextUrl);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}, ${response.statusText}`);
         }
 
         const { results, next }: { results: Cluster[], next: string | null } = await response.json();
@@ -132,51 +117,53 @@
     }
   }
 
-  // fetch cluster polygon from server and show menu
   $: if (map && L) {
-    const regionsControl = L.control({ position: 'topleft' });
+    // 새로운 커스텀 컨트롤 클래스를 정의
+    const RegionsControl = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function (map: L.Map): HTMLElement {
+        const container = L.DomUtil.create('div', 'flex flex-col gap-1');
+        const toggleButton = L.DomUtil.create('button', 'bg-slate-800 text-slate-200 py-2 px-3 rounded-lg text-xs', container);
+        toggleButton.innerHTML = 'Cluster Layer';
+        container.appendChild(toggleButton);
 
-    // map.on('click', onMapClick)
+        const dropdown = L.DomUtil.create('div', 'hidden flex flex-col items-start bg-slate-700 rounded-lg py-2 px-2 gap-1', container);
+        const regions = [1, 2, 3, 4, 5, 6];
+        const selectedRegions: { [key: number]: HTMLButtonElement } = {};
 
-    regionsControl.onAdd = function () {
-      const container = L.DomUtil.create('div', 'flex flex-col gap-1');
-      const toggleButton = L.DomUtil.create('button', 'bg-slate-800 text-slate-200 py-2 px-3 rounded-lg text-xs', container);
-      toggleButton.innerHTML = 'Cluster Layer';
-      container.appendChild(toggleButton);
+        regions.forEach((region) => {
+          const regionButton = L.DomUtil.create('button', 'text-xs text-slate-200 px-3 w-full text-start rounded-sm', dropdown);
+          regionButton.innerHTML = regionMapping[region]; // regionMapping 객체를 사용하려면 이 부분을 수정해야 함
 
-      const dropdown = L.DomUtil.create('div', 'hidden flex flex-col items-start bg-slate-700 rounded-lg py-2 px-2 gap-1', container);
+          L.DomEvent.on(regionButton, 'click', () => {
+            const numericRegion = typeof region === 'string' ? parseInt(region, 10) : region;
 
-      const regions = [1, 2, 3, 4, 5, 6];  // 'all'을 제거
-      const selectedRegions: { [key: number]: HTMLButtonElement } = {};
+            if (selectedRegions[numericRegion]) {
+              delete selectedRegions[numericRegion];
+              regionButton.classList.remove('bg-blue-500');
+              regionButton.classList.add('bg-slate-700');
+            } else {
+              selectedRegions[numericRegion] = regionButton;
+              regionButton.classList.remove('bg-slate-700');
+              regionButton.classList.add('bg-blue-500');
+            }
 
-      regions.forEach((region) => {
-        const regionButton = L.DomUtil.create('button', 'text-xs text-slate-200 px-3 w-full text-start rounded-sm', dropdown);
-        regionButton.innerHTML = regionMapping[region];
-
-        L.DomEvent.on(regionButton, 'click', () => {
-          const numericRegion = typeof region === 'string' ? parseInt(region, 10) : region;
-
-          if (selectedRegions[numericRegion]) {
-            delete selectedRegions[numericRegion];
-            regionButton.classList.remove('bg-blue-500'); // 원래 색깔로 돌아감
-            regionButton.classList.add('bg-slate-700'); // 원래의 Tailwind 클래스
-          } else {
-            selectedRegions[numericRegion] = regionButton;
-            regionButton.classList.remove('bg-slate-700'); // 원래의 Tailwind 클래스 제거
-            regionButton.classList.add('bg-blue-500'); // 선택되면 파란색으로 변경
-          }
-
-          toggleRegion(numericRegion);
+            // toggleRegion 함수를 호출 (이 부분도 커스텀 로직에 따라 수정이 필요)
+            toggleRegion(numericRegion);
+          });
         });
-      });
 
-      L.DomEvent.on(toggleButton, 'click', () => {
-        dropdown.classList.toggle('hidden');
-      });
+        L.DomEvent.on(toggleButton, 'click', () => {
+          dropdown.classList.toggle('hidden');
+        });
 
-      return container;
-    };
+        return container;
+      }
+    });
 
-    regionsControl.addTo(map);
+    // 커스텀 컨트롤 인스턴스를 생성하고 지도에 추가
+    const regionsControl = new RegionsControl().addTo(map);
   }
 </script>
