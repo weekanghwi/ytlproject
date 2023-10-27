@@ -190,7 +190,9 @@
             <span class="text-sm dark:text-gray-400">{sites.siteid}</span>
             <span class="text-xs dark:text-gray-500 truncate w-[160px] inline-block">{sites.sitename}</span>
           </TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.cluster}</span></TableBodyCell>
+          <TableBodyCell class="py-2">
+            <span class="dark:text-gray-400 truncate w-[160px] inline-block">{sites.cluster}</span>
+          </TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.region}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.state}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
