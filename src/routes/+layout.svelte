@@ -48,9 +48,30 @@
 			<NavUl {hidden}>
 				<div class="flex items-center gap-6">
 					{#if userInfo && userInfo.is_staff}
-					<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
-					<NavLi href="/fddproject" class="font-semibold">FDD Project</NavLi>
-					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>
+					<NavLi href="/" class="font-semibold" active={false}>
+						<div class="flex items-center gap-1">
+							<Icon icon="carbon:home" class="text-lg font-bold"/>
+							<span>HOME</span>
+						</div>
+					</NavLi>
+					<NavLi href="/fddproject" class="font-semibold">
+						<div class="flex items-center gap-1">
+							<Icon icon="octicon:project-16" class="text-md font-bold"/>
+							<span>FDD PROJECT</span>
+						</div>
+					</NavLi>
+					<NavLi href="/sitelist" class="font-semibold">
+						<div class="flex items-center gap-1">
+							<Icon icon="gg:website" class="text-lg font-bold"/>
+							<span>SITE LIST</span>
+						</div>
+					</NavLi>
+					<NavLi href="/sitelist" class="font-semibold">
+						<div class="flex items-center gap-1">
+							<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
+							<span>STATISTIC</span>
+						</div>
+					</NavLi>
 					{:else}
 					<NavLi href="/" class="font-semibold" active={false}>Home</NavLi>
 					<NavLi href="/sitelist" class="font-semibold">YTL LTE Site List</NavLi>

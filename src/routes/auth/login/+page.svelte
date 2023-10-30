@@ -1,9 +1,23 @@
 <script lang="ts">
+  import { Toast } from 'flowbite-svelte';
   import { goto } from '$app/navigation';
   import { fetchUserInfo } from '../../../store/auth';
 
   let username: string = '';
   let password: string = '';
+  let loginSuccess: boolean = false;
+  let counter: number = 6;
+
+  function trigger() {
+    loginSuccess = true;
+    counter = 6;
+    timeout()
+  }
+
+  function timeout() {
+    if (--counter > 0) return setTimeout(timeout, 1000);
+    loginSuccess = false
+  }
   
   async function login() {
     const response = await fetch('http://10.24.8.120:8000/api/login_/', {
@@ -14,10 +28,10 @@
     });
 
     if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('jwt_token', data.access)
+      const data = await response.json();
+      localStorage.setItem('jwt_token', data.access);
       await fetchUserInfo();
-      goto('/sitelist')
+      loginSuccess = true;
     } else {
       console.error('Login failed')
     }
@@ -26,10 +40,17 @@
   async function handleSubmit(event: Event) {
     event.preventDefault();
     await login();
+    goto('/sitelist');
   }
 </script>
 
-
+{#if loginSuccess}
+<div class="loginsuccess">
+  <Toast color="green">
+    Login successfully.
+  </Toast>
+</div>
+{/if}
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-400">Sign in to your account</h2>

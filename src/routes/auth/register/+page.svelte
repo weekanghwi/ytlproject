@@ -4,7 +4,7 @@
   let password: string = '';
 
   async function register() {
-    const res = await fetch('http://10.24.8.120:8000/api/register/', {
+    const res = await fetch('http://10.24.8.120:8000/api/register_/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

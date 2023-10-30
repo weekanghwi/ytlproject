@@ -1,10 +1,27 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
+  import { user, fetchUserInfo } from '../../store/auth.js';
+	import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
 
   export let data;
   const formatNumber = (num: number): string => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  onMount(() => {
+    fetchUserInfo().then(() => {
+      const unsubscribe = user.subscribe(($user) => {
+        if (!$user || !$user.is_staff) {
+          goto('/auth/login'); // 로그인 페이지로 리다이렉트
+        }
+      });
+      
+      return unsubscribe;  // 컴포넌트가 unmount될 때 구독 해제
+    });
+  });
+
+
 
 
   let image1: string = 'tower-night.jpg';
@@ -74,7 +91,7 @@
         <p class="text-xs text-slate-400 mb-5">Add equipment at the existing TDD location or install at new location</p>
         <div class="grid grid-cols-2 mt-auto">
           <p class="text-xs text-blue-50">Total Install</p>
-          <p class="text-xs font-bold text-blue-50 text-end">{formatNumber(data.weeklyStatistic.data.total_doissue)}</p>
+          <p class="text-xs font-bold text-blue-50 text-end">{formatNumber(data.weeklyStatistic.data.total_installcomplete)}</p>
         </div>
       </div>
       <div class="flex flex-col rounded-lg border border-rose-600 p-4">
