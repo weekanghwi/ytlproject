@@ -1,23 +1,10 @@
 <script lang="ts">
-  import { Toast } from 'flowbite-svelte';
   import { goto } from '$app/navigation';
   import { fetchUserInfo } from '../../../store/auth';
+  import toast, { Toaster } from 'svelte-french-toast'
 
   let username: string = '';
   let password: string = '';
-  let loginSuccess: boolean = false;
-  let counter: number = 6;
-
-  function trigger() {
-    loginSuccess = true;
-    counter = 6;
-    timeout()
-  }
-
-  function timeout() {
-    if (--counter > 0) return setTimeout(timeout, 1000);
-    loginSuccess = false
-  }
   
   async function login() {
     const response = await fetch('http://10.24.8.120:8000/api/login_/', {
@@ -31,26 +18,26 @@
       const data = await response.json();
       localStorage.setItem('jwt_token', data.access);
       await fetchUserInfo();
-      loginSuccess = true;
+      toast.success('Login success')
+      setTimeout(() => {
+        goto('/sitelist');
+      }, 2000);
     } else {
-      console.error('Login failed')
+      const errorData = await response.json();
+      const errorMessage = errorData.error || 'Login failed';
+      toast.error(errorMessage);
     }
   }
 
   async function handleSubmit(event: Event) {
     event.preventDefault();
     await login();
-    goto('/sitelist');
   }
+
 </script>
 
-{#if loginSuccess}
-<div class="loginsuccess">
-  <Toast color="green">
-    Login successfully.
-  </Toast>
-</div>
-{/if}
+<Toaster />
+
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-400">Sign in to your account</h2>

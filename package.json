@@ -50,6 +50,7 @@
 		"leaflet": "^1.9.4",
 		"leaflet-draw": "^1.0.4",
 		"papaparse": "^5.4.1",
+		"svelte-french-toast": "^1.2.0",
 		"tailwind-merge": "^1.14.0"
 	}
 }
