@@ -188,15 +188,19 @@
         <TableBodyRow color="custom" class="dark:bg-gray-700/30 border-b border-gray-500/50">
           <TableBodyCell class="flex flex-col py-2">
             <span class="text-sm dark:text-gray-400">{sites.siteid}</span>
-            <span class="text-xs dark:text-gray-500 truncate w-[160px] inline-block">{sites.sitename}</span>
+            <span class="text-xs dark:text-gray-500 truncate w-[140px] inline-block">{sites.sitename}</span>
           </TableBodyCell>
           <TableBodyCell class="py-2">
-            <span class="dark:text-gray-400 truncate w-[160px] inline-block">{sites.cluster}</span>
+            <span class="dark:text-gray-400 truncate w-[100px] inline-block">{sites.cluster}</span>
           </TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.region}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.state}</span></TableBodyCell>
+          <TableBodyCell class="py-2">
+            <span class="dark:text-gray-400 truncate w-[80px] inline-block">
+              {sites.state}
+            </span>
+          </TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.siteconfig}</span></TableBodyCell>
+          <TableBodyCell class="py-2"><span class="dark:text-gray-400 text-xs">{sites.siteconfig}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">
             <div class="flex items-center gap-2">
               {#if sites.btsmanager_count}

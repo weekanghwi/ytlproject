@@ -56,11 +56,11 @@
         <h1 class="text-xs text-blue-100">Total Sites</h1>
       </div>
       <div class="flex flex-col rounded-lg justify-center">
-        <h1 class="text-xl font-bold text-blue-100">{formatNumber(data.lsmStatistic.data.unique_site_count_fdd)}</h1>
+        <h1 class="text-xl font-bold text-blue-100">{formatNumber(data.lsmStatistic.data.sitecount_byband.count[1])}</h1>
         <h1 class="text-xs text-blue-100">Total FDD Sites</h1>
       </div>
       <div class="flex flex-col rounded-lg justify-center">
-        <h1 class="text-xl font-bold text-blue-100">{formatNumber(data.lsmStatistic.data.cell_count_fdd)}</h1>
+        <h1 class="text-xl font-bold text-blue-100">{formatNumber(data.lsmStatistic.data.cellcount_byband.count[1])}</h1>
         <h1 class="text-xs text-blue-100">Total FDD Cells</h1>
       </div>
       <div class="flex flex-col rounded-lg justify-center">

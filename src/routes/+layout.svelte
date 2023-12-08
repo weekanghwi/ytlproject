@@ -66,7 +66,7 @@
 							<span>SITE LIST</span>
 						</div>
 					</NavLi>
-					<NavLi href="/sitelist" class="font-semibold">
+					<NavLi href="/statistic" class="font-semibold">
 						<div class="flex items-center gap-1">
 							<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
 							<span>STATISTIC</span>
