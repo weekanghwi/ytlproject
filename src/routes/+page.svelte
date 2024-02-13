@@ -188,7 +188,7 @@
     </div>
 
     <div class="flex flex-col rounded-lg border border-sky-400 hover:shadow-xl hover:shadow-sky-900 p-4">
-      <h1 class="text-xs text-sky-400 font-bold mb-6">FDD SITE COUNT</h1>
+      <h1 class="text-xs text-sky-400 font-bold mb-6">TDD2.6 SITE COUNT</h1>
 
       <div class="flex items-center gap-3 mb-6">
         <div class="h-10 w-10 rounded-full bg-sky-400 flex items-center justify-center">
