@@ -67,12 +67,12 @@
 								<span>SITE LIST</span>
 							</div>
 						</NavLi>
-						<NavLi href="/statistic" class="font-semibold">
+						<!-- <NavLi href="/statistic" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
 								<span>STATISTIC</span>
 							</div>
-						</NavLi>
+						</NavLi> -->
 						<NavLi href="/statistic2" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
