@@ -18,7 +18,6 @@
 
   function updateChart() {
     const bandData = SitecountChartData.sitecount_by_regionband['20'];
-    console.log(bandData)
     if (!bandData) return;
     const { region, count } = bandData;
 

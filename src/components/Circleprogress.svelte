@@ -13,17 +13,18 @@
   $: color = progress >= 99 ? '#4ade80' : progress >= 95 ? '#facc15' : '#e11d48'; // 붉은색
 
   // 텍스트의 Y 위치를 계산하는 함수
-  function calculateYPosition(index, lineHeight) {
-    const baseY = 50;
+  function calculateYPosition(index: number, lineHeight?: number): string {
+    const baseY = size / 2;
     const defaultLineHeight = 20;
-    let totalOffset = 0;
+    let totalOffset = -5;
 
-    for (let i = 0; i < index; i++) {
-      totalOffset += centerTexts[i].lineHeight || defaultLineHeight;
+    for (let i = 0; i <= index; i++) {
+      totalOffset += (centerTexts[i]?.lineHeight || defaultLineHeight) / 2;
     }
 
-    return `${baseY + (totalOffset - (centerTexts.length - 1) * defaultLineHeight / 2)}%`;
+    return `${baseY + totalOffset - (lineHeight || defaultLineHeight) / 2}px`;
   }
+
 </script>
 
 <style>
@@ -31,6 +32,10 @@
     transition: stroke-dashoffset 2s;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
+  }
+
+  .progress-ring__text {
+    dominant-baseline: central;
   }
 </style>
 
@@ -57,7 +62,7 @@
       cy="{size / 2}"
       style="stroke-dasharray: {circumference} {circumference}; stroke-dashoffset: {offset()};" />
     {#each centerTexts as { text, size, lineHeight }, index (text)}
-      <text x="50%" y={calculateYPosition(index, lineHeight)} class="progress-ring__text" style="fill: {color}; font-size: {size}; text-anchor: middle; dominant-baseline: middle;">
+      <text x="50%" y={calculateYPosition(index, lineHeight)} class="progress-ring__text" style="fill: {color}; font-size: {size}; text-anchor: middle;">
         {text}
       </text>
     {/each}
