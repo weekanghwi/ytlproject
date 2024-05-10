@@ -10,6 +10,7 @@
   import RegionalCallDropFailSiteCell from "../chart/RegionalCallDropFailSiteCell.svelte";
   import RegionalClusterTable from "../../components/RegionalClusterTable.svelte";
   import RegionalCellTable from "../../components/RegionalCellTable.svelte";
+  import FailClusterInfoModal from "../../components/FailClusterInfoModal.svelte";
 
   export let region: string;
   export let data: any;
@@ -68,6 +69,7 @@
     return data[key].by_band;
   }
   $: selectedData = getSelectedData(CallDropnGBRData, selectedChartKey)
+  $: FailClusterCount = 'fail_cluster_count_byband';
 </script>
 
 <div class="grid grid-cols-8 gap-4 w-full mb-4">
@@ -218,52 +220,29 @@
       </div>
 
       <div class="flex flex-col gap-2">
-        <div class="flex">
-          <button class="flex items-center justify-between rounded-md bg-sky-800 px-2 py-2 gap-4 w-full"
-            on:click={() => {band = '2.3G'; field = field; region=region; FailClusterModal = true}}>
-            <h1 class="text-xs text-white">2.3G</h1>
-            <div class="h-4 w-4 rounded-full bg-rose-400 text-xs flex items-center justify-center">
-              {#if CallDropnGBRData}
-                {#if CallDropnGBRData.fail_cluster_count_byband.band.includes('2.3G')}
-                  {CallDropnGBRData.fail_cluster_count_byband.count[CallDropnGBRData.fail_cluster_count_byband.band.indexOf('2.3G')]}
-                {:else}
-                -
-                {/if}
-              {/if}
-            </div>
-          </button>
-        </div>
-        <div class="flex">
-          <button class="flex items-center justify-between rounded-md bg-sky-600 px-2 py-2 gap-4 w-full"
-            on:click={() => {band = '2.6G'; field = field; region=region; FailClusterModal = true}}>
-            <h1 class="text-xs text-white">2.6G</h1>
-            <div class="h-4 w-4 rounded-full bg-rose-400 text-xs flex items-center justify-center">
-              {#if CallDropnGBRData}
-                {#if CallDropnGBRData.fail_cluster_count_byband.band.includes('2.6G')}
-                  {CallDropnGBRData.fail_cluster_count_byband.count[CallDropnGBRData.fail_cluster_count_byband.band.indexOf('2.6G')]}
-                {:else}
-                -
-                {/if}
-              {/if}
-            </div>
-          </button>
-        </div>
-        <div class="flex">
-          <button class="flex items-center justify-between rounded-md bg-sky-400 px-2 py-2 gap-4 w-full"
-            on:click={() => {band = '800M'; field = field; region=region; FailClusterModal = true}}>
-            <h1 class="text-xs text-black">800M</h1>
-            <div class="h-4 w-4 rounded-full bg-rose-400 text-xs flex items-center justify-center">
-              {#if CallDropnGBRData}
-                {#if CallDropnGBRData.fail_cluster_count_byband.band.includes('800M')}
-                  {CallDropnGBRData.fail_cluster_count_byband.count[CallDropnGBRData.fail_cluster_count_byband.band.indexOf('800M')]}
-                {:else}
-                -
-                {/if}
-              {/if}
-            </div>
-          </button>
+        <div class="flex flex-col">
+          <div class="flex flex-col gap-4">
+            {#if CallDropnGBRData && CallDropnGBRData[FailClusterCount]}
+              {#each CallDropnGBRData[FailClusterCount].band as bands, index}
+                <div class="flex items-center">
+                  <button class="flex items-center justify-between p-2 gap-2 text-xs text-white w-full rounded-md 
+                    {bands === '2.3G' ? 'bg-sky-800' : 
+                    bands === '2.6G' ? 'bg-sky-600' : 'bg-sky-400'}"
+                    on:click={() => {band = bands; field = field; region=region; FailClusterModal = true}}>
+                    {bands}
+                    <h1 class="text-xs text-black w-4 h-4 rounded-full bg-rose-300">
+                      {CallDropnGBRData[FailClusterCount].count[index]}
+                    </h1>
+                  </button>
+                </div>
+                
+              {/each}
+            {/if}
+          </div>
         </div>
       </div>
+
+
     </div>
   </div>
 
@@ -462,3 +441,5 @@
 
 
 </div>
+
+<FailClusterInfoModal {band} {field} {region} bind:FailClusterModal={FailClusterModal} />

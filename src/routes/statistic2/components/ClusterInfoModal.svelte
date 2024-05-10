@@ -228,18 +228,22 @@
           {#if tab.id === 'tab1'}
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <div class="relative flex items-center">
-                  <SiteCount {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[23%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <SiteCount {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">Site Count</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {ClusterStatisticData.sitecount_all}
                     </h1>
                   </div>
                 </div>
-                <div class="relative items-center">
-                  <CellCount {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[25%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <CellCount {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">Cell Count</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {ClusterStatisticData.cellcount_all}
@@ -275,27 +279,33 @@
           <!-- ACTIVE USER SECTION -->
           {:else if tab.id === 'tab2'}
             <div class="flex items-center justify-center gap-4">
-              <div class="relative items-center">
-                <ActiveUser {ClusterStatisticData} />
-                <div class="absolute top-[30%] left-[20%] flex flex-col items-center justify-center">
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUser {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
                   <h1 class="text-xs text-slate-500">Avg Act user</h1>
                   <h1 class="text-2xl text-white font-bold">
                     {(ClusterStatisticData.activeuserInfo.avg_connectno[0]).toFixed(1)}
                   </h1>
                 </div>
               </div>
-              <div class="relative items-center">
-                <ActiveUserSum {ClusterStatisticData} />
-                <div class="absolute top-[30%] left-[15%] flex flex-col items-center justify-center">
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserSum {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
                   <h1 class="text-xs text-slate-500">Sum Act user</h1>
                   <h1 class="text-2xl text-white font-bold">
                     {(ClusterStatisticData.activeuserInfo.sum_connectno[0]).toFixed(0)}
                   </h1>
                 </div>
               </div>
-              <div class="relative items-center">
-                <ActiveUserMaxavg {ClusterStatisticData} />
-                <div class="absolute top-[30%] left-[15%] flex flex-col items-center justify-center">
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserMaxavg {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
                   <h1 class="text-xs text-slate-500">Max user avg</h1>
                   <h1 class="text-2xl text-white font-bold">
                     {(ClusterStatisticData.activeuserInfo.avg_connectmax[0]).toFixed(0)}
@@ -303,9 +313,11 @@
                 </div>
               </div>
               
-              <div class="relative items-center">
-                <ActiveUserMaxsum {ClusterStatisticData} />
-                <div class="absolute top-[30%] left-[13%] flex flex-col items-center justify-center">
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserMaxsum {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
                   <h1 class="text-xs text-slate-500">Max user sum</h1>
                   <h1 class="text-2xl text-white font-bold">
                     {(ClusterStatisticData.activeuserInfo.sum_connectmax[0]).toFixed(0)}
@@ -318,36 +330,44 @@
           {:else if tab.id === 'tab3'}
             <div class="flex flex-col items-center justify-center gap-4">
               <div class="flex items-center justify-center gap-4">
-                <div class="relative items-center">
-                  <PrbAvgDl {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[20%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbAvgDl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">PRB avg DL</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {(ClusterStatisticData.prbutilizationInfo.avg_prbdl[0]).toFixed(1)}%
                     </h1>
                   </div>
                 </div>
-                <div class="relative items-center">
-                  <PrbMaxDl {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[20%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbMaxDl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">PRB max DL</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {(ClusterStatisticData.prbutilizationInfo.max_prbdl[0]).toFixed(1)}%
                     </h1>
                   </div>
                 </div>
-                <div class="relative items-center">
-                  <PrbAvgUl {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[20%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbAvgUl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">PRB avg UL</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {(ClusterStatisticData.prbutilizationInfo.avg_prbul[0]).toFixed(1)}%
                     </h1>
                   </div>
                 </div>
-                <div class="relative items-center">
-                  <PrbMaxUl {ClusterStatisticData} />
-                  <div class="absolute top-[30%] left-[20%] flex flex-col items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbMaxUl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
                     <h1 class="text-xs text-slate-500">PRB max UL</h1>
                     <h1 class="text-2xl text-white font-bold">
                       {(ClusterStatisticData.prbutilizationInfo.max_prbul[0]).toFixed(1)}%

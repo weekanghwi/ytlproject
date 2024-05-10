@@ -76,7 +76,7 @@
 						<NavLi href="/statistic2" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
-								<span>STATISTIC2</span>
+								<span>STATISTIC</span>
 							</div>
 						</NavLi>
 						{:else}

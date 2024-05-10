@@ -8,6 +8,7 @@
   import OverallattachTrend from './chart/OverallattachTrend.svelte';
   import OverallattachTrendbyband from './chart/OverallattachTrendbyband.svelte';
   import OverallattachFailCluster from './chart/OverallattachFailCluster.svelte';
+  import OverallattachFail from './chart/OverallattachFail.svelte';
   import OverallattachFailSite from './chart/OverallattachFailSite.svelte';
   import OverallattachFailCell from './chart/OverallattachFailCell.svelte';
   import RegionalContents from './regionalcontents/RegionalContents.svelte';
@@ -32,13 +33,13 @@
   }
 
   const AttachNominateKeyMap: { [key: string]: string} = {
-    'attachnominatebyband': 'Attach All',
+    'attachnominatebyband': 'All Type of Attach',
     'connestabbyband': 'ConnEstab',
     's1connestabbyband': 'S1ConnEstab',
     'establnitbyband': 'EstabInit',
   };
   const AttachNominateDescription: { [key: string]: string} = {
-    'Attach All': 'All of Attach Type',
+    'All Type of Attach': 'All of Attach Type',
     'ConnEstab': 'When the eNB received the RRCConnectionRequest from the UE',
     'S1ConnEstab': 'Message is received from the MME following an Initial UE message transmission',
     'EstabInit': 'Success/Failure of E-RAB after receiving InitialContextSetupRequest'
@@ -76,7 +77,7 @@
 
   <!-- OVERALL CONTENTS -->
   <div class="grid grid-cols-8 gap-4 mb-4">
-    <!-- OVERALL INTER FREQ HO COUNT CHART -->
+    <!-- OVERALL ATTACH SETUP COUNT CHART -->
     <div class="flex flex-col col-span-2 rounded-md bg-slate-900/40 p-4">
       <div class="flex items-center gap-1 mb-4">
         <Icon icon="f7:number-square" class="text-lg text-slate-500" />
@@ -89,7 +90,7 @@
           </div>
           <div class="absolute flex flex-col items-center">
             <h1 class="text-xs text-slate-300">ATTACH Attempt</h1>
-            <h1 class="text-XS text-white font-bold">
+            <h1 class="text-xs text-white font-bold">
               {(data.AttachStatisticData.Attach.attachnominatebyband.overall.NominateTotal).toLocaleString()}
             </h1>
           </div>
@@ -118,7 +119,7 @@
     <div class="flex flex-col col-span-3 rounded-md bg-slate-900/40 p-4">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-1">
-          <Icon icon="f7:number-square" class="text-lg text-slate-500" />
+          <Icon icon="iconamoon:category-light" class="text-lg text-slate-500" />
           <h1 class="text-xs text-slate-500">TYPE OF ATTACH RATIO & COUNT</h1>
         </div>
         <button class="ms-auto flex items-center gap-2 text-gray-800 rounded-md"
@@ -197,8 +198,35 @@
 
     </div>
 
-    <!-- OVERALL -->
+    <!-- OVERALL ATTACH FAIL COUNT CHART -->
     <div class="flex flex-col col-span-3 rounded-md bg-slate-900/40 p-4">
+      <div class="flex items-center gap-1 mb-4">
+        <Icon icon="icon-park-outline:folder-failed" class="text-lg text-rose-500" />
+        <h1 class="text-xs text-slate-500">ATTACH FAIL COUNT</h1>
+      </div>
+      <div class="flex items-center justify-center gap-4">
+        <div class="relative flex items-center justify-center">
+          <OverallattachFail {OverallData} />
+          <div class="absolute flex flex-col">
+            <h1 class="text-xs text-slate-500">Attach Fail</h1>
+          </div>
+        </div>
+        <div class="flex flex-col justify-center gap-2">
+          <div class="flex flex-col gap-1">
+            {#each Object.keys(data.AttachStatisticData.Attach.attachnominatebyband.by_band.band) as index}
+            <div class="flex items-center gap-1">
+              <div class="h-3 w-3 rounded-sm 
+              {data.AttachStatisticData.Attach.attachnominatebyband.by_band.band[index] === '800M' ? 'bg-sky-400' : 
+              data.AttachStatisticData.Attach.attachnominatebyband.by_band.band[index] === '2.6GHz' ? 'bg-sky-600' : 'bg-sky-800'}"></div>
+              <h1 class="text-xs text-white">{data.AttachStatisticData.Attach.attachnominatebyband.by_band.band[index]}</h1>
+            </div>
+            <h1 class="text-xs text-slate-500 ps-4">
+              {(data.AttachStatisticData.Attach.attachfallbybandall.by_band.failcount[index]).toLocaleString()}
+            </h1>
+            {/each}
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ATTACH TREND -->

@@ -3,15 +3,25 @@
   import Icon from '@iconify/svelte';
   import toast, { Toaster } from 'svelte-french-toast';
 	import { onMount } from "svelte";
+  
+  import SiteCount from "./ClusterModalChart/SiteCount.svelte";
+  import CellCount from "./ClusterModalChart/CellCount.svelte";
+  import ActiveUser from "./ClusterModalChart/ActiveUser.svelte";
+  import ActiveUserSum from "./ClusterModalChart/ActiveUserSum.svelte";
+  import ActiveUserMaxavg from "./ClusterModalChart/ActiveUserMaxavg.svelte";
+  import ActiveUserMaxsum from "./ClusterModalChart/ActiveUserMaxsum.svelte";
+  import PrbAvgDl from "./ClusterModalChart/PRBAvgDL.svelte";
+  import PrbMaxDl from "./ClusterModalChart/PRBMaxDL.svelte";
+  import PrbAvgUl from "./ClusterModalChart/PRBAvgUL.svelte";
+  import PrbMaxUl from "./ClusterModalChart/PRBMaxUL.svelte";
 
   export let SiteInfoModal = false;
   export let band: string = '';
-  // export let region: string = '';
-  // export let cluster: string = ''
   export let field: string = '';
   export let siteid: string = ''
 
   let SiteStatisticData: any = '';
+  let ClusterStatisticData: any = '';
   let activeTab = 0;
   const tabs = [
     { id: 'tab1', title: 'SITE&CELL COUNT' },
@@ -59,6 +69,7 @@
       if (response.ok) {
         const data = await response.json();
         SiteStatisticData = data;
+        ClusterStatisticData = data;
       } else {
         toast.error('Network response was not ok.');
       }
@@ -197,6 +208,180 @@
     </div>
 
     <!-- -->
+    <div>
+      <div class="flex items-center bg-slate-700 gap-[1px] mb-6 -mx-6">
+        {#each tabs as tab, index}
+          <button class="text-xs px-2 py-1 rounded-sm active:bg-fuchsia-500 active:text-black w-full 
+            {index === activeTab ? 'bg-fuchsia-500 text-black' : 'hover:bg-fuchsia-500 hover:text-black'}"
+            on:click={() => handleTabClick(index)}>
+            {tab.title}
+          </button>
+        {/each}
+      </div>
+
+      <!-- TITLE -->
+      {#each tabs as tab, index}
+        {#if index === activeTab}
+        <!-- SITE AND CELL COUNT CONTENT -->
+          {#if tab.id === 'tab1'}
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <SiteCount {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">Site Count</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {SiteStatisticData.sitecount_all}
+                    </h1>
+                  </div>
+                </div>
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <CellCount {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">Cell Count</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {SiteStatisticData.cellcount_all}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+
+              {#if SiteStatisticData}
+              <div class="grid grid-cols-[minmax(min-content,1fr)_minmax(0,auto)_minmax(0,auto)] gap-2">
+                {#each SiteStatisticData.sitecount_byband.band as bandName, index (bandName)}
+                  <div class="flex items-center gap-1 pe-4 {bandString === bandName ? 'text-white' : 'text-slate-500'}">
+                    <div class="h-3 w-3 rounded-sm" class:bg-sky-800={bandName === '2.3GHz'} class:bg-sky-600={bandName === '2.6GHz'} class:bg-sky-400={bandName === '800M'}></div>
+                    <h1 class="text-xs">{bandName}</h1>
+                  </div>
+                  <div class="flex items-center justify-end pe-2">
+                    <h1 class="text-xs text-slate-500">{SiteStatisticData.sitecount_byband.count[index]}</h1>
+                  </div>
+                  <div class="flex items-center justify-end pe-2">
+                    <h1 class="text-xs text-slate-500">{SiteStatisticData.cellcount_byband.count[index]}</h1>
+                  </div>
+                {/each}
+              </div>
+              {/if}
+            </div>
+            
+            <div class="flex flex-col mt-4">
+              <h1 class="text-xs text-slate-500">
+                this cluster aqupying 10% of total central sites
+              </h1>
+            </div>
+
+          <!-- ACTIVE USER SECTION -->
+          {:else if tab.id === 'tab2'}
+            <div class="flex items-center justify-center gap-4">
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUser {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
+                  <h1 class="text-xs text-slate-500">Avg Act user</h1>
+                  <h1 class="text-2xl text-white font-bold">
+                    {(SiteStatisticData.activeuserInfo.avg_connectno[0]).toFixed(1)}
+                  </h1>
+                </div>
+              </div>
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserSum {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
+                  <h1 class="text-xs text-slate-500">Sum Act user</h1>
+                  <h1 class="text-2xl text-white font-bold">
+                    {(SiteStatisticData.activeuserInfo.sum_connectno[0]).toFixed(0)}
+                  </h1>
+                </div>
+              </div>
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserMaxavg {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
+                  <h1 class="text-xs text-slate-500">Max user avg</h1>
+                  <h1 class="text-2xl text-white font-bold">
+                    {(SiteStatisticData.activeuserInfo.avg_connectmax[0]).toFixed(0)}
+                  </h1>
+                </div>
+              </div>
+              
+              <div class="relative flex items-center justify-center">
+                <div class="z-50">
+                  <ActiveUserMaxsum {ClusterStatisticData} />
+                </div>
+                <div class="absolute flex flex-col items-center justify-center">
+                  <h1 class="text-xs text-slate-500">Max user sum</h1>
+                  <h1 class="text-2xl text-white font-bold">
+                    {(SiteStatisticData.activeuserInfo.sum_connectmax[0]).toFixed(0)}
+                  </h1>
+                </div>
+              </div>
+            </div>
+
+          <!-- PRB UTILIZATION SECTION-->
+          {:else if tab.id === 'tab3'}
+            <div class="flex flex-col items-center justify-center gap-4">
+              <div class="flex items-center justify-center gap-4">
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbAvgDl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">PRB avg DL</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {(SiteStatisticData.prbutilizationInfo.avg_prbdl[0]).toFixed(1)}%
+                    </h1>
+                  </div>
+                </div>
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbMaxDl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">PRB max DL</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {(SiteStatisticData.prbutilizationInfo.max_prbdl[0]).toFixed(1)}%
+                    </h1>
+                  </div>
+                </div>
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbAvgUl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">PRB avg UL</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {(SiteStatisticData.prbutilizationInfo.avg_prbul[0]).toFixed(1)}%
+                    </h1>
+                  </div>
+                </div>
+                <div class="relative flex items-center justify-center">
+                  <div class="z-50">
+                    <PrbMaxUl {ClusterStatisticData} />
+                  </div>
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <h1 class="text-xs text-slate-500">PRB max UL</h1>
+                    <h1 class="text-2xl text-white font-bold">
+                      {(SiteStatisticData.prbutilizationInfo.max_prbul[0]).toFixed(1)}%
+                    </h1>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            
+          {:else}
+            <!-- 기본 컨텐츠 렌더링 -->
+          {/if}
+        {/if}
+      {/each}
+    </div>
   </div>
 </Modal>
 
