@@ -191,26 +191,27 @@
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.state}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.contracttype}</span></TableBodyCell>
           <TableBodyCell class="py-2"><span class="dark:text-gray-400">{sites.siteconfig}</span></TableBodyCell>
-          <TableBodyCell class="py-2"><span class="dark:text-gray-400">
-            <div class="flex items-center gap-2">
-              {#if sites.btsmanager_count}
-                <p class="rounded-full h-6 w-6 ring-1 ring-lime-400 flex items-center justify-center">
-                  <Icon icon="akar-icons:gear" class="text-lime-400" />
-                  <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-lime-400 py-1 px-2" type="custom">In LSM</Tooltip>
-                </p>
-              {:else}
-                <p class="rounded-full h-6 w-6 ring-1 ring-rose-400 flex items-center justify-center">
-                  <Icon icon="pepicons-pop:gear-off" class="text-rose-400" />
-                  <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-rose-400 py-1 px-2" type="custom">No LSM Data</Tooltip>
-                </p>
-              {/if}
-              {#if sites.antennatypes === 'Updated' && sites.btsmanager_count > 0}
-                <p class="text-lime-400 text-xs">{sites.antennatypes}</p>
-              {:else}
-                <p class="text-rose-400 text-xs">No Phyinfo</p>
-              {/if}
-            </div>
-          </span></TableBodyCell>
+          <TableBodyCell class="py-2">
+            <span class="dark:text-gray-400">
+              <div class="flex items-center gap-2">
+                {#if sites.btsmanager_count}
+                  <p class="rounded-full h-6 w-6 ring-1 ring-lime-400 flex items-center justify-center">
+                    <Icon icon="akar-icons:gear" class="text-lime-400" />
+                    <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-lime-400 py-1 px-2" type="custom">In LSM</Tooltip>
+                  </p>
+                {:else}
+                  <p class="rounded-full h-6 w-6 ring-1 ring-rose-400 flex items-center justify-center">
+                    <Icon icon="pepicons-pop:gear-off" class="text-rose-400" />
+                    <Tooltip placement="right" defaultClass="bg-slate-700 text-xs text-rose-400 py-1 px-2" type="custom">No LSM Data</Tooltip>
+                  </p>
+                {/if}
+                {#if sites.antennatypes === 'Updated' && sites.btsmanager_count > 0}
+                  <p class="text-lime-400 text-xs">{sites.antennatypes}</p>
+                {:else}
+                  <p class="text-rose-400 text-xs">No Phyinfo</p>
+                {/if}
+              </div>
+            </span></TableBodyCell>
           <TableBodyCell class="py-2">
             <span class="dark:text-gray-400">
               <div class="flex gap-1">
@@ -232,5 +233,3 @@
   <PaginationComponent bind:totalPages={totalPages} bind:activePage={activePage} bind:limit={limit} bind:paginationurl={paginationurl} filterParams={{q, cluster, region, state, contracttype, siteconfig, btsmanager_count, antennatypes}} />
   
 </div>
-
-  <!-- CRUD Modal -->

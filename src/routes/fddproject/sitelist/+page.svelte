@@ -9,6 +9,7 @@
 	import CreateModal from './crud/CreateModal.svelte';
   import UpdateModal from './crud/UpdateModal.svelte';
   import DeleteModal from './crud/DeleteModal.svelte';
+  import PhyinfoUpdateModal from './PhyinfoUpdateModal.svelte';
 
 
   export let data;
@@ -79,6 +80,7 @@
   let siteUpdateModal = false
   let siteCreateModal = false
   let siteDeleteModal = false
+  let phyinfoUpdateModal = false;
   let siteId = '';
 
 </script>
@@ -168,6 +170,9 @@
 
     <Button size="sm" color="purple" class="rounded-md" on:click={resetFilters}>
       <Icon icon="ri:restart-line" /> <span class="ms-2 whitespace-nowrap">Reset Filter</span>
+    </Button>
+    <Button size="sm" color="green" class="rounded-md col-span-2" on:click={() => {phyinfoUpdateModal = true;}}>
+      <Icon icon="ic:outline-upload-file" /> <span class="ms-2 whitespace-nowrap">Upload Phyinfo File</span>
     </Button>
   </div>
 
@@ -274,3 +279,5 @@
     bind:siteDeleteModal={siteDeleteModal} {siteId}
     on:siteDeleted={search}
   />
+
+  <PhyinfoUpdateModal bind:phyinfoUpdateModal={phyinfoUpdateModal} on:phyinfoUpdated={search} />

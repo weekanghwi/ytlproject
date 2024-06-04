@@ -8,9 +8,12 @@
   import Createphyinfo from '../../fddproject/sitelist/[id]/crud/Createphyinfo.svelte';
   import Updatephyinfo from '../../fddproject/sitelist/[id]/crud/Updatephyinfo.svelte';
   import Deletephyinfo from '../../fddproject/sitelist/[id]/crud/Deletephyinfo.svelte';
+  import { fetchUserInfo, user } from '../../../store/auth';
+  import type { User } from '../../../store/auth';
 
   export let data: PageData;
   let btsmanagerdata:any = [];
+  let currentUser: User | null = null;
 
   async function fetchBTSmanagerData() {
     const res = await fetch(`http://10.24.8.120:8000/api/btsmanager/?siteid=${data.sitedata.siteid}`)
@@ -28,6 +31,10 @@
   }
 
   onMount(async () => {
+    await fetchUserInfo();
+    user.subscribe(value => {
+      currentUser = value;
+    });
     btsmanagerdata = await fetchBTSmanagerData();
     btsmanagerdata = {...btsmanagerdata}
 
@@ -50,7 +57,53 @@
     let params = new URLSearchParams();
     params.set('refresh', Date.now().toString())
     btsmanagerdata = await fetchBTSmanagerData();
-    goto(`/fddproject/sitelist/${$page.params.id}/`)
+    goto(`/sitelist/${$page.params.id}/`)
+  }
+
+  function openModal(modalType: 'create' | 'update' | 'delete', item: any = null) {
+    if (!currentUser) {
+      console.error('User in not logged in');
+      goto('/auth/login');
+      return;
+    }
+
+    switch (modalType) {
+      case 'create':
+        if (item) {
+          siteId = item.siteid;
+          _physiteinfoid = item.uid;
+        }
+        physiteinfoCreateModal = true;
+        break;
+      case 'update':
+        if (item) {
+          _cellidentity = item.phyinfo.id;
+          _physiteinfoid = item.uid;
+        }
+        physiteinfoUpdateModal = true;
+        break;
+      case 'delete':
+        if (item) {
+          _cellidentity = item.phyinfo.id;
+          _physiteinfoid = item.uid;
+        }
+        physiteinfoDeleteModal = true;
+        break;
+    }
+  }
+
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  let item: {
+    phyinfo: {
+      modifyat: string
+    }
   }
 
 </script>
@@ -58,7 +111,7 @@
     <!-- Breadcrumb -->
     <Breadcrumb aria-label="siteinfo breadcrumb" class="mb-6">
       <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-      <BreadcrumbItem href="/fddproject/sitelist">YTL LTE Site List</BreadcrumbItem>
+      <BreadcrumbItem href="/sitelist">YTL LTE Site List</BreadcrumbItem>
       <BreadcrumbItem>{data.sitedata.siteid} Detail</BreadcrumbItem>
     </Breadcrumb>
     <!-- site detail title-->
@@ -144,8 +197,8 @@
             <TableHead>
               <TableHeadCell padding="py-4 px-6">ECGI</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ANT Type</TableHeadCell>
-              <TableHeadCell padding="py-4 px-6">ANT Height</TableHeadCell>
-              <TableHeadCell padding="py-4 px-6">Azimuth</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">Height</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">Azi</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">MTILT</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">ETILT</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">PCI</TableHeadCell>
@@ -153,6 +206,8 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">ModifyDate</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">Modifyer</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -169,20 +224,25 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{formatDate(item.phyinfo.modifyat)}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.modifyby}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
-                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                  on:click={() => openModal('create', item)}>
+                  <!-- on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}> -->
                     <Icon icon="gridicons:create" />
                   </Button>
                   {/if}
                   {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => openModal('update', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}> -->
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => openModal('delete', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}> -->
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                   {/if}
@@ -218,6 +278,8 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">ModifyDate</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">Modifyer</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -234,20 +296,25 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{formatDate(item.phyinfo.modifyat)}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.modifyby}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
-                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                    on:click={() => openModal('create', item)}>
+                    <!-- on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}> -->
                     <Icon icon="gridicons:create" />
                   </Button>
                   {/if}
                   {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => openModal('update', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}> -->
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => openModal('delete', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}> -->
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                   {/if}
@@ -283,6 +350,8 @@
               <TableHeadCell padding="py-4 px-6">SSS</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">TAC</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">RSI</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">ModifyDate</TableHeadCell>
+              <TableHeadCell padding="py-4 px-6">Modifyer</TableHeadCell>
               <TableHeadCell padding="py-4 px-6">Action</TableHeadCell>
             </TableHead>
             <TableBody>
@@ -299,20 +368,25 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.tac}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.rsi}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{formatDate(item.phyinfo.modifyat)}</TableBodyCell>
+                <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.modifyby}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">
                   {#if !item.phyinfo.antennatype}
                   <Button size="xs" color="blue" class="rounded-md px-2"
-                  on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}>
+                    on:click={() => openModal('create', item)}>
+                    <!-- on:click={() => {siteId = item.siteid; _physiteinfoid = item.uid; physiteinfoCreateModal = true}}> -->
                     <Icon icon="gridicons:create" />
                   </Button>
                   {/if}
                   {#if item.phyinfo.antennatype}
                   <Button size="xs" color="purple" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}>
+                    on:click={() => openModal('update', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoUpdateModal = true}}> -->
                     <Icon icon="ri:edit-line" />
                   </Button>
                   <Button size="xs" color="red" class="rounded-md px-2"
-                    on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}>
+                    on:click={() => openModal('delete', item)}>
+                    <!-- on:click={() => {_cellidentity = item.phyinfo.id; _physiteinfoid = item.uid; physiteinfoDeleteModal = true}}> -->
                     <Icon icon="ri:delete-bin-line" />
                   </Button>
                   {/if}

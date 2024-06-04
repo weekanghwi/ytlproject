@@ -46,6 +46,7 @@ export interface PhysicalSiteData {
   azimuth: number;
   mtilt: number;
   etilt: number;
+  modified_by: string;
 }
 
 export function createInitialphySiteData(): PhysicalSiteData {
@@ -61,6 +62,7 @@ export function createInitialphySiteData(): PhysicalSiteData {
     azimuth: 0,
     mtilt: 0,
     etilt: 0,
+    modified_by: '',
   }
 }
 

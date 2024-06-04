@@ -61,18 +61,18 @@
 								<span>FDD PROJECT</span>
 							</div>
 						</NavLi>
+						<!-- <NavLi href="" class="font-semibold">
+							<div class="flex items-center gap-1">
+								<Icon icon="octicon:project-16" class="text-md font-bold"/>
+								<span>MULTI CARRIER</span>
+							</div>
+						</NavLi> -->
 						<NavLi href="/sitelist" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="gg:website" class="text-lg font-bold"/>
 								<span>SITE LIST</span>
 							</div>
 						</NavLi>
-						<!-- <NavLi href="/statistic" class="font-semibold">
-							<div class="flex items-center gap-1">
-								<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>
-								<span>STATISTIC</span>
-							</div>
-						</NavLi> -->
 						<NavLi href="/statistic2" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="flat-color-icons:statistics" class="text-lg font-bold"/>

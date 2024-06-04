@@ -106,6 +106,21 @@
             <SidebarDropdownItem label="UL BLER" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
           </SidebarDropdownWrapper>
 
+          <SidebarDropdownWrapper label="FILTER SAME PCI SITE"
+            btnClass="flex items-center p-1 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-700 ">
+            <svelte:fragment slot="icon">
+              <Icon icon="lets-icons:filter-big-alt" class="text-md font-bold text-slate-400"/>
+            </svelte:fragment>
+            <svelte:fragment slot="arrowup">
+              <Icon icon="mingcute:up-line" />
+            </svelte:fragment>
+            <svelte:fragment slot="arrowdown">
+              <Icon icon="mingcute:down-line" />
+            </svelte:fragment>
+            <SidebarDropdownItem label="SAME PCI" href="/statistic2/filtersamepci" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
+            <SidebarDropdownItem label="UL BLER" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
+          </SidebarDropdownWrapper>
+
         </SidebarGroup>
       </SidebarWrapper>
     </Sidebar>

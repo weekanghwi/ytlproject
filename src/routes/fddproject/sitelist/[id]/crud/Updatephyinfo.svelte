@@ -6,12 +6,15 @@
   import { z } from 'zod'
 	import { Button, Label, Input, Modal, Select, NumberInput } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-  import { fetchAntennaTypeData } from '$lib/categoryapicall'
+  import { fetchAntennaTypeData } from '$lib/categoryapicall';
+  import { fetchUserInfo, user } from '../../../../../store/auth';
+  import type { User } from '../../../../../store/auth';
 
   export let physiteinfoUpdateModal = false;
   export let _cellidentity: string;
   export let _physiteinfoid: string;
 
+  let currentUser: User | null = null;
   let physiteData: PhysicalSiteData = createInitialphySiteData();
   let errors: ErrorsRecord = {}
   let previousIdentity: string;
@@ -24,6 +27,10 @@
   })
 
   onMount(async () => {
+    await fetchUserInfo();
+    user.subscribe(value => {
+      currentUser = value;
+    });
     try {
       const antennaTypeData = await fetchAntennaTypeData();
       
@@ -53,9 +60,15 @@
 
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
+    if (!currentUser) {
+      console.error('User information is not available.');
+      return;
+    }
     try {
-      crudSchema.parse(physiteData);
-      await updatephySiteData(_cellidentity, physiteData);
+      // physiteData = { ...physiteData, modify_by: currentUser.username };
+      const updateData = { ...physiteData, modified_by: currentUser.username };
+      crudSchema.parse(updateData);
+      await updatephySiteData(_cellidentity, updateData);
       physiteinfoUpdateModal = false;
       errors = {};
       // siteData = createInitialSiteData();
@@ -81,6 +94,10 @@
       <p class="text-slate-400 text-lg">Physical Site Info Update</p>
     </div>
     <Input class="py-1.5 px-3 w-full text-red-500" bind:value={physiteData.id} type="hidden" />
+    {#if currentUser}
+    {currentUser.username}
+      <Input class="py-1.5 px-3 w-full text-red-500" bind:value={currentUser.username} type="hidden" />
+    {/if}
 
     <div class="grid grid-cols-3 items-center justify-center space-x-2 mb-4">
       <p class="text-slate-800 rounded-md bg-slate-400 flex justify-center text-xs py-1">{physiteData.sitebasicinfo}</p>

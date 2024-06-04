@@ -24,6 +24,7 @@ export const PhysicalSiteFormSchema = z.object({
   mtilt: z.number().nullable(),
   sitebasicinfo: z.string().nullable(),
   antennatype: z.string().min(1).nullable(),
+  modified_by: z.string().nullable(),
 })
 
 export const MaterialFormSchema = z.object({

@@ -10,7 +10,6 @@ export async function load({ url, fetch }) {
   params.set('siteconfig', params.get('siteconfig') || '');
   params.set('btsmanager_count', params.get('btsmanager_count') || '');
   params.set('antennatypes', params.get('antennatypes') || '')
-
   async function getSitelist(){
     const res = await fetch(`http://10.24.8.120:8000/api/sitebasicinfo/?${params.toString()}`)
     if (res.ok) {
