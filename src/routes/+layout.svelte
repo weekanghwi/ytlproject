@@ -61,12 +61,18 @@
 								<span>FDD PROJECT</span>
 							</div>
 						</NavLi>
-						<!-- <NavLi href="" class="font-semibold">
+						<NavLi href="/multicarrier" class="font-semibold">
 							<div class="flex items-center gap-1">
-								<Icon icon="octicon:project-16" class="text-md font-bold"/>
+								<Icon icon="gala:layer" class="text-md font-bold"/>
 								<span>MULTI CARRIER</span>
 							</div>
-						</NavLi> -->
+						</NavLi>
+						<NavLi href="/alarm" class="font-semibold">
+							<div class="flex items-center gap-1">
+								<Icon icon="lets-icons:alarm" class="text-md font-bold"/>
+								<span>ALARM</span>
+							</div>
+						</NavLi>
 						<NavLi href="/sitelist" class="font-semibold">
 							<div class="flex items-center gap-1">
 								<Icon icon="gg:website" class="text-lg font-bold"/>
@@ -114,8 +120,6 @@
 	</div>
 	
 	<div class="flex-1 mt-[88px] z-0">
-
 		<slot />
 	</div>
 </div>
-

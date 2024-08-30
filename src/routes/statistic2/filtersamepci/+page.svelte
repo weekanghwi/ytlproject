@@ -104,6 +104,10 @@
         <DropdownItem defaultClass="text-xs py-1 px-4 hover:bg-sky-400" on:click={() => selectRegion('Sabah')}>Sabah</DropdownItem>
         <DropdownItem defaultClass="text-xs py-1 px-4 hover:bg-sky-400" on:click={() => selectRegion('Sarawak')}>Sarawak</DropdownItem>
       </Dropdown>
+
+      <button class="rounded-md bg-blue-900 px-2 py-2 text-white text-xs" on:click={search}>Search</button>
+
+      <button class="rounded-md bg-purple-900 px-2 py-2 text-white text-xs" on:click={resetFilters}>Reset Filters</button>
     </div>
 
     <!-- TABLE -->

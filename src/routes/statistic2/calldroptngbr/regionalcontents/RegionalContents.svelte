@@ -142,13 +142,13 @@
             <div class="h-3 w-3 rounded-sm bg-sky-800"></div>
             <h1 class="text-xs text-white">2.3GHz</h1>
             <h1 class="text-xs text-slate-500">
-              {#if selectedData}
+              {#if selectedData  && selectedData.ratio && selectedData.ratio[0] !== undefined}
                 {(selectedData.ratio[0]).toFixed(2)}%
               {/if}
             </h1>
           </div>
           <h1 class="text-xs text-slate-500 ps-4">
-            {#if selectedData}
+            {#if selectedData  && selectedData.ratio && selectedData.ratio[0] !== undefined}
               {(selectedData.counts[0]).toLocaleString()}
             {/if}
           </h1>
@@ -159,13 +159,13 @@
             <div class="h-3 w-3 rounded-sm bg-sky-600"></div>
             <h1 class="text-xs text-white">2.6GHz</h1>
             <h1 class="text-xs text-slate-500">
-              {#if selectedData}
+              {#if selectedData && selectedData.ratio && selectedData.ratio[1] !== undefined}
                 {(selectedData.ratio[1]).toFixed(2)}%
               {/if}
             </h1>
           </div>
           <h1 class="text-xs text-slate-500 ps-4">
-            {#if selectedData}
+            {#if selectedData  && selectedData.ratio && selectedData.ratio[1] !== undefined}
               {(selectedData.counts[1]).toLocaleString()}
             {/if}
           </h1>
@@ -176,13 +176,13 @@
             <div class="h-3 w-3 rounded-sm bg-sky-400"></div>
             <h1 class="text-xs text-white">800MHz</h1>
             <h1 class="text-xs text-slate-500">
-              {#if selectedData}
+              {#if selectedData  && selectedData.ratio && selectedData.ratio[2] !== undefined}
                 {(selectedData.ratio[2]).toFixed(2)}%
               {/if}
             </h1>
           </div>
           <h1 class="text-xs text-slate-500 ps-4">
-            {#if selectedData}
+            {#if selectedData  && selectedData.ratio && selectedData.ratio[2] !== undefined}
               {(selectedData.counts[2]).toLocaleString()}
             {/if}
           </h1>
