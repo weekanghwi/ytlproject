@@ -18,7 +18,10 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const CallDropGBRStatisticData = await geteCallDropGBRStatisticdata()
+
   return {
-    CallDropGBRStatisticData: geteCallDropGBRStatisticdata()
+    CallDropGBRStatisticData,
   }
 }

@@ -17,7 +17,11 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const CellAvailStatisticData = await getCellAvailStatisticdata();
+
+
   return {
-    CellAvailStatisticData: getCellAvailStatisticdata()
+    CellAvailStatisticData,
   }
 }

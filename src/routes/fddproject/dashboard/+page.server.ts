@@ -14,7 +14,9 @@ export async function load({ fetch }) {
     }
   }
 
+  const dashboardData = await getDashboardData();
+
   return {
-    dashboardData: getDashboardData()
+    dashboardData,
   }
 }

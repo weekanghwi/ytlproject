@@ -26,7 +26,9 @@ export async function load({ url, fetch }) {
     }
   }
 
+  const sitelists = await getSitelist();
+
   return {
-    sitelists: getSitelist()
+    sitelists,
   }
 }

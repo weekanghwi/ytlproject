@@ -21,7 +21,10 @@ export async function load({url, fetch}) {
       }
     }
   }
+
+  const SamePCIData = await getSamePCIlist()
+
   return {
-    SamePCIData: getSamePCIlist()
+    SamePCIData,
   }
 }

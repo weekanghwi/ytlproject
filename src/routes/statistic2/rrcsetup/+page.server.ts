@@ -18,7 +18,10 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const RRCStatisticData = await getRRCsetupStatisticdata();
+
   return {
-    RRCStatisticData: getRRCsetupStatisticdata()
+    RRCStatisticData,
   }
 }

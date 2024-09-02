@@ -17,7 +17,10 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const IntraFreqHOStatisticData = await getIntraFreqHOStatisticdata()
+
   return {
-    IntraFreqHOStatisticData: getIntraFreqHOStatisticdata()
+    IntraFreqHOStatisticData,
   }
 }

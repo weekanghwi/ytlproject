@@ -17,7 +17,11 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const AttachStatisticData = await getAttachStatisticdata();
+
+
   return {
-    AttachStatisticData: getAttachStatisticdata()
+    AttachStatisticData,
   }
 }

@@ -17,7 +17,11 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const s1OutHOStatisticData = await gets1OutHOStatisticdata()
+
+
   return {
-    s1OutHOStatisticData: gets1OutHOStatisticdata()
+    s1OutHOStatisticData,
   }
 }

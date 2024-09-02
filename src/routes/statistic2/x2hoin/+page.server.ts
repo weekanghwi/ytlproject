@@ -17,7 +17,11 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const x2InHOStatisticData = await getx2InHOStatisticdata()
+
+
   return {
-    x2InHOStatisticData: getx2InHOStatisticdata()
+    x2InHOStatisticData,
   }
 }

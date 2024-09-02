@@ -18,7 +18,11 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const eRABStatisticData = await geteRABsetupStatisticdata();
+
+
   return {
-    eRABStatisticData: geteRABsetupStatisticdata()
+    eRABStatisticData,
   }
 }

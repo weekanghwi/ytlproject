@@ -39,13 +39,21 @@
 
   const initializeMap = () => {
     map = L.map('map', {
-      zoomControl: false,
-      attributionControl: false
+      zoomControl: true,  // 줌 컨트롤 활성화
+      attributionControl: true,
+      scrollWheelZoom: true,  // 마우스 휠로 확대/축소 활성화
+      dragging: true,  // 맵 드래그 이동 활성화
+      touchZoom: true,  // 터치 줌 활성화
+      doubleClickZoom: true,  // 더블 클릭 줌 활성화
+      boxZoom: true  // 박스 줌 활성화
     }).setView([3.115196667, 101.6536514], 10);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    map.zoomControl.setPosition('bottomright');
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 18,
-      noWrap: true
+      noWrap: true,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
   };
 
@@ -65,8 +73,8 @@
 
     if (formattedData.length > 0) {
       heatLayer = L.heatLayer(formattedData, {
-        radius: 30,
-        blur: 15,
+        radius: 40,
+        blur: 25,
         maxZoom: 18,
         max: 40,
         gradient: {
@@ -74,11 +82,14 @@
           0.2: 'rgb(8,236,232)',
           0.4: 'rgb(46,236,8)',
           0.6: 'rgb(236,221,8)',
-          0.8: 'rgb(236,141,8)',
-          1.0: 'rgb(236,8,8)'
+          0.8: 'rgb(236,8,8)',
+          // 0.8: 'rgb(236,141,8)',
+          // 1.0: 'rgb(236,8,8)'
         }
-      });
-      heatLayer.addTo(map);
+      }).addTo(map);
+      // heatLayer.addTo(map);
+    } else {
+      console.warn('No heatmap data available.')
     }
 
     if (selectedRegion && regions[selectedRegion]) {
@@ -132,7 +143,7 @@
   </div>
 {/if}
 
-<div id="map" class="h-[calc(100vh-100px)] rounded-md ms-4 relative -z-10">
+<div id="map" class="h-[calc(100vh-100px)] rounded-md ms-4 relative">
 
 </div>
 <div class="filters flex items-center justify-center gap-2 absolute top-[95px] left-[285px] rounded-md bg-black/20 p-1">

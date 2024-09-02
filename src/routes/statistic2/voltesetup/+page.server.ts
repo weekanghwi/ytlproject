@@ -18,7 +18,10 @@ export async function load({ url, fetch }) {
       }
     }
   }
+
+  const VoLTEStatisticData = await getVoLTEsetupStatisticdata();
+
   return {
-    VoLTEStatisticData: getVoLTEsetupStatisticdata()
+    VoLTEStatisticData,
   }
 }

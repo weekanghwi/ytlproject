@@ -64,7 +64,9 @@ export async function load({ url, fetch }) {
     }
   }
 
+  const statisticData = await getStatisticData();
+  
   return {
-    statisticData: getStatisticData()
+    statisticData,
   }
 }

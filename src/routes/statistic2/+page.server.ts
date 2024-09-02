@@ -15,7 +15,9 @@
     }
   }
 
+  const statisticData = await getStatisticData();
+
   return {
-    statisticData: getStatisticData()
+    statisticData,
   }
  }

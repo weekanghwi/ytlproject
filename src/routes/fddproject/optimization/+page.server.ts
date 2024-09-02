@@ -33,7 +33,9 @@ export async function load({ url, fetch }) {
     }
   }
 
+  const reldata = await getReldataList();
+
   return {
-    reldata: getReldataList(),
+    reldata
   }
 }
