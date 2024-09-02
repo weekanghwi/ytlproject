@@ -160,7 +160,11 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {#if item.retinfo.ret}
+                  <TableBodyCell tdClass="px-6 py-3">{item.retinfo.ret}</TableBodyCell>
+                {:else}
+                  <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {/if}
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
@@ -227,7 +231,11 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {#if item.retinfo.ret}
+                  <TableBodyCell tdClass="px-6 py-3">{item.retinfo.ret}</TableBodyCell>
+                {:else}
+                  <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {/if}
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>
@@ -294,7 +302,11 @@
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.antennaheight}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.azimuth}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.phyinfo.mtilt}</TableBodyCell>
-                <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {#if item.retinfo.ret}
+                  <TableBodyCell tdClass="px-6 py-3">{item.retinfo.ret}</TableBodyCell>
+                {:else}
+                  <TableBodyCell tdClass="px-6 py-3">{item.etilt}</TableBodyCell>
+                {/if}
                 <TableBodyCell tdClass="px-6 py-3">{item.pci}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.pss}</TableBodyCell>
                 <TableBodyCell tdClass="px-6 py-3">{item.sss}</TableBodyCell>

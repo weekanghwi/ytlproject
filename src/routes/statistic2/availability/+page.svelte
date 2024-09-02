@@ -195,7 +195,7 @@
             <OverallcellavailFailSite {OverallData} />
           </div>
           <div class="absolute flex flex-col items-center justify-center">
-            <h1 class="text-xs text-slate-400">Fail cluster</h1>
+            <h1 class="text-xs text-slate-400">Fail Sites</h1>
             <h1 class="text-2xl text-white font-bold">
               {(data.CellAvailStatisticData.CellAvail.fail_site_count_all).toLocaleString()}
             </h1>
@@ -207,7 +207,7 @@
             <OverallcellavailFailCell {OverallData} />
           </div>
           <div class="absolute flex flex-col items-center justify-center">
-            <h1 class="text-xs text-slate-400">Fail cluster</h1>
+            <h1 class="text-xs text-slate-400">Fail Cells</h1>
             <h1 class="text-2xl text-white font-bold">
               {(data.CellAvailStatisticData.CellAvail.fail_cell_count_all).toLocaleString()}
             </h1>

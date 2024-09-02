@@ -85,7 +85,7 @@
 
   <!-- Table Title -->
   <div class="flex items-center gap-4 mb-3">
-    <h5 class="text-2xl text-gray-800 dark:text-gray-300">Certificationfication Information</h5>
+    <h5 class="text-2xl text-gray-800 dark:text-gray-300">Certification Information</h5>
   </div>
 
   <!-- search -->

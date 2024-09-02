@@ -1,9 +1,15 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import toast, { Toaster } from 'svelte-french-toast'
+
+
   let username: string = '';
   let email: string = '';
   let password: string = '';
 
-  async function register() {
+  async function register(event: Event) {
+    event.preventDefault();
+
     const res = await fetch('http://10.24.8.120:8000/api/register_/', {
       method: 'POST',
       headers: {
@@ -14,7 +20,10 @@
 
     if (res.ok) {
       console.log('Registerd successfully');
+      toast.success('Registerd successfully')
+      goto('/auth/login');
     } else {
+      toast.error('Registration failed')
       console.log('Registration failed');
     }
   }
@@ -26,7 +35,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="#" method="POST">
+    <form class="space-y-6" on:submit={register}>
       <div>
         <label for="username" class="block text-sm font-medium leading-6 text-slate-300">User ID</label>
         <div class="mt-2">
@@ -51,9 +60,11 @@
       </div>
 
       <div>
-        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" on:click={register}>Register</button>
+        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
       </div>
     </form>
 
   </div>
 </div>
+
+<Toaster />

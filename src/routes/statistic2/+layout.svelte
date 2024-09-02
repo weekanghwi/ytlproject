@@ -121,60 +121,25 @@
             <SidebarDropdownItem label="UL BLER" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
           </SidebarDropdownWrapper>
 
+          <!-- HeatMap -->
+          <SidebarDropdownWrapper label="HeatMap"
+            btnClass="flex items-center p-1 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-700 ">
+            <svelte:fragment slot="icon">
+              <Icon icon="mdi:map-search" class="text-md font-bold text-slate-400"/>
+            </svelte:fragment>
+            <svelte:fragment slot="arrowup">
+              <Icon icon="mingcute:up-line" />
+            </svelte:fragment>
+            <svelte:fragment slot="arrowdown">
+              <Icon icon="mingcute:down-line" />
+            </svelte:fragment>
+            <SidebarDropdownItem label="PRB DL HeatMap" href="/statistic2/heatmapdlprb" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
+            <SidebarDropdownItem label="Call Drop(nGBR)" aClass="flex items-center p-1 pl-7 w-full text-sm text-slate-400 rounded-lg transition duration-75 group hover:bg-gray-100 hover:text-slate-900" />
+          </SidebarDropdownWrapper>
+
         </SidebarGroup>
       </SidebarWrapper>
     </Sidebar>
-
-    <!-- <div class="flex flex-col rounded-xl bg-slate-700/20 m-2 py-4 px-2 mt-auto">
-      <div class="flex items-center gap-2 mb-4">
-        <div class="h-8 w-8 rounded-full bg-slate-950 flex items-center justify-center">
-          <Icon icon="icon-park-outline:whole-site-accelerator" class="text-lg text-slate-100" />
-        </div>
-        <p class="text-sm text-slate-300 font-semibold">Site Count</p>
-      </div>
-      {#if lsmstatisticData}
-      <div class="flex gap-2 items-center justify-around mb-4">
-        <div class="flex items-center gap-2 rounded-lg border border-lime-400 p-2">
-          <Icon icon="clarity:bundle-line" class="text-4xl text-slate-400"/>
-          <div class="flex flex-col">
-            <p class="text-xs text-slate-400">Site</p>
-            <h1 class="text-lg text-slate-500 font-semibold">{lsmstatisticData.unique_site_count}</h1>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 rounded-lg border border-indigo-700 p-2">
-          <Icon icon="uil:cell" class="text-4xl text-slate-400"/>
-          <div class="flex flex-col">
-            <p class="text-xs text-slate-400">Cell</p>
-            <h1 class="text-lg text-slate-500 font-semibold">{lsmstatisticData.cell_count}</h1>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-8 justify-center">
-        <div class="flex flex-col gap-1">
-          <p class="text-sm text-slate-400 font-semibold">REGIONS</p>
-          {#each lsmstatisticData.sitecount_byregion.region as regions}
-          <p class="text-sm text-slate-400">{regions}</p>
-          {/each}
-        </div>
-        <div class="flex flex-col gap-1 items-center">
-          <p class="text-sm text-slate-400 font-semibold">SITES</p>
-          {#each lsmstatisticData.sitecount_byregion.count as counts}
-          <p class="text-xs text-slate-950 font-semibold px-1 py-[2px] bg-lime-400 rounded-md w-full text-center">{counts}</p>
-          {/each}
-        </div>
-        <div class="flex flex-col gap-1 items-end">
-          <p class="text-sm text-slate-400 font-semibold">CELLS</p>
-          {#each lsmstatisticData.cellcount_byregion.count as counts}
-          <p class="text-xs text-slate-950 font-semibold px-1 py-[2px] bg-indigo-700 rounded-md w-full text-center">{counts}</p>
-          {/each}
-        </div>
-
-      </div>
-      {:else}
-        <p class="text-sm text-indigo-400">Loading Data ...</p>
-      {/if}
-    </div> -->
   </div>
 
   <div class="flex-1 ml-[257px]">
